@@ -8,7 +8,7 @@ function ThemeToogle() {
     <Button
       className="rounded-full"
       basic
-      color={darkMode ? 'transparent' : 'yellow'}
+      color={darkMode ? 'white' : 'yellow'}
       icon={darkMode ? 'FaMoon' : 'FaSun'}
       onClick={() => {
         setDarkMode(!darkMode)

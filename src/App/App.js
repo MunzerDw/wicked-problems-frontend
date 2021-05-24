@@ -25,30 +25,32 @@ function App() {
         authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
       }}
     >
-      <FirebaseAuthConsumer>
-        {({ isSignedIn, user, providerId, ...authState }) => {
-          if (isSignedIn) {
-            firebase
-              .auth()
-              .currentUser.getIdToken()
-              .then((value) => {
-                axios.defaults.headers = {
-                  Authorization: 'Bearer ' + value,
-                }
-              })
-              .catch((error) => console.log(error))
-          }
-          return !providerId && !isSignedIn ? (
-            <LoadingPage />
-          ) : isSignedIn ? (
-            <States>
-              <Router />
-            </States>
-          ) : (
-            <Login />
-          )
-        }}
-      </FirebaseAuthConsumer>
+      <div className="dark:text-white">
+        <FirebaseAuthConsumer>
+          {({ isSignedIn, user, providerId, ...authState }) => {
+            if (isSignedIn) {
+              firebase
+                .auth()
+                .currentUser.getIdToken()
+                .then((value) => {
+                  axios.defaults.headers = {
+                    Authorization: 'Bearer ' + value,
+                  }
+                })
+                .catch((error) => console.log(error))
+            }
+            return !providerId && !isSignedIn ? (
+              <LoadingPage />
+            ) : isSignedIn ? (
+              <States>
+                <Router />
+              </States>
+            ) : (
+              <Login />
+            )
+          }}
+        </FirebaseAuthConsumer>
+      </div>
     </FirebaseAuthProvider>
   )
 }

@@ -24,7 +24,7 @@ function Button({
   } else {
     color = color || (darkMode ? 'white' : 'gray')
     style += basic
-      ? `bg-transparent text-${color}-500 border border-${color}-500 hover:text-${color}-400 hover:border-${color}-400`
+      ? `bg-transparent text-${color}-500 text-${color} border border-${color}-500 hover:text-${color}-600 dark:hover:text-${color}-400 hover:text-${color} hover:border-${color}-600 dark:hover:border-${color}-400`
       : `bg-${color}-500 hover:bg-${color}-400`
   }
   style += ` h-8 relative trans focus:outline-none leading-none flex space-x-2 cursor-pointer
