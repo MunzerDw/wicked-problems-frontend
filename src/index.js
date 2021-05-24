@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './styles/tailwind.css'
 import './index.css'
-import App from './App'
+import App from './App/App.js'
 import reportWebVitals from './reportWebVitals'
 
 ReactDOM.render(<App />, document.getElementById('root'))
