@@ -1,7 +1,7 @@
 function Col({ space, align, justify, className, children }) {
   return (
     <div
-      className={`flex items-${align || 'start'} justify-${
+      className={`flex flex-col items-${align || 'start'} justify-${
         justify || 'start'
       } space-y-${space || '6'} ${className}`}
     >
