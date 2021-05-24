@@ -27,7 +27,7 @@ function Button({
       ? `bg-transparent text-${color}-500 border border-${color}-500 hover:text-${color}-400 hover:border-${color}-400`
       : `bg-${color}-500 hover:bg-${color}-400`
   }
-  style += ` h-8 relative dark:text-white text-gray-600 trans focus:outline-none leading-none flex space-x-2 cursor-pointer
+  style += ` h-8 relative trans focus:outline-none leading-none flex space-x-2 cursor-pointer
     ${icon ? 'justify-between' : 'justify-center'} 
     ${icon && !props.children ? 'w-8 p-2 border-none' : 'rounded px-4 py-2'} 
     ${className ? className : ''} `

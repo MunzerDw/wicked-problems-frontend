@@ -23,7 +23,7 @@ function Popup({ className, trigger, state, setState, onClose, ...props }) {
           //   onClose && onClose()
           // }}
           className={
-            'fixed top-0 left-0 h-screen w-screen flex justify-center items-center overflow-hidden ' +
+            'fixed top-0 left-0 blur h-screen w-screen flex justify-center items-center overflow-hidden ' +
             className
           }
           style={{

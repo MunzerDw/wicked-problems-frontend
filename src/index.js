@@ -5,7 +5,11 @@ import './index.css'
 import App from './App/App.js'
 import reportWebVitals from './reportWebVitals'
 import axios from 'axios'
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
 
+// DEFAULTS
+TimeAgo.addDefaultLocale(en)
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL
 
 ReactDOM.render(<App />, document.getElementById('root'))

@@ -3,11 +3,7 @@ import Icon from './Icon'
 
 function Small({ value, text, icon, ...props }) {
   return (
-    <Flex.Row
-      className="w-full"
-      justify="between"
-      className="text-gray-500 w-full"
-    >
+    <Flex.Row justify="between" className="text-gray-500 w-full">
       <Flex.Row space="1">
         <Icon name={icon} />
         <div>{text}</div>

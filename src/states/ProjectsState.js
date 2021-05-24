@@ -63,4 +63,6 @@ function Provider(props) {
   return <Context.Provider value={value}>{props.children}</Context.Provider>
 }
 
-export default { Context, Provider }
+const exports = { Context, Provider }
+
+export default exports

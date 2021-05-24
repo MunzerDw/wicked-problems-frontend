@@ -1,5 +1,4 @@
 import React from 'react'
-import useDarkMode from '../hooks/useDarkMode'
 import Icon from './Icon'
 
 function Input({
@@ -12,7 +11,6 @@ function Input({
   className,
   ...props
 }) {
-  const { darkMode } = useDarkMode()
   return (
     <div className={'flex flex-col w-full space-y-2 ' + className}>
       <label

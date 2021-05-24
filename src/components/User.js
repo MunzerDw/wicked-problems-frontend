@@ -20,9 +20,12 @@ function User() {
             trigger={
               <div className="flex space-x-2 items-center cursor-pointer">
                 <div className="bg-blue-300 w-8 h-8 p-1 flex items-center justify-center text-sm rounded-full">
-                  MD
+                  {(user.displayName || user.email)
+                    ?.split(' ')
+                    .map((str) => str[0].toUpperCase())
+                    .join('')}
                 </div>
-                <div>{user.displayName}</div>
+                <div>{user.displayName || user.email}</div>
               </div>
             }
           />
