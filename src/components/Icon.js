@@ -1,7 +1,7 @@
 import React from 'react'
 import * as Icons from 'react-icons/fa'
 
-function Icon({ name, ...props }) {
+function Icon({ name, className, ...props }) {
   const IconComponent = Icons[name]
 
   if (!IconComponent) {
@@ -9,7 +9,11 @@ function Icon({ name, ...props }) {
     return <Icons.FaBeer {...props} />
   }
 
-  return <IconComponent {...props} />
+  return (
+    <div className={className}>
+      <IconComponent />
+    </div>
+  )
 }
 
 export default Icon

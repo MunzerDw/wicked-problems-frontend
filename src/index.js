@@ -4,6 +4,9 @@ import './styles/tailwind.css'
 import './index.css'
 import App from './App/App.js'
 import reportWebVitals from './reportWebVitals'
+import axios from 'axios'
+
+axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

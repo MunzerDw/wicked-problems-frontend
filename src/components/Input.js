@@ -1,4 +1,5 @@
 import React from 'react'
+import useDarkMode from '../hooks/useDarkMode'
 import Icon from './Icon'
 
 function Input({
@@ -11,6 +12,7 @@ function Input({
   className,
   ...props
 }) {
+  const { darkMode } = useDarkMode()
   return (
     <div className={'flex flex-col w-full space-y-2 ' + className}>
       <label
@@ -19,7 +21,7 @@ function Input({
       >
         {label}
       </label>
-      <div className="flex bg-gray-100 border rounded text-gray-900">
+      <div className="flex bg-gray-100 dark:bg-gray-500 border border-gray-100 dark:border-gray-500 rounded text-gray-900 dark:text-white">
         {icon ? (
           <span className="inline-flex items-center px-3 pr-0 text-secondary-300 text-sm">
             <Icon name={icon} />
@@ -30,7 +32,7 @@ function Input({
           value={value || ''}
           type={props.type || 'text'}
           name={props.name}
-          className={`flex-1 block w-full p-2 pl-2 focus:outline-none border-0 ${
+          className={`flex-1 block w-full p-2 pl-2 focus:outline-none border-0 bg-transparent ${
             disabled
               ? ' cursor-not-allowed bg-secondary-100 border-secondary-200 text-gray-900'
               : ''

@@ -1,6 +1,5 @@
-import Button from './Button'
-import firebase from 'firebase/app'
 import ThemeToogle from './ThemeToogle'
+import User from './User'
 
 function TopMenu() {
   return (
@@ -21,15 +20,7 @@ function TopMenu() {
         </div>
         <div className="flex items-center space-x-4">
           <ThemeToogle />
-          <Button
-            color="red"
-            onClick={() => {
-              firebase.auth().signOut()
-            }}
-            basic
-          >
-            Sign out
-          </Button>
+          <User />
         </div>
       </div>
     </div>

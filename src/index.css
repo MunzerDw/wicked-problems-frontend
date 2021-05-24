@@ -12,6 +12,18 @@ code {
     monospace;
 }
 
+/* BLUR */
+
+.blur {
+  background-color: rgb(155, 155, 155, 0.5);
+}
+
+/* TRANSITION */
+
+.trans {
+  transition: all 100ms ease;
+}
+
 /* FONT FAMILY */
 * {
   font-family: 'Raleway';

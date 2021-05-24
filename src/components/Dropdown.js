@@ -1,51 +1,68 @@
 import React, { useState } from 'react'
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Icon from './Icon'
 
-export default function Dropdown({ placeholder, data, className, label }) {
+export default function Dropdown({
+  placeholder,
+  actions,
+  className,
+  label,
+  trigger,
+}) {
   const [active, setActive] = useState(false)
 
-  document.addEventListener(
-    'click',
-    function (event) {
-      if (!event.target.matches('[class*="dropdownAction"]')) {
-        active && setActive(false)
-      }
-    },
-    false
-  )
+  // document.addEventListener(
+  //   'click',
+  //   function (event) {
+  //     if (!event.target.matches('[class*="dropdownAction"]')) {
+  //       if (active) {
+  //         setActive(false)
+  //       }
+  //     }
+  //   },
+  //   false
+  // )
   return (
     <div className={'flex flex-col ' + className}>
-      <label className="block text-h5">{label}</label>
+      {label && <label className="block text-h5">{label}</label>}
       <div className="relative">
-        <button
-          className={
-            'dropdownAction w-full focus:outline-none inputParent trans flex justify-between items-center space-x-2 p-3 cursor-pointer '
+        {React.cloneElement(
+          trigger ? (
+            trigger
+          ) : (
+            <button
+              className={
+                'dropdownAction w-full focus:outline-none inputParent trans flex justify-between items-center space-x-2 p-3 cursor-pointer '
+              }
+            >
+              <div className="dropdownAction cursor-pointer">{placeholder}</div>
+              <div className="dropdownAction inline-flex items-center px-3 cursor-pointer ">
+                <Icon
+                  className="pointer-events-none"
+                  name={active ? 'FaAngleUp' : 'FaAngleDown'}
+                />
+              </div>
+            </button>
+          ),
+          {
+            onClick: () => {
+              setActive(!active)
+            },
           }
-          onClick={() => setActive(!active)}
-        >
-          <div className="dropdownAction cursor-pointer">{placeholder}</div>
-          <div className="dropdownAction inline-flex items-center px-3 cursor-pointer ">
-            <FontAwesomeIcon
-              className="pointer-events-none"
-              icon={active ? faAngleUp : faAngleDown}
-            />
-          </div>
-        </button>
+        )}
         <div
           className={
-            'dropdownAction absolute max-h-32 w-full mt-1 overflow-auto flex flex-col shadow trans rounded origin-bottom-left z-40 bg-white ' +
+            'dropdownAction absolute max-h-32 w-full mt-1 overflow-auto flex flex-col shadow trans rounded origin-bottom-left z-40 bg-white dark:bg-gray-600 ' +
             (active
               ? 'opacity-100 scale-100 visible'
               : 'opacity-0 scale-75 hidden')
           }
         >
-          {data.map((item, i) => {
+          {actions.map((item, i) => {
             return (
               <Item
                 key={i}
                 onClick={() => {
-                  item.onClick()
+                  item.action()
                   setActive(false)
                 }}
               >
@@ -63,7 +80,7 @@ function Item({ ...props }) {
   return (
     <div
       className={
-        'dropdownAction text-h5 cursor-pointer trans px-3 py-2 hover:bg-secondary-100 '
+        'dropdownAction text-h5 cursor-pointer trans px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-500 trans'
       }
       {...props}
     >

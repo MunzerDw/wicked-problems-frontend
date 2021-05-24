@@ -2,6 +2,7 @@ import React from 'react'
 import Loading from './Loading'
 import { useHistory } from 'react-router'
 import Icon from './Icon'
+import useDarkMode from '../hooks/useDarkMode'
 
 function Button({
   className,
@@ -16,29 +17,32 @@ function Button({
   ...props
 }) {
   const history = useHistory()
+  const { darkMode } = useDarkMode()
   let style = ''
   if (props.disabled) {
     style += 'bg-secondary-300 cursor-not-allowed'
   } else {
-    color = color || 'gray'
+    color = color || (darkMode ? 'white' : 'gray')
     style += basic
-      ? `bg-transparent text-${color}-500 border border-${color}-500 hover:text-${color}-600 hover:border-${color}-600`
-      : `bg-${color}-500 hover:bg-${color}-600`
+      ? `bg-transparent text-${color}-500 border border-${color}-500 hover:text-${color}-400 hover:border-${color}-400`
+      : `bg-${color}-500 hover:bg-${color}-400`
   }
-  style += ` h-8 relative text-white trans focus:outline-none leading-none flex space-x-2 cursor-pointer
+  style += ` h-8 relative dark:text-white text-gray-600 trans focus:outline-none leading-none flex space-x-2 cursor-pointer
     ${icon ? 'justify-between' : 'justify-center'} 
-    ${iconBtn ? 'w-8 p-2 border-none' : 'rounded px-4 py-2'} 
+    ${icon && !props.children ? 'w-8 p-2 border-none' : 'rounded px-4 py-2'} 
     ${className ? className : ''} `
 
   const children = (
     <>
-      {iconBtn ? (
+      {icon && !props.children ? (
         <Icon
           className={
-            'm-auto ' + (loading ? 'invisible' : 'visible') + ' ' + iconColor
+            'm-auto ' +
+            (loading ? 'invisible' : 'visible') +
+            ' text-' +
+            iconColor
           }
           name={icon}
-          size={iconSize || 'lg'}
         />
       ) : (
         <>
