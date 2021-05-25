@@ -1,17 +1,16 @@
-import useDarkMode from '../hooks/useDarkMode'
+import { useDarkMode } from '../hooks/useDarkMode'
 import Button from './Button'
 
-function ThemeToogle() {
-  const { darkMode, setDarkMode } = useDarkMode()
-
+function ThemeToogle({ className }) {
+  const { darkMode, toggle } = useDarkMode()
   return (
     <Button
-      className="rounded-full"
+      className={'rounded-full ' + className}
       basic
       color={darkMode ? 'white' : 'yellow'}
       icon={darkMode ? 'FaMoon' : 'FaSun'}
       onClick={() => {
-        setDarkMode(!darkMode)
+        toggle()
       }}
       iconBtn
     />

@@ -3,6 +3,7 @@ import Flex from '../../../components/Flex'
 import NumberStat from '../../../components/NumberStat'
 import ProjectsState from '../../../states/ProjectsState'
 import TimeAgo from 'javascript-time-ago'
+import ProjectEditor from './ProjectEditor'
 
 function Project({ project }) {
   const currentdate = new Date(project.createdAt)
@@ -13,14 +14,27 @@ function Project({ project }) {
       space="2"
       justify="between"
       className="p-4 rounded shadow-xl hover:shadow-2xl trans bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 w-full"
-      // style={{ width: '350px' }}
+      onClick={() => {
+        window.location.href =
+          window.location.origin + '/projects/' + project.name
+      }}
     >
-      <Flex.Row justify="between" space="8" className="w-full">
-        <span className="text-h2 font-medium">{project.name}</span>
+      <Flex.Row justify="between" align="start" space="8" className="w-full">
+        <span className="text-h2 font-medium truncate">{project.name}</span>
         <ProjectsState.Context.Consumer>
-          {({ deleteProject }) => (
+          {({ deleteProject, setEditorProject }) => (
             <Flex.Row space="1">
-              <Button icon="FaEdit" color="transparent" />
+              <ProjectEditor
+                trigger={
+                  <Button
+                    onClick={() => {
+                      setEditorProject(project)
+                    }}
+                    icon="FaEdit"
+                    color="transparent"
+                  />
+                }
+              />
               <Button
                 icon="FaTrashAlt"
                 iconColor="yellow-500"

@@ -1,19 +1,34 @@
-import { useEffect, useState } from 'react'
+import { useState, createContext, useEffect, useContext } from 'react'
+// https://vimalselvam.com/post/toggle-theme-using-react-hooks/
+const DarkModeContext = createContext({ darKMode: false, toogle: () => {} })
 
-function useDarkMode() {
-  const [darkMode, setDarkMode] = useState(
-    JSON.parse(localStorage.getItem('darkMode') || false)
-  )
+function DarkModeProvider({ children }) {
+  const [darkMode, setDarkMode] = useState(false) // Default theme is light
+
+  // On mount, read the preferred theme from the persistence
   useEffect(() => {
-    if (darkMode) {
-      document.getElementById('html').setAttribute('class', 'dark')
-      localStorage.setItem('darkMode', true)
-    } else {
-      document.getElementById('html').setAttribute('class', '')
-      localStorage.setItem('darkMode', false)
-    }
+    const isDark = localStorage.getItem('darkMode') === 'true'
+    document.getElementById('html').setAttribute('class', isDark ? 'dark' : '')
+    setDarkMode(isDark)
   }, [darkMode])
-  return { darkMode, setDarkMode }
+
+  // To toggle between dark and light modes
+  const toggle = () => {
+    const isDark = !darkMode
+    localStorage.setItem('darkMode', JSON.stringify(isDark))
+    document.getElementById('html').setAttribute('class', isDark ? 'dark' : '')
+    setDarkMode(isDark)
+  }
+
+  return (
+    <DarkModeContext.Provider value={{ darkMode, toggle }}>
+      {children}
+    </DarkModeContext.Provider>
+  )
 }
 
-export default useDarkMode
+function useDarkMode() {
+  return { ...useContext(DarkModeContext) }
+}
+
+export { DarkModeProvider, useDarkMode, DarkModeContext }

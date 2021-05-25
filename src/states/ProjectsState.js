@@ -15,6 +15,13 @@ function Provider(props) {
   function removeProject(id) {
     setProjects(projects.filter((project) => project.id !== id))
   }
+  function changeProject(id, change) {
+    const project = projects.find((project) => project.id === id)
+    setProjects([
+      ...projects.filter((project) => project.id !== id),
+      { ...project, ...change },
+    ])
+  }
 
   // API FUNCTIONS
   async function getProjects() {
@@ -45,6 +52,18 @@ function Provider(props) {
       alert(error.message)
     }
   }
+  async function updateProject(id, body) {
+    try {
+      const response = await axios.put('/projects/' + id, body)
+      if (response.status === 200) {
+        changeProject(id, response.data)
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
 
   // ONLOAD
   useEffect(() => {
@@ -57,6 +76,7 @@ function Provider(props) {
     editorProject,
     setEditorProject,
     createProject,
+    updateProject,
     deleteProject,
   }
 

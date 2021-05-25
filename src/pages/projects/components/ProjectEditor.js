@@ -6,25 +6,28 @@ import Input from '../../../components/Input'
 import Popup from '../../../components/Popup'
 import ProjectsState from '../../../states/ProjectsState'
 
-function ProjectEditor() {
+function ProjectEditor({ trigger }) {
   const [open, setOpen] = useState(false)
   return (
-    <Popup
-      state={open}
-      setState={setOpen}
-      trigger={
-        <Button basic color="green">
-          New project
-        </Button>
-      }
-    >
-      <ProjectsState.Context.Consumer>
-        {({ editorProject, setEditorProject, createProject }) => {
-          return (
+    <ProjectsState.Context.Consumer>
+      {({ editorProject, setEditorProject, createProject, updateProject }) => {
+        return (
+          <Popup
+            state={open}
+            setState={setOpen}
+            trigger={trigger}
+            onClose={() => setEditorProject({ name: '' })}
+          >
             <Form
               className="bg-gray-200 dark:bg-gray-700 shadow-lg rounded p-6"
               onSubmit={async () => {
-                await createProject(editorProject)
+                if (editorProject.id) {
+                  await updateProject(editorProject.id, {
+                    name: editorProject.name,
+                  })
+                } else {
+                  await createProject(editorProject)
+                }
                 setEditorProject({ name: '' })
                 setOpen(false)
               }}
@@ -40,17 +43,23 @@ function ProjectEditor() {
               />
               <Flex.Row space="2">
                 <Button basic color="green" type="submit">
-                  Add
+                  {editorProject.id ? 'Save' : 'Add'}
                 </Button>
-                <Button basic color="gray" onClick={() => setOpen(false)}>
+                <Button
+                  basic
+                  color="gray"
+                  onClick={() => {
+                    setOpen(false)
+                  }}
+                >
                   Cancel
                 </Button>
               </Flex.Row>
             </Form>
-          )
-        }}
-      </ProjectsState.Context.Consumer>
-    </Popup>
+          </Popup>
+        )
+      }}
+    </ProjectsState.Context.Consumer>
   )
 }
 export default ProjectEditor

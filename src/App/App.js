@@ -9,12 +9,10 @@ import Router from './components/Router'
 import axios from 'axios'
 import States from '../states/States'
 import LoadingPage from '../pages/LoadingPage/LoadingPage'
-import useDarkMode from '../hooks/useDarkMode'
+import { DarkModeProvider } from '../hooks/useDarkMode'
 require('dotenv').config()
 
 function App() {
-  useDarkMode()
-
   return (
     <FirebaseAuthProvider
       firebase={firebase}
@@ -26,30 +24,32 @@ function App() {
       }}
     >
       <div className="dark:text-white">
-        <FirebaseAuthConsumer>
-          {({ isSignedIn, user, providerId, ...authState }) => {
-            if (isSignedIn) {
-              firebase
-                .auth()
-                .currentUser.getIdToken()
-                .then((value) => {
-                  axios.defaults.headers = {
-                    Authorization: 'Bearer ' + value,
-                  }
-                })
-                .catch((error) => console.log(error))
-            }
-            return !providerId && !isSignedIn ? (
-              <LoadingPage />
-            ) : isSignedIn ? (
-              <States>
-                <Router />
-              </States>
-            ) : (
-              <Login />
-            )
-          }}
-        </FirebaseAuthConsumer>
+        <DarkModeProvider>
+          <FirebaseAuthConsumer>
+            {({ isSignedIn, user, providerId, ...authState }) => {
+              if (isSignedIn) {
+                firebase
+                  .auth()
+                  .currentUser.getIdToken()
+                  .then((value) => {
+                    axios.defaults.headers = {
+                      Authorization: 'Bearer ' + value,
+                    }
+                  })
+                  .catch((error) => console.log(error))
+              }
+              return !providerId && !isSignedIn ? (
+                <LoadingPage />
+              ) : isSignedIn ? (
+                <States>
+                  <Router />
+                </States>
+              ) : (
+                <Login />
+              )
+            }}
+          </FirebaseAuthConsumer>
+        </DarkModeProvider>
       </div>
     </FirebaseAuthProvider>
   )

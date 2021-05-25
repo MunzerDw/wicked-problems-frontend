@@ -2,7 +2,7 @@ import React from 'react'
 import Loading from './Loading'
 import { useHistory } from 'react-router'
 import Icon from './Icon'
-import useDarkMode from '../hooks/useDarkMode'
+import { useDarkMode } from '../hooks/useDarkMode'
 
 function Button({
   className,
@@ -18,13 +18,14 @@ function Button({
 }) {
   const history = useHistory()
   const { darkMode } = useDarkMode()
+
   let style = ''
   if (props.disabled) {
     style += 'bg-secondary-300 cursor-not-allowed'
   } else {
-    color = color || (darkMode ? 'white' : 'gray')
+    color = color || (darkMode ? 'white' : 'black')
     style += basic
-      ? `bg-transparent text-${color}-500 text-${color} border border-${color}-500 hover:text-${color}-600 dark:hover:text-${color}-400 hover:text-${color} hover:border-${color}-600 dark:hover:border-${color}-400`
+      ? `bg-transparent text-${color}-500 text-${color} border border-${color}-500 border-${color} hover:text-${color}-600 dark:hover:text-${color}-400 hover:text-${color} hover:border-${color}-600 dark:hover:border-${color}-400`
       : `bg-${color}-500 hover:bg-${color}-400`
   }
   style += ` h-8 relative trans focus:outline-none leading-none flex space-x-2 cursor-pointer
