@@ -1,5 +1,5 @@
 import Page from '../../components/Page'
-import Project from './components/Project'
+import ProjectCard from './components/ProjectCard'
 import ProjectEditor from './components/ProjectEditor'
 import ProjectsState from '../../states/ProjectsState'
 import Button from '../../components/Button'
@@ -17,10 +17,12 @@ function Projects() {
           }
         />
       </div>
-      <div className="grid gap-6 grid-flow-row grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 w-full px-4">
+      <div className="grid gap-6 grid-flow-row grid-cols-3 md:grid-cols-3 2xl:grid-cols-5 w-full px-4">
         <ProjectsState.Context.Consumer>
           {({ projects }) =>
-            projects.map((project, i) => <Project key={i} project={project} />)
+            projects.map((project, i) => (
+              <ProjectCard key={i} project={project} />
+            ))
           }
         </ProjectsState.Context.Consumer>
       </div>
