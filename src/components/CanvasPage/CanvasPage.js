@@ -1,5 +1,6 @@
 import Flex from 'components/Flex'
 import Menu from 'components/Menu/Menu'
+import ThemeToogle from 'components/ThemeToogle'
 import MenuToggle from './components/MenuToggle'
 
 function CanvasPage({ className, topBar, ...props }) {
@@ -8,9 +9,9 @@ function CanvasPage({ className, topBar, ...props }) {
       <Flex.Row space="0" align="start" className="w-full relative">
         <Menu />
         <Flex.Col space="0" className="w-full">
-          <div className="w-full p-1">
+          <div className="w-full p-1 flex justify-between">
             <MenuToggle />
-            {topBar}
+            <ThemeToogle />
           </div>
           <div className={'p-6 pt-2 w-full ' + className}>{props.children}</div>
         </Flex.Col>

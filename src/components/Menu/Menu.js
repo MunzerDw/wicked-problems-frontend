@@ -10,7 +10,7 @@ function Menu() {
   return (
     <div
       className={
-        'w-full h-screen absolute bg-gray-300 dark:bg-gray-700 flex flex-col overflow-hidden '
+        'w-full h-screen absolute bg-gray-200 dark:bg-gray-700 flex flex-col overflow-hidden '
       }
       style={{
         zIndex: '1000',
@@ -22,17 +22,27 @@ function Menu() {
         <MenuToggle />
       </div>
       <Flex.Col className="p-6">
-        <Tab text="Home" to="/" />
-        <Tab text="Canvas" to={'/projects/' + projectName} />
         <Tab
+          icon="FaProjectDiagram"
+          text="Canvas"
+          to={'/projects/' + projectName}
+        />
+        <Tab
+          icon="FaChartLine"
           text="Statistics"
           to={'/projects/' + projectName + '/statistics'}
         />
-        <Tab text="Snapshots" to={'/projects/' + projectName + '/snapshots'} />
         <Tab
+          icon="FaFileAlt"
+          text="Snapshots"
+          to={'/projects/' + projectName + '/snapshots'}
+        />
+        <Tab
+          icon="FaChartPie"
           text="Public Analysis"
           to={'/projects/' + projectName + '/publicanalysis'}
         />
+        <Tab icon="FaHome" text="Home" to="/" />
       </Flex.Col>
     </div>
   )

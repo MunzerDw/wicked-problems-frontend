@@ -1,6 +1,6 @@
 import Page from 'components/Page'
 import ProjectCard from './components/ProjectCard'
-import ProjectsState from 'states/ProjectsState'
+import { contexts } from 'states'
 import CreateProject from './components/CreateProject'
 
 function Projects() {
@@ -11,13 +11,13 @@ function Projects() {
         <CreateProject />
       </div>
       <div className="grid gap-6 grid-flow-row grid-cols-3 md:grid-cols-3 2xl:grid-cols-5 w-full px-4">
-        <ProjectsState.Context.Consumer>
+        <contexts.ProjectsStateCtx.Consumer>
           {({ projects }) =>
             projects
               .sort((a, b) => new Date(b.date) - new Date(a.date))
               .map((project, i) => <ProjectCard key={i} project={project} />)
           }
-        </ProjectsState.Context.Consumer>
+        </contexts.ProjectsStateCtx.Consumer>
       </div>
     </Page>
   )
