@@ -1,3 +1,4 @@
+import Toogle from 'components/Toogle'
 import Button from '../../../components/Button'
 import Flex from '../../../components/Flex'
 import Form from '../../../components/Form'
@@ -22,6 +23,7 @@ function ProjectEditor({ trigger, open, setOpen }) {
                 if (editorProject.id) {
                   await updateProject(editorProject.id, {
                     name: editorProject.name,
+                    public: editorProject.public,
                   })
                 } else {
                   await createProject(editorProject)
@@ -39,6 +41,15 @@ function ProjectEditor({ trigger, open, setOpen }) {
                   setEditorProject({ ...editorProject, name: value })
                 }}
               />
+              <Flex.Row>
+                <div>Public</div>
+                <Toogle
+                  checked={editorProject.public ? true : false}
+                  onChange={(value) => {
+                    setEditorProject({ ...editorProject, public: value })
+                  }}
+                />
+              </Flex.Row>
               <Flex.Row space="2">
                 <Button basic color="green" type="submit">
                   {editorProject.id ? 'Save' : 'Add'}

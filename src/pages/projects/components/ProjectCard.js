@@ -6,6 +6,7 @@ import TimeAgo from 'javascript-time-ago'
 import ProjectEditor from './ProjectEditor'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Icon from 'components/Icon'
 
 function ProjectCard({ project }) {
   const currentdate = new Date(project.createdAt)
@@ -57,6 +58,16 @@ function ProjectCard({ project }) {
           </Flex.Row>
           <hr />
           <br />
+          <NumberStat.Small
+            value={
+              <Icon
+                className={project.public ? 'text-green-600' : ''}
+                name={project.public ? 'FaCheck' : 'FaTimes'}
+              />
+            }
+            text="Public"
+            icon="FaGlobeEurope"
+          />
           <NumberStat.Small value={4} text="Users" icon="FaUsers" />
           <NumberStat.Small
             value={timeSince}

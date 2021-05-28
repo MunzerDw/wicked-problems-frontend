@@ -29,6 +29,13 @@ code {
   font-family: 'Raleway';
 }
 
+/* TOOGLE */
+
+input:checked ~ .toggle__dot {
+  transform: translateX(100%);
+  background-color: #1da571;
+}
+
 /* LOADING SPINNER */
 
 .loader {

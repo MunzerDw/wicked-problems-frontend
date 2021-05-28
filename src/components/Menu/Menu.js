@@ -18,7 +18,15 @@ function Menu() {
         maxWidth: menuOpen ? '250px' : '0px',
       }}
     >
-      <div className="p-1 flex justify-end w-full">
+      <div className="p-1 flex justify-between w-full">
+        <div
+          className="text-2xl font-medium dark:text-white p-4"
+          style={{
+            fontFamily: 'Pattaya',
+          }}
+        >
+          Wicked Problems
+        </div>
         <MenuToggle />
       </div>
       <Flex.Col className="p-6">
