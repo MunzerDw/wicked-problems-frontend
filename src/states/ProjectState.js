@@ -10,10 +10,21 @@ function Provider(props) {
 
   // STATE FUNCTIONS
   function addNode(node) {
-    setNodes([...nodes, node])
+    setNodes([
+      ...nodes,
+      {
+        id: node.id,
+        position: {
+          x: node.x,
+          y: node.y,
+        },
+        data: { ...node, label: '' },
+        type: node.type,
+      },
+    ])
   }
-  function removeNode(id) {
-    setNodes(nodes.filter((node) => node.id !== id))
+  function removeNodes(ids) {
+    setNodes(nodes.filter((node) => !ids.includes(node.id)))
   }
 
   // API FUNCTIONS
@@ -29,7 +40,17 @@ function Provider(props) {
   async function getNodes(id) {
     try {
       const response = await axios('/nodes?projectId=' + id)
-      setNodes(response.data)
+      setNodes(
+        response.data.map((node) => ({
+          id: node.id,
+          position: {
+            x: node.x,
+            y: node.y,
+          },
+          data: { ...node, label: '' },
+          type: node.type,
+        }))
+      )
     } catch (error) {
       alert(error.message)
     }
@@ -45,11 +66,11 @@ function Provider(props) {
       alert(error.message)
     }
   }
-  async function deleteNode(id) {
+  async function deleteNode(ids) {
     try {
-      const response = await axios.delete('/nodes/' + id)
+      const response = await axios.delete('/nodes', { data: { ids: ids } })
       if (response.status === 204) {
-        removeNode(id)
+        removeNodes(ids)
       } else {
         alert(response.status)
       }

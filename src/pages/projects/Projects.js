@@ -11,6 +11,7 @@ function Projects() {
   )
   useEffect(() => {
     getProjects()
+    // eslint-disable-next-line
   }, [])
   return (
     <Page>

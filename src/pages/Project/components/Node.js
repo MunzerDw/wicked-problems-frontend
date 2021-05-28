@@ -1,14 +1,13 @@
 import Flex from 'components/Flex'
 import Icon from 'components/Icon'
-import ReactFlow, { Handle } from 'react-flow-renderer'
+import { Handle } from 'react-flow-renderer'
 
 function Node({ icon, color, children, ...props }) {
-  // console.log('node is rendered', props)
   return (
     <Flex.Row
       space="0"
       className={
-        'bg-white w-96 border rounded border-gray-500 dark:border-nonde text-black'
+        'bg-white w-96 border rounded border-gray-500 dark:border-none text-black'
       }
     >
       <Handle type="source" position="right" />
