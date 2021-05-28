@@ -10,7 +10,7 @@ function NodesBar() {
 
   return (
     <div
-      className="absolute rounded-full flex justify-around bg-white border border-gray-500 dark:border-none text-black"
+      className="absolute flex rounded-full justify-around bg-white border border-gray-500 dark:border-none text-black"
       style={{
         zIndex: '100',
         bottom: '20px',
@@ -18,9 +18,10 @@ function NodesBar() {
         transform: 'translate(-50%)',
       }}
     >
+      <div className=""></div>
       <div
         draggable={true}
-        className="flex p-4 dndnode QUESTION cursor-pointer"
+        className="flex p-4 dndnode QUESTION cursor-pointer bg-transparent"
         onDragStart={(event) => onDragStart(event, 'QUESTION')}
       >
         <Icon size={30} name={'FaQuestion'} color="yellow" className="m-auto" />
