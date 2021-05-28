@@ -22,12 +22,13 @@ const onLoad = (reactFlowInstance) => {
 }
 
 function Project() {
-  const name = window.location.pathname.split('/')[2]
+  const urlSafeName = window.location.pathname.split('/')[2]
   const { nodes, project, setNodes, loadProjectAndNodes } = useContext(
     contexts.ProjectCtx
   )
+  console.log(urlSafeName, window.location.pathname.split('/'))
   useEffect(() => {
-    loadProjectAndNodes(name)
+    loadProjectAndNodes(urlSafeName)
   }, [])
   const onElementsRemove = (elementsToRemove) =>
     setNodes((els) => removeElements(elementsToRemove, els))

@@ -21,13 +21,14 @@ function Provider(props) {
     try {
       const response = await axios('/projects/' + name)
       setProject(response.data)
+      return response.data
     } catch (error) {
       alert(error.message)
     }
   }
-  async function getNodes() {
+  async function getNodes(id) {
     try {
-      const response = await axios('/nodes?projectId=' + project?.id)
+      const response = await axios('/nodes?projectId=' + id)
       setNodes(response.data)
     } catch (error) {
       alert(error.message)
@@ -59,8 +60,8 @@ function Provider(props) {
 
   // ONLOAD
   async function loadProjectAndNodes(name) {
-    await getProject(name)
-    await getNodes()
+    const project = await getProject(name)
+    await getNodes(project.id)
   }
 
   // EXPORTS
