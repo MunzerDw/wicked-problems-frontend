@@ -3,18 +3,16 @@ import React from 'react'
 function Popup({ className, trigger, state, setState, onClose, ...props }) {
   return (
     <>
-      <div>
-        {trigger
-          ? React.cloneElement(trigger, {
-              onClick: (e) => {
-                console.log('triggered')
-                e.stopPropagation()
-                if (trigger.props.onClick) trigger.props.onClick(e)
-                setState(true)
-              },
-            })
-          : null}
-      </div>
+      {trigger
+        ? React.cloneElement(trigger, {
+            onClick: (e) => {
+              console.log('triggered')
+              e.stopPropagation()
+              if (trigger.props.onClick) trigger.props.onClick(e)
+              setState(true)
+            },
+          })
+        : null}
       {state && (
         <div
           // onClick={(e) => {

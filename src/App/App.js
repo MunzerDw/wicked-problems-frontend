@@ -7,7 +7,7 @@ import {
 } from '@react-firebase/auth'
 import Router from './components/Router'
 import axios from 'axios'
-import States from '../states/States'
+import { States } from '../states'
 import LoadingPage from '../pages/LoadingPage/LoadingPage'
 import { DarkModeProvider } from '../hooks/useDarkMode'
 require('dotenv').config()

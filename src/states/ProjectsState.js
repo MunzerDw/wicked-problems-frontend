@@ -16,11 +16,11 @@ function Provider(props) {
     setProjects(projects.filter((project) => project.id !== id))
   }
   function changeProject(id, change) {
-    const project = projects.find((project) => project.id === id)
-    setProjects([
-      ...projects.filter((project) => project.id !== id),
-      { ...project, ...change },
-    ])
+    setProjects(
+      projects.map((project) =>
+        project.id === id ? { ...project, ...change } : project
+      )
+    )
   }
 
   // API FUNCTIONS

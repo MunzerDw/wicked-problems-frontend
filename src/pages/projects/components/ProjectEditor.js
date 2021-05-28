@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Button from '../../../components/Button'
 import Flex from '../../../components/Flex'
 import Form from '../../../components/Form'
@@ -6,8 +5,7 @@ import Input from '../../../components/Input'
 import Popup from '../../../components/Popup'
 import ProjectsState from '../../../states/ProjectsState'
 
-function ProjectEditor({ trigger }) {
-  const [open, setOpen] = useState(false)
+function ProjectEditor({ trigger, open, setOpen }) {
   return (
     <ProjectsState.Context.Consumer>
       {({ editorProject, setEditorProject, createProject, updateProject }) => {
