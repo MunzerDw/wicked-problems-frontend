@@ -11,7 +11,7 @@ function Icon({ name, className, ...props }) {
 
   return (
     <div className={className}>
-      <IconComponent />
+      <IconComponent {...props} />
     </div>
   )
 }
