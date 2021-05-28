@@ -1,20 +1,29 @@
 import Toogle from 'components/Toogle'
-import Button from '../../../components/Button'
-import Flex from '../../../components/Flex'
-import Form from '../../../components/Form'
-import Input from '../../../components/Input'
-import Popup from '../../../components/Popup'
-import ProjectsState from '../../../states/ProjectsState'
+import Button from 'components/Button'
+import Flex from 'components/Flex'
+import Form from 'components/Form'
+import Input from 'components/Input'
+import Popup from 'components/Popup'
+import ProjectsState from 'states/ProjectsState'
 
-function ProjectEditor({ trigger, open, setOpen }) {
+const UrlSafeString = require('url-safe-string'),
+  tagGenerator = new UrlSafeString()
+
+function ProjectEditor() {
   return (
     <ProjectsState.Context.Consumer>
-      {({ editorProject, setEditorProject, createProject, updateProject }) => {
+      {({
+        editorProject,
+        setEditorProject,
+        createProject,
+        updateProject,
+        editorOpen,
+        setEditorOpen,
+      }) => {
         return (
           <Popup
-            state={open}
-            setState={setOpen}
-            trigger={trigger}
+            state={editorOpen}
+            setState={setEditorOpen}
             onClose={() => setEditorProject({ name: '' })}
           >
             <Form
@@ -29,9 +38,12 @@ function ProjectEditor({ trigger, open, setOpen }) {
                   await createProject(editorProject)
                 }
                 setEditorProject({ name: '' })
-                setOpen(false)
+                setEditorOpen(false)
               }}
             >
+              <div className="opacity-50">
+                {tagGenerator.generate(editorProject.name || '')}
+              </div>
               <Input
                 required
                 label="Project name"
@@ -58,7 +70,7 @@ function ProjectEditor({ trigger, open, setOpen }) {
                   basic
                   color="gray"
                   onClick={() => {
-                    setOpen(false)
+                    setEditorOpen(false)
                   }}
                 >
                   Cancel

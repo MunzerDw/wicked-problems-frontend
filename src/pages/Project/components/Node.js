@@ -1,5 +1,6 @@
 import Flex from 'components/Flex'
 import Icon from 'components/Icon'
+import ReactFlow, { Handle } from 'react-flow-renderer'
 
 function Node({ icon, color, children, ...props }) {
   // console.log('node is rendered', props)
@@ -10,6 +11,8 @@ function Node({ icon, color, children, ...props }) {
         'bg-white w-96 border rounded border-gray-500 dark:border-nonde text-black'
       }
     >
+      <Handle type="source" position="right" />
+      <Handle type="target" position="left" />
       <div className="flex p-4">
         <Icon size={50} name={icon} className="m-auto" color={color} />
       </div>

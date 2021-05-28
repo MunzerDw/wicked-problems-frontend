@@ -6,6 +6,7 @@ const Context = createContext()
 function Provider(props) {
   // STATE
   const [projects, setProjects] = useState([])
+  const [editorOpen, setEditorOpen] = useState(false)
   const [editorProject, setEditorProject] = useState({ name: '' })
 
   // STATE FUNCTIONS
@@ -66,9 +67,6 @@ function Provider(props) {
   }
 
   // ONLOAD
-  useEffect(() => {
-    getProjects()
-  }, [])
 
   // EXPORTS
   const value = {
@@ -78,6 +76,9 @@ function Provider(props) {
     createProject,
     updateProject,
     deleteProject,
+    getProjects,
+    editorOpen,
+    setEditorOpen,
   }
 
   return <Context.Provider value={value}>{props.children}</Context.Provider>

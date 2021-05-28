@@ -3,8 +3,6 @@ import Flex from 'components/Flex'
 import NumberStat from 'components/NumberStat'
 import ProjectsState from 'states/ProjectsState'
 import TimeAgo from 'javascript-time-ago'
-import ProjectEditor from './ProjectEditor'
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Icon from 'components/Icon'
 
@@ -12,12 +10,10 @@ function ProjectCard({ project }) {
   const currentdate = new Date(project.createdAt)
   const timeAgo = new TimeAgo('en-EN')
   const timeSince = timeAgo.format(currentdate)
-  const [open, setOpen] = useState(false)
 
   return (
     <>
-      <ProjectEditor open={open} setOpen={setOpen} />
-      <Link to={'/projects/' + project.name} className="cursor-pointer">
+      <Link to={'/projects/' + project.urlSafeName} className="cursor-pointer">
         <Flex.Col
           space="2"
           justify="between"
@@ -31,14 +27,14 @@ function ProjectCard({ project }) {
           >
             <span className="text-h2 font-medium">{project.name}</span>
             <ProjectsState.Context.Consumer>
-              {({ deleteProject, setEditorProject }) => (
+              {({ deleteProject, setEditorProject, setEditorOpen }) => (
                 <Flex.Row space="1">
                   <Button
                     onClick={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
                       setEditorProject(project)
-                      setOpen(true)
+                      setEditorOpen(true)
                     }}
                     icon="FaEdit"
                     color="transparent"

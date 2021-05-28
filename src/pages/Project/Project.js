@@ -1,5 +1,5 @@
 import CanvasPage from 'components/CanvasPage/CanvasPage'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ReactFlow, {
   removeElements,
   addEdge,
@@ -7,6 +7,7 @@ import ReactFlow, {
   Controls,
   Background,
 } from 'react-flow-renderer'
+import { contexts } from 'states'
 import Question from './components/Question'
 import initialElements from './mockElements'
 
@@ -22,15 +23,21 @@ const onLoad = (reactFlowInstance) => {
 
 function Project() {
   const name = window.location.pathname.split('/')[2]
-  const [elements, setElements] = useState(initialElements)
+  const { nodes, project, setNodes, loadProjectAndNodes } = useContext(
+    contexts.ProjectCtx
+  )
+  useEffect(() => {
+    loadProjectAndNodes(name)
+  }, [])
   const onElementsRemove = (elementsToRemove) =>
-    setElements((els) => removeElements(elementsToRemove, els))
-  const onConnect = (params) => setElements((els) => addEdge(params, els))
-  console.log(elements)
+    setNodes((els) => removeElements(elementsToRemove, els))
+  const onConnect = (params) => setNodes((els) => addEdge(params, els))
+  console.log(nodes)
+  console.log(project)
   return (
-    <CanvasPage>
+    <CanvasPage topBar={<div>{project?.name}</div>}>
       <ReactFlow
-        elements={elements}
+        elements={nodes}
         onElementsRemove={onElementsRemove}
         onConnect={onConnect}
         onLoad={onLoad}

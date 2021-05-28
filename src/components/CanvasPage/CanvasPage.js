@@ -10,7 +10,10 @@ function CanvasPage({ className, topBar, ...props }) {
         <Menu />
         <Flex.Col space="0" className="w-full h-full">
           <div className="w-full p-1 flex justify-between">
-            <MenuToggle />
+            <Flex.Row>
+              <MenuToggle />
+              {topBar}
+            </Flex.Row>
             <ThemeToogle />
           </div>
           <div className={'pt-2 w-full h-full ' + className}>
