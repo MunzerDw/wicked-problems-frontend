@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 function Node({ icon, color, children, ...props }) {
   const [x, setX] = useState()
   const [y, setY] = useState()
+
+  // eslint-disable-next-line
   useEffect(() => {
     if (!props.isDragging && (props.xPos !== x || props.yPos !== y)) {
       axios.put('/nodes/' + props.id, { x: props.xPos, y: props.yPos })

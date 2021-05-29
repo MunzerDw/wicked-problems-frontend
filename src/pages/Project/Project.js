@@ -1,7 +1,6 @@
 import CanvasPage from 'components/CanvasPage/CanvasPage'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import ReactFlow, {
-  addEdge,
   MiniMap,
   Controls,
   Background,
@@ -15,6 +14,7 @@ import Idea from './components/Idea'
 import Action from './components/Action'
 import Argument from './components/Argument'
 import Constraint from './components/Constraint'
+import NodeEditor from './components/NodeEditor'
 
 // HELPERS
 const nodeTypes = {
@@ -137,6 +137,7 @@ function Project() {
           <NodesBar />
         </ReactFlowProvider>
       </div>
+      <NodeEditor />
     </CanvasPage>
   )
 }

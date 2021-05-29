@@ -16,7 +16,7 @@ function CanvasPage({ className, topBar, ...props }) {
             </Flex.Row>
             <ThemeToogle />
           </div>
-          <div className={'pt-2 w-full h-full ' + className}>
+          <div className={'pt-2 w-full h-full relative ' + className}>
             {props.children}
           </div>
         </Flex.Col>
