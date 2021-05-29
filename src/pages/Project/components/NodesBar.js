@@ -2,9 +2,10 @@ import Icon from 'components/Icon'
 import React from 'react'
 
 function NodesBar() {
-  const onDragStart = (event, nodeType) => {
+  const onDragStart = (event, nodeType, argumentFor) => {
     console.log('dragging')
     event.dataTransfer.setData('application/reactflow', nodeType)
+    event.dataTransfer.setData('text/plain', argumentFor)
     event.dataTransfer.effectAllowed = 'move'
   }
 
@@ -53,14 +54,14 @@ function NodesBar() {
       <div
         draggable={true}
         className="flex p-4 dndnode ARGUMENT cursor-pointer"
-        onDragStart={(event) => onDragStart(event, 'ARGUMENT')}
+        onDragStart={(event) => onDragStart(event, 'ARGUMENT', true)}
       >
         <Icon size={30} name={'FaCheck'} color="green" className="m-auto" />
       </div>
       <div
         draggable={true}
         className="flex p-4 dndnode ARGUMENT cursor-pointer"
-        onDragStart={(event) => onDragStart(event, 'ARGUMENT')}
+        onDragStart={(event) => onDragStart(event, 'ARGUMENT', false)}
       >
         <Icon size={30} name={'FaTimes'} color="red" className="m-auto" />
       </div>

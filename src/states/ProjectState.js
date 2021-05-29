@@ -7,6 +7,7 @@ function Provider(props) {
   // STATE
   const [project, setProject] = useState()
   const [nodes, setNodes] = useState([])
+  const [edges, setEdges] = useState([])
 
   // STATE FUNCTIONS
   function addNode(node) {
@@ -25,6 +26,19 @@ function Provider(props) {
   }
   function removeNodes(ids) {
     setNodes(nodes.filter((node) => !ids.includes(node.id)))
+  }
+  function addEdge(edge) {
+    setEdges([
+      ...edges,
+      {
+        id: edge.id,
+        source: edge.source,
+        target: edge.target,
+      },
+    ])
+  }
+  function removeEdges(ids) {
+    setEdges(edges.filter((edge) => !ids.includes(edge.id)))
   }
 
   // API FUNCTIONS
@@ -66,11 +80,48 @@ function Provider(props) {
       alert(error.message)
     }
   }
-  async function deleteNode(ids) {
+  async function deleteNodes(ids) {
     try {
       const response = await axios.delete('/nodes', { data: { ids: ids } })
       if (response.status === 204) {
         removeNodes(ids)
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+  async function getEdges(id) {
+    try {
+      const response = await axios('/edges?projectId=' + id)
+      setEdges(
+        response.data.map((edge) => ({
+          id: edge.id,
+          source: edge.source,
+          target: edge.target,
+        }))
+      )
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+  async function createEdge(edge) {
+    try {
+      const response = await axios.post('/edges', {
+        ...edge,
+        projectId: project.id,
+      })
+      addEdge(response.data)
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+  async function deleteEdges(ids) {
+    try {
+      const response = await axios.delete('/edges', { data: { ids: ids } })
+      if (response.status === 204) {
+        removeEdges(ids)
       } else {
         alert(response.status)
       }
@@ -83,6 +134,7 @@ function Provider(props) {
   async function loadProjectAndNodes(name) {
     const project = await getProject(name)
     await getNodes(project.id)
+    await getEdges(project.id)
   }
 
   // EXPORTS
@@ -91,10 +143,15 @@ function Provider(props) {
     setProject,
     nodes,
     setNodes,
+    edges,
+    setEdges,
     getProject,
     getNodes,
     createNode,
-    deleteNode,
+    deleteNodes,
+    getEdges,
+    createEdge,
+    deleteEdges,
     loadProjectAndNodes,
   }
 

@@ -1,11 +1,11 @@
 import Node from './Node'
 
-function Question({ data, ...props }) {
+function Constraint({ data, ...props }) {
   return (
     <Node {...props} color={'yellow'} icon="FaQuestion">
-      <div>{data.text}</div>
+      <div>{data.question}</div>
     </Node>
   )
 }
 
-export default Question
+export default Constraint

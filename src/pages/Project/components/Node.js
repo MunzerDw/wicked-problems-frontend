@@ -1,13 +1,26 @@
 import Flex from 'components/Flex'
 import Icon from 'components/Icon'
 import { Handle } from 'react-flow-renderer'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 
 function Node({ icon, color, children, ...props }) {
+  const [x, setX] = useState()
+  const [y, setY] = useState()
+  useEffect(() => {
+    if (!props.isDragging && (props.xPos !== x || props.yPos !== y)) {
+      axios.put('/nodes/' + props.id, { x: props.xPos, y: props.yPos })
+    }
+    if (!props.isDragging) {
+      setX(props.xPos)
+      setY(props.yPos)
+    }
+  })
   return (
     <Flex.Row
       space="0"
       className={
-        'bg-white w-96 border rounded border-gray-500 dark:border-none text-black'
+        'bg-gray-500 dark:bg-gray-500 w-96 border rounded border-gray-500 dark:border-none text-black'
       }
     >
       <Handle type="source" position="right" />
