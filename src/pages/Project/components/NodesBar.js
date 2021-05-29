@@ -11,7 +11,7 @@ function NodesBar() {
 
   return (
     <div
-      className="absolute flex rounded-full justify-around bg-white border border-gray-500 dark:border-none text-black"
+      className="absolute flex rounded-full justify-around bg-white dark:bg-gray-700 shadow-lg dark:border-none text-black overflow-hidden"
       style={{
         zIndex: '100',
         bottom: '20px',
@@ -22,48 +22,68 @@ function NodesBar() {
       <div className=""></div>
       <div
         draggable={true}
-        className="flex p-4 dndnode QUESTION cursor-pointer bg-transparent"
+        className="flex p-4 dndnode QUESTION cursor-pointer trans hover:bg-gray-200 dark:hover:bg-gray-500"
         onDragStart={(event) => onDragStart(event, 'QUESTION')}
       >
-        <Icon size={30} name={'FaQuestion'} color="yellow" className="m-auto" />
+        <Icon
+          title="question"
+          size={30}
+          name={'FaQuestion'}
+          color="#fce71e"
+          className="m-auto"
+        />
       </div>
       <div
         draggable={true}
-        className="flex p-4 dndnode IDEA cursor-pointer"
+        className="flex p-4 dndnode IDEA cursor-pointer trans hover:bg-gray-200 dark:hover:bg-gray-500"
         onDragStart={(event) => onDragStart(event, 'IDEA')}
       >
         <Icon
+          title="idea"
           size={30}
           name={'FaLightbulb'}
-          color="orange"
+          color="#F59E0B"
           className="m-auto"
         />
       </div>
       <div
         draggable={true}
-        className="flex p-4 dndnode ACTION cursor-pointer"
+        className="flex p-4 dndnode ACTION cursor-pointer trans hover:bg-gray-200 dark:hover:bg-gray-500"
         onDragStart={(event) => onDragStart(event, 'ACTION')}
       >
         <Icon
+          title="action"
           size={30}
           name={'FaArrowsAlt'}
-          color="indigo"
+          color="#818CF8"
           className="m-auto"
         />
       </div>
       <div
         draggable={true}
-        className="flex p-4 dndnode ARGUMENT cursor-pointer"
+        className="flex p-4 dndnode ARGUMENT cursor-pointer trans hover:bg-gray-200 dark:hover:bg-gray-500"
         onDragStart={(event) => onDragStart(event, 'ARGUMENT', true)}
       >
-        <Icon size={30} name={'FaCheck'} color="green" className="m-auto" />
+        <Icon
+          title="argument for"
+          size={30}
+          name={'FaCheck'}
+          color="#10B981"
+          className="m-auto"
+        />
       </div>
       <div
         draggable={true}
-        className="flex p-4 dndnode ARGUMENT cursor-pointer"
+        className="flex p-4 dndnode ARGUMENT cursor-pointer trans hover:bg-gray-200 dark:hover:bg-gray-500"
         onDragStart={(event) => onDragStart(event, 'ARGUMENT', false)}
       >
-        <Icon size={30} name={'FaTimes'} color="red" className="m-auto" />
+        <Icon
+          title="argument against"
+          size={30}
+          name={'FaTimes'}
+          color="#EF4444"
+          className="m-auto"
+        />
       </div>
     </div>
   )

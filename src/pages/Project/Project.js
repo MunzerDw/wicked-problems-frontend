@@ -88,7 +88,7 @@ function Project() {
     }
     createNode(newNodeFormated)
   }
-
+  console.log('porject')
   return (
     <CanvasPage topBar={<div>{project?.name}</div>}>
       <div className="dndflow w-full h-full">

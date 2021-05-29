@@ -10,7 +10,6 @@ function ProjectCard({ project }) {
   const currentdate = new Date(project.createdAt)
   const timeAgo = new TimeAgo('en-EN')
   const timeSince = timeAgo.format(currentdate)
-
   return (
     <>
       <Link to={'/projects/' + project.urlSafeName} className="cursor-pointer">

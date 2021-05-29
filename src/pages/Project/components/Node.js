@@ -16,19 +16,23 @@ function Node({ icon, color, children, ...props }) {
       setY(props.yPos)
     }
   })
+
   return (
     <Flex.Row
       space="0"
       className={
-        'bg-gray-500 dark:bg-gray-500 w-96 border rounded border-gray-500 dark:border-none text-black'
+        'bg-gray-200 dark:bg-gray-500 w-96 border-2 rounded dark:border-none text-black p-4 ' +
+        (props.selected
+          ? ' border-gray-600 dark:border-white'
+          : 'border-gray-200 dark:border-gray-500')
       }
     >
       <Handle type="source" position="right" />
       <Handle type="target" position="left" />
-      <div className="flex p-4">
+      <div className="flex p-4 rounded-full">
         <Icon size={50} name={icon} className="m-auto" color={color} />
       </div>
-      <div className="p-4 w-full h-full">{children}</div>
+      <div className="w-full h-full">{children}</div>
     </Flex.Row>
   )
 }
