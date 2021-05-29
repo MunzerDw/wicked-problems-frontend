@@ -1,13 +1,17 @@
 import Node from './Node'
 
-function Argument({ data, ...props }) {
+function Argument({ ...props }) {
   return (
     <Node
       {...props}
-      color={data.for ? '#10B981' : '#EF4444'}
-      icon={data.for ? 'FaCheck' : 'FaTimes'}
+      color={props.data.for ? '#10B981' : '#EF4444'}
+      icon={props.data.for ? 'FaCheck' : 'FaTimes'}
     >
-      <div>{data.text}</div>
+      {(data) => (
+        <>
+          <div>{data?.text}</div>
+        </>
+      )}
     </Node>
   )
 }

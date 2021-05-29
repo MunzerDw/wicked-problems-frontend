@@ -1,9 +1,13 @@
 import Node from './Node'
 
-function Question({ data, ...props }) {
+function Question({ ...props }) {
   return (
     <Node {...props} color={'#fce71e'} icon="FaQuestion">
-      <div>{data.text}</div>
+      {(data) => (
+        <>
+          <div>{data?.text}</div>
+        </>
+      )}
     </Node>
   )
 }

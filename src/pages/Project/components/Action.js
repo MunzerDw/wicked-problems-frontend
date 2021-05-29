@@ -1,9 +1,13 @@
 import Node from './Node'
 
-function Action({ data, ...props }) {
+function Action({ ...props }) {
   return (
     <Node {...props} color={'#818CF8'} icon="FaArrowsAlt">
-      <div>{data.text}</div>
+      {(data) => (
+        <>
+          <div>{data?.text}</div>
+        </>
+      )}
     </Node>
   )
 }

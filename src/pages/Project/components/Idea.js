@@ -1,9 +1,13 @@
 import Node from './Node'
 
-function Idea({ data, ...props }) {
+function Idea({ ...props }) {
   return (
     <Node {...props} color={'#F59E0B'} icon="FaLightbulb">
-      <div>{data.text}</div>
+      {(data) => (
+        <>
+          <div>{data?.text}</div>
+        </>
+      )}
     </Node>
   )
 }

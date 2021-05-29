@@ -1,12 +1,12 @@
 import CanvasPage from 'components/CanvasPage/CanvasPage'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { observer } from 'mobx-react'
 import ReactFlow, {
   MiniMap,
   Controls,
   Background,
   ReactFlowProvider,
 } from 'react-flow-renderer'
-import { contexts } from 'states'
 import NodesBar from './components/NodesBar'
 import Question from './components/Question'
 import { v4 as uuidv4 } from 'uuid'
@@ -15,6 +15,7 @@ import Action from './components/Action'
 import Argument from './components/Argument'
 import Constraint from './components/Constraint'
 import NodeEditor from './components/NodeEditor'
+import projectModel from 'models/Project'
 
 // HELPERS
 const nodeTypes = {
@@ -25,42 +26,30 @@ const nodeTypes = {
   CONSTRAINT: Constraint,
 }
 
-function Project() {
+const Project = observer(() => {
   const urlSafeName = window.location.pathname.split('/')[2]
   const reactFlowWrapper = useRef(null)
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
-  const {
-    nodes,
-    edges,
-    project,
-    createNode,
-    deleteNodes,
-    createEdge,
-    deleteEdges,
-    loadProjectAndNodes,
-  } = useContext(contexts.ProjectCtx)
 
   useEffect(() => {
-    loadProjectAndNodes(urlSafeName)
+    projectModel.loadProjectAndNodes(urlSafeName)
     // eslint-disable-next-line
   }, [])
 
   const onLoad = (_reactFlowInstance) =>
     setReactFlowInstance(_reactFlowInstance)
   const onElementsRemove = (elementsToRemove) => {
-    console.log(elementsToRemove)
     const nodes = elementsToRemove.filter(
       (element) => !element.source && !element.target
     )
     const edges = elementsToRemove.filter(
       (element) => element.source && element.target
     )
-    nodes.length && deleteNodes(nodes.map((element) => element.id))
-    edges.length && deleteEdges(edges.map((element) => element.id))
+    nodes.length && projectModel.deleteNodes(nodes.map((element) => element.id))
+    edges.length && projectModel.deleteEdges(edges.map((element) => element.id))
   }
   const onConnect = (params) => {
-    console.log(params)
-    createEdge({ source: params.source, target: params.target })
+    projectModel.createEdge({ source: params.source, target: params.target })
   }
   const onDragOver = (event) => {
     event.preventDefault()
@@ -86,11 +75,11 @@ function Project() {
       x: position.x,
       y: position.y,
     }
-    createNode(newNodeFormated)
+    projectModel.createNode(newNodeFormated)
   }
-  console.log('porject')
+
   return (
-    <CanvasPage topBar={<div>{project?.name}</div>}>
+    <CanvasPage topBar={<div>{projectModel.project?.name}</div>}>
       <div className="dndflow w-full h-full">
         <ReactFlowProvider>
           <div
@@ -99,7 +88,7 @@ function Project() {
           >
             <ReactFlow
               nodeTypes={nodeTypes}
-              elements={[...nodes, ...edges]}
+              elements={[...projectModel.nodes, ...projectModel.edges]}
               onConnect={onConnect}
               onElementsRemove={onElementsRemove}
               onLoad={onLoad}
@@ -140,6 +129,6 @@ function Project() {
       <NodeEditor />
     </CanvasPage>
   )
-}
+})
 
 export default Project

@@ -1,9 +1,13 @@
 import Node from './Node'
 
-function Constraint({ data, ...props }) {
+function Constraint({ ...props }) {
   return (
     <Node {...props} color={'yellow'} icon="FaQuestion">
-      <div>{data.question}</div>
+      {(data) => (
+        <>
+          <div>{data?.text}</div>
+        </>
+      )}
     </Node>
   )
 }
