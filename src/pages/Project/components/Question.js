@@ -3,11 +3,13 @@ import Node from './Node'
 function Question({ ...props }) {
   return (
     <Node {...props} color={'#fce71e'} icon="FaQuestion">
-      {(data) => (
-        <>
-          <div>{data?.text}</div>
-        </>
-      )}
+      {(data) => {
+        return (
+          <>
+            <div>{data?.data?.text}</div>
+          </>
+        )
+      }}
     </Node>
   )
 }

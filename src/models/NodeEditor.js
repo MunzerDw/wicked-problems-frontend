@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx'
+import axios from 'axios'
 
 // Model the application state.
 class NodeEditor {
@@ -33,6 +34,23 @@ class NodeEditor {
 
   setOnChange(onChange) {
     this.onChange = onChange
+  }
+
+  //API FUNCTIONS
+  async updateEditorNode(body) {
+    try {
+      const response = await axios.put('/nodes/' + this.editorNode.id, body)
+      if (response.status === 200) {
+        this.setEditorNode({
+          ...this.editorNode,
+          data: { ...this.editorNode.data, ...response.data },
+        })
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
   }
 }
 

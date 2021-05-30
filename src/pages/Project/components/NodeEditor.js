@@ -28,18 +28,17 @@ const NodeEditor = observer(() => {
         }}
       />
       <div className="absolute top-0 right-0 cursor-pointer flex flex-col space-y-1 text-sm text-gray-500 m-1">
-        <Flex.Row>x: {Math.floor(node.x * 100) / 100}</Flex.Row>
-        <Flex.Row>y: {Math.floor(node.y * 100) / 100}</Flex.Row>
+        <Flex.Row>x: {Math.floor(node.xPos * 100) / 100}</Flex.Row>
+        <Flex.Row>y: {Math.floor(node.yPos * 100) / 100}</Flex.Row>
       </div>
       <br />
       <br />
       <Flex.Col className="p-6">
         <Input
           label="Text"
-          value={node.text}
+          value={node.data?.text}
           onChange={(e) =>
-            nodeEditor.setEditorNode({
-              ...nodeEditor.editorNode,
+            nodeEditor.updateEditorNode({
               text: e.currentTarget.value,
             })
           }

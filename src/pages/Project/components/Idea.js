@@ -5,7 +5,7 @@ function Idea({ ...props }) {
     <Node {...props} color={'#F59E0B'} icon="FaLightbulb">
       {(data) => (
         <>
-          <div>{data?.text}</div>
+          <div>{data?.data?.text}</div>
         </>
       )}
     </Node>
