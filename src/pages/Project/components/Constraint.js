@@ -5,7 +5,7 @@ function Constraint({ ...props }) {
     <Node {...props} color={'yellow'} icon="FaQuestion">
       {(data) => (
         <>
-          <div>{data?.text}</div>
+          <div>{data?.data?.text}</div>
         </>
       )}
     </Node>

@@ -5,7 +5,7 @@ function Action({ ...props }) {
     <Node {...props} color={'#818CF8'} icon="FaArrowsAlt">
       {(data) => (
         <>
-          <div>{data?.text}</div>
+          <div>{data?.data?.text}</div>
         </>
       )}
     </Node>

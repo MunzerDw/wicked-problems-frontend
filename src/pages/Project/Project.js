@@ -16,6 +16,8 @@ import Argument from './components/Argument'
 import Constraint from './components/Constraint'
 import NodeEditor from './components/NodeEditor'
 import projectModel from 'models/Project'
+import Icon from 'components/Icon'
+import Flex from 'components/Flex'
 
 // HELPERS
 const nodeTypes = {
@@ -80,7 +82,16 @@ const Project = observer(() => {
   }
 
   return (
-    <CanvasPage topBar={<div>{projectModel.project?.name}</div>}>
+    <CanvasPage
+      topBar={
+        <Flex.Row space="2">
+          <div>{projectModel.project?.name}</div>
+          {projectModel.project?.public && (
+            <Icon title="public" color="green" name="FaGlobeEurope" />
+          )}
+        </Flex.Row>
+      }
+    >
       <div className="dndflow w-full h-full">
         <ReactFlowProvider>
           <div

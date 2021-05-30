@@ -18,11 +18,15 @@ function Node({ icon, color, children, ...props }) {
   // eslint-disable-next-line
   useEffect(() => {
     if (nodeEditor.getEditorNode()?.id === props.id) {
-      nodeEditor.setEditorNode({
-        ...nodeEditor.getEditorNode(),
-        xPos: props.xPos,
-        yPos: props.yPos,
-      })
+      if (props.selected) {
+        nodeEditor.setEditorNode({
+          ...nodeEditor.getEditorNode(),
+          xPos: props.xPos,
+          yPos: props.yPos,
+        })
+      } else {
+        nodeEditor.setOpen(false)
+      }
     }
     if (
       !props.isDragging &&

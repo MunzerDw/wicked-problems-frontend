@@ -29,6 +29,10 @@ class NodeEditor {
   }
 
   setOpen(state) {
+    if (!state) {
+      this.setEditorNode({})
+      this.setOnChange(null)
+    }
     this.open = state
   }
 

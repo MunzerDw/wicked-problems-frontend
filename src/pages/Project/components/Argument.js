@@ -9,7 +9,7 @@ function Argument({ ...props }) {
     >
       {(data) => (
         <>
-          <div>{data?.text}</div>
+          <div>{data?.data?.text}</div>
         </>
       )}
     </Node>
