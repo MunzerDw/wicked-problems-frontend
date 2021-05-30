@@ -37,12 +37,9 @@ function Button({
     <>
       {icon && !props.children ? (
         <Icon
-          className={
-            'm-auto ' +
-            (loading ? 'invisible' : 'visible') +
-            ' text-' +
-            iconColor
-          }
+          size={iconSize}
+          className={'m-auto ' + (loading ? 'invisible' : 'visible')}
+          color={iconColor}
           name={icon}
         />
       ) : (

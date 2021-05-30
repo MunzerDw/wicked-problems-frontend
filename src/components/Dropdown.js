@@ -56,6 +56,9 @@ export default function Dropdown({
               ? 'opacity-100 scale-100 visible'
               : 'opacity-0 scale-75 hidden')
           }
+          style={{
+            minWidth: '120px',
+          }}
         >
           {actions.map((item, i) => {
             return (

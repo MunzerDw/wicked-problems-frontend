@@ -41,20 +41,22 @@ function Node({ icon, color, children, ...props }) {
     }
   })
 
+  const onDoubleClick = () => {
+    if (data.id !== nodeEditor.getEditorNode().id) {
+      nodeEditor.setOnChange((editorNode) => {
+        setData(editorNode)
+      })
+      nodeEditor.setOpen(true)
+      nodeEditor.setEditorNode(data)
+    }
+  }
+
   return (
     <Flex.Row
       space="0"
-      onDoubleClick={() => {
-        if (data.id !== nodeEditor.getEditorNode().id) {
-          nodeEditor.setOnChange((editorNode) => {
-            setData(editorNode)
-          })
-          nodeEditor.setOpen(true)
-          nodeEditor.setEditorNode(data)
-        }
-      }}
+      onDoubleClick={onDoubleClick}
       className={
-        'bg-gray-200 dark:bg-gray-500 w-96 border-2 rounded dark:border-none p-4 ' +
+        'bg-gray-200 dark:bg-gray-500 w-96 border-2 rounded dark:border-none trans hover:shadow-lg ' +
         (props.selected
           ? ' border-gray-600 dark:border-white'
           : 'border-gray-200 dark:border-gray-500')
@@ -65,7 +67,9 @@ function Node({ icon, color, children, ...props }) {
       <div className="flex p-4 rounded-full">
         <Icon size={50} name={icon} className="m-auto" color={color} />
       </div>
-      <div className="w-full h-full">{children({ ...data })}</div>
+      <div className="w-full h-full">
+        {children({ ...data }, setData, onDoubleClick)}
+      </div>
     </Flex.Row>
   )
 }

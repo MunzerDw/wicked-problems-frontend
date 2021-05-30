@@ -41,14 +41,20 @@ class NodeEditor {
   }
 
   //API FUNCTIONS
-  async updateEditorNode(body) {
+  async updateEditorNode(body, id) {
     try {
-      const response = await axios.put('/nodes/' + this.editorNode.id, body)
+      const response = await axios.put(
+        '/nodes/' + (id || this.editorNode.id),
+        body
+      )
       if (response.status === 200) {
-        this.setEditorNode({
-          ...this.editorNode,
-          data: { ...this.editorNode.data, ...response.data },
-        })
+        if (this.editorNode?.id) {
+          this.setEditorNode({
+            ...this.editorNode,
+            data: { ...this.editorNode.data, ...response.data },
+          })
+        }
+        return response.data
       } else {
         alert(response.status)
       }
