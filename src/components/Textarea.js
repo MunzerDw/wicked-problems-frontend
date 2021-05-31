@@ -1,7 +1,7 @@
 import React from 'react'
 import Icon from './Icon'
 
-function Input({
+function Textarea({
   disabled,
   error,
   icon,
@@ -27,7 +27,7 @@ function Input({
             <Icon name={icon} />
           </span>
         ) : null}
-        <input
+        <textarea
           {...props}
           value={value || ''}
           type={props.type || 'text'}
@@ -54,4 +54,4 @@ function Input({
   )
 }
 
-export default Input
+export default Textarea

@@ -124,11 +124,9 @@ function Action({ ...props }) {
                 >
                   <Icon title="downvote" name="FaChevronUp" />
                   <div>
-                    {
-                      data.data?.votes?.filter((vote) => {
-                        return vote.vote === true
-                      }).length
-                    }
+                    {data.data?.votes?.filter((vote) => {
+                      return vote.vote === true
+                    }).length || '0'}
                   </div>
                 </Flex.Row>
                 <Flex.Row
@@ -149,11 +147,9 @@ function Action({ ...props }) {
                 >
                   <Icon title="downvote" name="FaChevronDown" />
                   <div>
-                    {
-                      data.data?.votes?.filter((vote) => {
-                        return vote.vote === false
-                      }).length
-                    }
+                    {data.data?.votes?.filter((vote) => {
+                      return vote.vote === false
+                    }).length || '0'}
                   </div>
                 </Flex.Row>
               </Flex.Row>

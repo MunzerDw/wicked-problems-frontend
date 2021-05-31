@@ -29,11 +29,13 @@ class NodeEditor {
   }
 
   setOpen(state) {
-    if (!state) {
-      this.setEditorNode({})
-      this.setOnChange(null)
-    }
     this.open = state
+    if (!state) {
+      setTimeout(() => {
+        this.setEditorNode({})
+        this.setOnChange(null)
+      }, 200)
+    }
   }
 
   setOnChange(onChange) {

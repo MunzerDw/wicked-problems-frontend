@@ -11,7 +11,7 @@ function NodesBar() {
 
   return (
     <div
-      className="absolute flex rounded-full justify-around bg-white dark:bg-gray-700 shadow-lg dark:border-none text-black overflow-hidden"
+      className="absolute flex rounded-full justify-around bg-white dark:bg-gray-700 shadow-lg dark:border-none overflow-hidden"
       style={{
         zIndex: '100',
         bottom: '20px',
@@ -82,6 +82,18 @@ function NodesBar() {
           size={30}
           name={'FaTimes'}
           color="#EF4444"
+          className="m-auto"
+        />
+      </div>
+      <div
+        draggable={true}
+        className="flex p-4 dndnode CONSTRAINT cursor-pointer trans hover:bg-gray-200 dark:hover:bg-gray-500"
+        onDragStart={(event) => onDragStart(event, 'CONSTRAINT')}
+      >
+        <Icon
+          title="constraint"
+          size={30}
+          name={'FaExclamationTriangle'}
           className="m-auto"
         />
       </div>

@@ -4,9 +4,42 @@ import nodeEditor from 'models/NodeEditor'
 import Icon from 'components/Icon'
 import Flex from 'components/Flex'
 import Input from 'components/Input'
+import Textarea from 'components/Textarea'
+import Toogle from 'components/Toogle'
 
 const NodeEditor = observer(() => {
   const node = nodeEditor.editorNode || {}
+  let icon, color
+  switch (node.type) {
+    case 'ARGUMENT':
+      if (node.data.for) {
+        icon = 'FaCheck'
+        color = '#10B981'
+      } else {
+        icon = 'FaTimes'
+        color = '#EF4444'
+      }
+      break
+    case 'IDEA':
+      icon = 'FaLightbulb'
+      color = '#F59E0B'
+      break
+    case 'ACTION':
+      icon = 'FaArrowsAlt'
+      color = '#818CF8'
+      break
+    case 'CONSTRAINT':
+      icon = 'FaExclamationTriangle'
+      color = ''
+      break
+    case 'QUESTION':
+      icon = 'FaQuestion'
+      color = '#fce71e'
+      break
+
+    default:
+      break
+  }
 
   return (
     <div
@@ -34,15 +67,59 @@ const NodeEditor = observer(() => {
       <br />
       <br />
       <Flex.Col className="p-6">
-        <Input
-          label="Text"
-          value={node.data?.text}
-          onChange={(e) =>
-            nodeEditor.updateEditorNode({
-              text: e.currentTarget.value,
-            })
-          }
-        />
+        <div className="bg-gray-200 dark:bg-gray-800 rounded w-full">
+          <Flex.Row space="0">
+            <div className="flex p-4 rounded-full">
+              <Icon size={50} name={icon} className="m-auto" color={color} />
+            </div>
+            <div className="p-2 pl-0 w-full">
+              <Textarea
+                value={node.data?.text}
+                onChange={(e) =>
+                  nodeEditor.updateEditorNode({
+                    text: e.currentTarget.value,
+                  })
+                }
+              />
+            </div>
+          </Flex.Row>
+        </div>
+        {node.type === 'ACTION' && (
+          <Flex.Col className="w-full" space="0">
+            <div className="text-lg">Has this action been taken?</div>
+            <Flex.Row className="w-full" justify="between">
+              <div className="font-bold text-lg">
+                {node.data.done ? 'Yes' : 'No'}
+              </div>
+              <Toogle
+                checked={node.data.done}
+                onChange={(val) =>
+                  nodeEditor.updateEditorNode({
+                    done: val,
+                  })
+                }
+              />
+            </Flex.Row>
+          </Flex.Col>
+        )}
+        {/* {node.type === 'ACTION' || node.type === 'IDEA' && (
+          <Flex.Col className="w-full" space="0">
+            <div className="text-lg">Has this action been taken?</div>
+            <Flex.Row className="w-full" justify="between">
+              <div className="font-bold text-lg">
+                {node.data.done ? 'Yes' : 'No'}
+              </div>
+              <Toogle
+                checked={node.data.done}
+                onChange={(val) =>
+                  nodeEditor.updateEditorNode({
+                    done: val,
+                  })
+                }
+              />
+            </Flex.Row>
+          </Flex.Col>
+        )} */}
       </Flex.Col>
     </div>
   )
