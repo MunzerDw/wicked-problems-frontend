@@ -62,6 +62,25 @@ class NodeEditor {
       alert(error.message)
     }
   }
+
+  async vote(body) {
+    try {
+      const response = await axios.put('/votes', body)
+      if (response.status === 200) {
+        if (this.editorNode?.id) {
+          this.setEditorNode({
+            ...this.editorNode,
+            data: { ...this.editorNode.data, ...response.data },
+          })
+        }
+        return response.data
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
 }
 
 const nodeEditor = new NodeEditor()
