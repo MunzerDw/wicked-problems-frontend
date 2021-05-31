@@ -10,16 +10,7 @@ function Action({ ...props }) {
   return (
     <Node {...props} color={'#818CF8'} icon="FaArrowsAlt">
       {(data, setData, onDoubleClick) => {
-        const upvotes = data.data?.votes?.filter((vote) => {
-          return vote.vote === true
-        }).length
-        const downvotes = data.data?.votes?.filter((vote) => {
-          return vote.vote === false
-        }).length
-        const vote = data.data?.votes?.find((vote) => {
-          return vote.userId === data.data.userId
-        })
-        console.log(vote)
+        const vote = data.data?.vote
         function handleNewVote(newVote) {
           if (!newVote) return
           const oldVote = data.data.votes?.find((vote) => {
@@ -31,7 +22,11 @@ function Action({ ...props }) {
             })
             setData({
               ...data,
-              data: { ...data.data, votes: [...votesFiltered, newVote] },
+              data: {
+                ...data.data,
+                vote: newVote,
+                votes: [...votesFiltered, newVote],
+              },
             })
           } else {
             setData({
@@ -39,6 +34,7 @@ function Action({ ...props }) {
               data: {
                 ...data.data,
                 votes: [...(data.data.votes || []), newVote],
+                vote: newVote,
               },
             })
           }
@@ -54,7 +50,7 @@ function Action({ ...props }) {
                 minHeight: '120px',
               }}
             >
-              <Flex.Row justify="end" className="w-full" space="1">
+              <Flex.Row justify="end" className="w-full h-8" space="1">
                 <Button
                   title="Action has been taken?"
                   icon="FaBullseye"
@@ -108,16 +104,17 @@ function Action({ ...props }) {
                   {'Double click to edit the node'}
                 </div>
               )}
-              <Flex.Row justify="end" className="w-full" space="2">
+              <Flex.Row justify="end" className="w-full h-8" space="2">
                 <Flex.Row
                   space="1"
                   className={
-                    'hover:text-indigo-400 cursor-pointer h-8 w-8 ' +
+                    'hover:text-indigo-400 cursor-pointer w-8 ' +
                     (vote?.vote === true && 'text-indigo-400')
                   }
                   onClick={async (e) => {
                     e.preventDefault()
                     e.stopPropagation()
+                    console.log(vote?.vote)
                     const newVote = await nodeEditor.vote({
                       nodeId: data.id,
                       vote: vote?.vote === true ? null : true,
@@ -126,12 +123,18 @@ function Action({ ...props }) {
                   }}
                 >
                   <Icon title="downvote" name="FaChevronUp" />
-                  <div>{upvotes}</div>
+                  <div>
+                    {
+                      data.data?.votes?.filter((vote) => {
+                        return vote.vote === true
+                      }).length
+                    }
+                  </div>
                 </Flex.Row>
                 <Flex.Row
                   space="1"
                   className={
-                    'hover:text-red-500 cursor-pointer h-8 w-8 ' +
+                    'hover:text-red-500 cursor-pointer w-8 ' +
                     (vote?.vote === false && 'text-red-500')
                   }
                   onClick={async (e) => {
@@ -145,7 +148,13 @@ function Action({ ...props }) {
                   }}
                 >
                   <Icon title="downvote" name="FaChevronDown" />
-                  <div>{downvotes}</div>
+                  <div>
+                    {
+                      data.data?.votes?.filter((vote) => {
+                        return vote.vote === false
+                      }).length
+                    }
+                  </div>
                 </Flex.Row>
               </Flex.Row>
             </Flex.Col>

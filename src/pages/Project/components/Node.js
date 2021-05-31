@@ -11,7 +11,16 @@ function Node({ icon, color, children, ...props }) {
   const [data, setData] = useState()
 
   useEffect(() => {
-    setData({ ...props })
+    console.log('hello effect')
+    setData({
+      ...props,
+      data: {
+        ...props.data,
+        vote: props.data?.votes?.find((vote) => {
+          return vote.userId === props.data?.userId
+        }),
+      },
+    })
     // eslint-disable-next-line
   }, [])
 
