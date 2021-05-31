@@ -21,8 +21,9 @@ function Action({ ...props }) {
         })
         console.log(vote)
         function handleNewVote(newVote) {
+          if (!newVote) return
           const oldVote = data.data.votes?.find((vote) => {
-            return vote.id === newVote.id
+            return vote.id === newVote?.id
           })
           if (oldVote) {
             const votesFiltered = data.data.votes?.filter((vote) => {
@@ -35,7 +36,10 @@ function Action({ ...props }) {
           } else {
             setData({
               ...data,
-              data: { ...data.data, votes: [...data.data.votes, newVote] },
+              data: {
+                ...data.data,
+                votes: [...(data.data.votes || []), newVote],
+              },
             })
           }
         }

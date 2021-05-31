@@ -72,7 +72,7 @@ class Project {
   }
   async getNodes(id) {
     try {
-      const response = await axios('/nodes?projectId=' + id, { timeout: 1000 })
+      const response = await axios('/nodes?projectId=' + id)
       this.setNodes(
         response.data.map((node) => ({
           id: node.id,
