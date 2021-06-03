@@ -1,6 +1,7 @@
 import CanvasPage from 'components/CanvasPage/CanvasPage'
 import React, { useEffect, useRef, useState } from 'react'
 import { observer } from 'mobx-react'
+import { trace } from 'mobx'
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -80,13 +81,13 @@ const Project = observer(() => {
     }
     projectModel.createNode(newNodeFormated)
   }
-
+  trace()
   return (
     <CanvasPage
       topBar={
         <Flex.Row space="2">
-          <div>{projectModel.project?.name}</div>
-          {projectModel.project?.public && (
+          <div>{projectModel.getProject()?.name}</div>
+          {projectModel.getProject()?.public && (
             <Icon title="public" color="green" name="FaGlobeEurope" />
           )}
         </Flex.Row>
@@ -100,7 +101,10 @@ const Project = observer(() => {
           >
             <ReactFlow
               nodeTypes={nodeTypes}
-              elements={[...projectModel.nodes, ...projectModel.edges]}
+              elements={[
+                ...projectModel.getNodes(),
+                ...projectModel.getEdges(),
+              ]}
               onConnect={onConnect}
               onElementsRemove={onElementsRemove}
               onLoad={onLoad}

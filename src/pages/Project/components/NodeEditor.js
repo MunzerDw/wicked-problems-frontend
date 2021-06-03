@@ -6,6 +6,7 @@ import Flex from 'components/Flex'
 import Input from 'components/Input'
 import Textarea from 'components/Textarea'
 import Toogle from 'components/Toogle'
+import project from 'models/Project'
 
 const NodeEditor = observer(() => {
   const node = nodeEditor.editorNode || {}
@@ -76,7 +77,7 @@ const NodeEditor = observer(() => {
               <Textarea
                 value={node.data?.text}
                 onChange={(e) =>
-                  nodeEditor.updateEditorNode({
+                  project.updateNode({
                     text: e.currentTarget.value,
                   })
                 }
@@ -94,7 +95,7 @@ const NodeEditor = observer(() => {
               <Toogle
                 checked={node.data.done}
                 onChange={(val) =>
-                  nodeEditor.updateEditorNode({
+                  project.updateNode({
                     done: val,
                   })
                 }
@@ -112,7 +113,7 @@ const NodeEditor = observer(() => {
               <Toogle
                 checked={node.data.done}
                 onChange={(val) =>
-                  nodeEditor.updateEditorNode({
+                  project.updateNode({
                     done: val,
                   })
                 }

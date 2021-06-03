@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import axios from 'axios'
+import nodeEditor from './NodeEditor'
 
 // Model the application state.
 class Project {
@@ -9,6 +10,18 @@ class Project {
 
   constructor() {
     makeAutoObservable(this)
+  }
+
+  getProject() {
+    return this.project
+  }
+
+  getNodes() {
+    return this.nodes
+  }
+
+  getEdges() {
+    return this.edges
   }
 
   setProject(project) {
@@ -41,11 +54,6 @@ class Project {
   removeNodes(ids) {
     this.setNodes(this.nodes.filter((node) => !ids.includes(node.id)))
   }
-  // editNode(id, body) {
-  //   this.setNodes(
-  //     this.nodes.map((node) => (node.id !== id ? node : { ...node, ...body }))
-  //   )
-  // }
   addEdge(edge) {
     this.setEdges([
       ...this.edges,
@@ -59,9 +67,53 @@ class Project {
   removeEdges(ids) {
     this.setEdges(this.edges.filter((edge) => !ids.includes(edge.id)))
   }
+  editNode(newData, id) {
+    const nodeIndex = this.nodes.findIndex((obj) => obj.id === id)
+    this.nodes[nodeIndex].data = { ...this.nodes[nodeIndex].data, ...newData }
+  }
 
   // API FUNCTIONS
-  async getProject(name) {
+  async updateNode(body, id) {
+    try {
+      const response = await axios.put(
+        '/nodes/' + (id || nodeEditor.editorNode.id),
+        body
+      )
+      if (response.status === 200) {
+        if (nodeEditor.editorNode?.id) {
+          nodeEditor.setEditorNode({
+            ...nodeEditor.editorNode,
+            data: { ...nodeEditor.editorNode.data, ...response.data },
+          })
+        }
+        this.editNode(response.data, id || nodeEditor.editorNode.id)
+        return response.data
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+  async vote(body) {
+    try {
+      const response = await axios.put('/votes', body)
+      if (response.status === 200) {
+        if (nodeEditor.editorNode?.id) {
+          nodeEditor.setEditorNode({
+            ...nodeEditor.editorNode,
+            data: { ...nodeEditor.editorNode.data, ...response.data },
+          })
+        }
+        return response.data
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+  async fetchProject(name) {
     try {
       const response = await axios('/projects/' + name)
       this.setProject(response.data)
@@ -70,7 +122,7 @@ class Project {
       alert(error.message)
     }
   }
-  async getNodes(id) {
+  async fetchNodes(id) {
     try {
       const response = await axios('/nodes?projectId=' + id)
       this.setNodes(
@@ -111,7 +163,7 @@ class Project {
       alert(error.message)
     }
   }
-  async getEdges(id) {
+  async fetchEdges(id) {
     try {
       const response = await axios('/edges?projectId=' + id)
       this.setEdges(
@@ -151,9 +203,9 @@ class Project {
 
   // ONLOAD
   async loadProjectAndNodes(name) {
-    const project = await this.getProject(name)
-    await this.getNodes(project.id)
-    await this.getEdges(project.id)
+    const project = await this.fetchProject(name)
+    await this.fetchNodes(project.id)
+    await this.fetchEdges(project.id)
   }
 }
 

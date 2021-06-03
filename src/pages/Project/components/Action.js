@@ -58,7 +58,7 @@ function Action({ ...props }) {
                   onClick={async (e) => {
                     e.preventDefault()
                     e.stopPropagation()
-                    const newData = await nodeEditor.updateEditorNode(
+                    const newData = await project.updateNode(
                       {
                         done: !data.data?.done,
                       },
@@ -115,7 +115,7 @@ function Action({ ...props }) {
                     e.preventDefault()
                     e.stopPropagation()
                     console.log(vote?.vote)
-                    const newVote = await nodeEditor.vote({
+                    const newVote = await project.vote({
                       nodeId: data.id,
                       vote: vote?.vote === true ? null : true,
                     })
@@ -138,7 +138,7 @@ function Action({ ...props }) {
                   onClick={async (e) => {
                     e.preventDefault()
                     e.stopPropagation()
-                    const newVote = await nodeEditor.vote({
+                    const newVote = await project.vote({
                       nodeId: data.id,
                       vote: vote?.vote === false ? null : false,
                     })
