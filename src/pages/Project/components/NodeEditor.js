@@ -86,12 +86,21 @@ const NodeEditor = observer(() => {
                 value={node.data?.text}
                 onChange={(e) => {
                   if (nodeEditor?.editorNode?.data) {
-                    nodeEditor.editorNode.data.text = e.currentTarget.value
+                    nodeEditor.setEditorNode({
+                      ...nodeEditor.editorNode,
+                      data: {
+                        ...nodeEditor.editorNode.data,
+                        text: e.currentTarget.value,
+                      },
+                    })
                   }
                 }}
                 onBlur={(e) => {
-                  console.log('focus out')
-                  if (nodeEditor?.editorNode?.id) {
+                  const oldNode = project.findNode(nodeEditor?.editorNode?.id)
+                  if (
+                    nodeEditor?.editorNode?.id &&
+                    nodeEditor?.editorNode?.data?.text !== oldNode?.data?.text
+                  ) {
                     project.updateNode({
                       text: e.currentTarget.value,
                     })
