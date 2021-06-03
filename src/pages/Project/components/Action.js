@@ -2,7 +2,6 @@ import Button from 'components/Button'
 import Dropdown from 'components/Dropdown'
 import Flex from 'components/Flex'
 import Icon from 'components/Icon'
-import nodeEditor from 'models/NodeEditor'
 import project from 'models/Project'
 import Node from './Node'
 
@@ -11,33 +10,6 @@ function Action({ ...props }) {
     <Node {...props} color={'#818CF8'} icon="FaArrowsAlt">
       {(node, onDoubleClick) => {
         const vote = node.data?.vote
-        function handleNewVote(newVote) {
-          if (!newVote) return
-          const oldVote = node.data.votes?.find((vote) => {
-            return vote.id === newVote?.id
-          })
-          if (oldVote) {
-            const votesFiltered = node.data.votes?.filter((vote) => {
-              return vote.id !== oldVote.id
-            })
-            project.editNode(
-              {
-                vote: newVote,
-                votes: [...votesFiltered, newVote],
-              },
-              node.id
-            )
-          } else {
-            project.editNode(
-              {
-                votes: [...(node.data.votes || []), newVote],
-                vote: newVote,
-              },
-              node.id
-            )
-          }
-        }
-
         return (
           <>
             <Flex.Col
@@ -111,11 +83,10 @@ function Action({ ...props }) {
                   onClick={async (e) => {
                     e.preventDefault()
                     e.stopPropagation()
-                    const newVote = await project.vote({
+                    await project.vote({
                       nodeId: node.id,
                       vote: vote?.vote === true ? null : true,
                     })
-                    handleNewVote(newVote)
                   }}
                 >
                   <Icon title="downvote" name="FaChevronUp" />
@@ -134,11 +105,10 @@ function Action({ ...props }) {
                   onClick={async (e) => {
                     e.preventDefault()
                     e.stopPropagation()
-                    const newVote = await project.vote({
+                    await project.vote({
                       nodeId: node.id,
                       vote: vote?.vote === false ? null : false,
                     })
-                    handleNewVote(newVote)
                   }}
                 >
                   <Icon title="downvote" name="FaChevronDown" />

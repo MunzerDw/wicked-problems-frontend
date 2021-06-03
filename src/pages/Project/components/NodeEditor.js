@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import nodeEditor from 'models/NodeEditor'
 import Icon from 'components/Icon'
 import Flex from 'components/Flex'
-import Input from 'components/Input'
 import Textarea from 'components/Textarea'
 import Toogle from 'components/Toogle'
 import project from 'models/Project'
+import Input from 'components/Input'
 
 const NodeEditor = observer(() => {
   const node = nodeEditor.editorNode || {}
+  const vote = node.data?.vote
+
+  useEffect(() => {
+    if (node.id) {
+      document.getElementById('editorTextarea').focus()
+    }
+  })
+
   let icon, color
   switch (node.type) {
     case 'ARGUMENT':
@@ -67,7 +75,7 @@ const NodeEditor = observer(() => {
       </div>
       <br />
       <br />
-      <Flex.Col className="p-6">
+      <Flex.Col className="p-6" space="16">
         <div className="bg-gray-200 dark:bg-gray-800 rounded w-full">
           <Flex.Row space="0">
             <div className="flex p-4 rounded-full">
@@ -75,12 +83,19 @@ const NodeEditor = observer(() => {
             </div>
             <div className="p-2 pl-0 w-full">
               <Textarea
+                id="editorTextarea"
                 value={node.data?.text}
-                onChange={(e) =>
+                onChange={(e) => {
+                  if (nodeEditor?.editorNode?.data) {
+                    nodeEditor.editorNode.data.text = e.currentTarget.value
+                  }
+                }}
+                onBlur={(e) => {
+                  console.log('focus out')
                   project.updateNode({
                     text: e.currentTarget.value,
                   })
-                }
+                }}
               />
             </div>
           </Flex.Row>
@@ -103,24 +118,56 @@ const NodeEditor = observer(() => {
             </Flex.Row>
           </Flex.Col>
         )}
-        {/* {node.type === 'ACTION' || node.type === 'IDEA' && (
-          <Flex.Col className="w-full" space="0">
-            <div className="text-lg">Has this action been taken?</div>
-            <Flex.Row className="w-full" justify="between">
-              <div className="font-bold text-lg">
-                {node.data.done ? 'Yes' : 'No'}
+        {(node.type === 'ACTION' || node.type === 'IDEA') && (
+          <Flex.Row className="w-full" justify="around" space="0">
+            <div
+              className={
+                'flex p-4 rounded border cursor-pointer flex-col space-around items-center trans ' +
+                (node.data?.vote?.vote === true
+                  ? 'text-indigo-400 border-indigo-400'
+                  : '')
+              }
+              onClick={async (e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                await project.vote({
+                  nodeId: node.id,
+                  vote: vote?.vote === true ? null : true,
+                })
+              }}
+            >
+              <Icon size={50} name={'FaChevronUp'} className="m-auto" />
+              <div>
+                {node.data?.votes?.filter((vote) => {
+                  return vote.vote === true
+                }).length || '0'}
               </div>
-              <Toogle
-                checked={node.data.done}
-                onChange={(val) =>
-                  project.updateNode({
-                    done: val,
-                  })
-                }
-              />
-            </Flex.Row>
-          </Flex.Col>
-        )} */}
+            </div>
+            <div
+              className={
+                'flex p-4 rounded border cursor-pointer flex-col space-around items-center trans ' +
+                (node.data?.vote?.vote === false
+                  ? 'text-red-500 border-red-500'
+                  : '')
+              }
+              onClick={async (e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                await project.vote({
+                  nodeId: node.id,
+                  vote: vote?.vote === false ? null : false,
+                })
+              }}
+            >
+              <Icon size={50} name={'FaChevronDown'} className="m-auto" />
+              <div>
+                {node.data?.votes?.filter((vote) => {
+                  return vote.vote === false
+                }).length || '0'}
+              </div>
+            </div>
+          </Flex.Row>
+        )}
       </Flex.Col>
     </div>
   )

@@ -30,7 +30,6 @@ const nodeTypes = {
 }
 
 const Project = observer(() => {
-  console.log('PROJECT')
   const urlSafeName = window.location.pathname.split('/')[2]
   const reactFlowWrapper = useRef(null)
   const [reactFlowInstance, setReactFlowInstance] = useState(null)

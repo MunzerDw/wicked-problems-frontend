@@ -84,12 +84,6 @@ class Project {
         body
       )
       if (response.status === 200) {
-        if (nodeEditor.editorNode?.id) {
-          nodeEditor.setEditorNode({
-            ...nodeEditor.editorNode,
-            data: { ...nodeEditor.editorNode.data, ...response.data },
-          })
-        }
         this.editNode(response.data, id || nodeEditor.editorNode.id)
         return response.data
       } else {
@@ -103,11 +97,30 @@ class Project {
     try {
       const response = await axios.put('/votes', body)
       if (response.status === 200) {
-        if (nodeEditor.editorNode?.id) {
-          nodeEditor.setEditorNode({
-            ...nodeEditor.editorNode,
-            data: { ...nodeEditor.editorNode.data, ...response.data },
+        const node = this.findNode(body.nodeId)
+        const newVote = response.data
+        const oldVote = node.data.votes?.find((vote) => {
+          return vote.id === newVote?.id
+        })
+        if (oldVote) {
+          const votesFiltered = node.data.votes?.filter((vote) => {
+            return vote.id !== oldVote.id
           })
+          project.editNode(
+            {
+              vote: newVote,
+              votes: [...votesFiltered, newVote],
+            },
+            node.id
+          )
+        } else if (newVote) {
+          project.editNode(
+            {
+              votes: [...(node.data.votes || []), newVote],
+              vote: newVote,
+            },
+            node.id
+          )
         }
         return response.data
       } else {
@@ -128,6 +141,7 @@ class Project {
   }
   async fetchNodes(id) {
     try {
+      if (!id) return
       const response = await axios('/nodes?projectId=' + id)
       this.setNodes(
         response.data.map((node) => ({
@@ -169,6 +183,7 @@ class Project {
   }
   async fetchEdges(id) {
     try {
+      if (!id) return
       const response = await axios('/edges?projectId=' + id)
       this.setEdges(
         response.data.map((edge) => ({
