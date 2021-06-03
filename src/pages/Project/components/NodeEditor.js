@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { observer } from 'mobx-react'
 import nodeEditor from 'models/NodeEditor'
 import Icon from 'components/Icon'
@@ -6,7 +6,6 @@ import Flex from 'components/Flex'
 import Textarea from 'components/Textarea'
 import Toogle from 'components/Toogle'
 import project from 'models/Project'
-import Input from 'components/Input'
 
 const NodeEditor = observer(() => {
   const node = nodeEditor.editorNode || {}
