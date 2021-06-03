@@ -1,4 +1,3 @@
-import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import Icon from 'components/Icon'
 import React, { useState } from 'react'
 
@@ -16,14 +15,13 @@ const Table = (props) => {
 }
 
 const Head = (props) => {
-  let cols =
-    props.children.reduce(
-      (x, child) => (child instanceof Array ? child.length + x : 1 + x),
-      0
-    ) + 1
+  let cols = props.children.reduce(
+    (x, child) => (child instanceof Array ? child.length + x : 1 + x),
+    0
+  )
   return (
     <div
-      className={`w-full p-4 grid gap-x-8 break-words text-h4 ${props.className}`}
+      className={`w-full p-4 grid gap-x-8 break-words text-h4 rounded ${props.className}`}
       style={{
         ...props.style,
         gridTemplateColumns:
@@ -32,7 +30,6 @@ const Head = (props) => {
             : `50px repeat(${cols - 1}, minmax(100px, 1fr))`,
       }}
     >
-      <div></div>
       {props.children}
     </div>
   )
@@ -48,11 +45,7 @@ const RowGroup = (props) => {
     <>
       {React.cloneElement(props.children[0], {
         leftControl: (
-          <Icon
-            bgColor="text-secondary-500"
-            color="bg-transparent"
-            icon={expanded ? faMinusCircle : faPlusCircle}
-          />
+          <Icon name={expanded ? 'faMinusCircle' : 'faPlusCircle'} />
         ),
         className: 'font-medium cursor-pointer',
         onClick: (e) => {

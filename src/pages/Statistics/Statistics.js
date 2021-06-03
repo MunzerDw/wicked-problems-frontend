@@ -4,10 +4,12 @@ import NumberStat from 'components/NumberStat'
 import project from 'models/Project'
 import { Bar } from 'react-chartjs-2'
 import { observer } from 'mobx-react'
+import Table from 'components/Table'
 
 function calculateStatistics() {
   const nodes = project.nodes
   const edges = project.edges
+  console.log(project.logs)
   const date = new Date(project.project.createdAt)
   let result = {}
   result.totalNodes = nodes.length
@@ -65,7 +67,6 @@ function calculateStatistics() {
 
 const Statistics = observer(() => {
   const statistics = calculateStatistics()
-  console.log(statistics)
   const barData = {
     labels: [
       'Questions',
@@ -82,12 +83,12 @@ const Statistics = observer(() => {
         },
         data: statistics.nodes,
         backgroundColor: [
-          'rgb(252, 231, 30, .4)',
-          'rgb(245, 158, 11, .4)',
-          'rgb(129, 140, 248, .4)',
-          'rgb(16, 185, 129, .4)',
-          'rgb(239, 68, 68, .4)',
-          'rgb(0,0,0, .4)',
+          'rgb(252, 231, 30, .9)',
+          'rgb(245, 158, 11, .9)',
+          'rgb(129, 140, 248, .9)',
+          'rgb(16, 185, 129, .9)',
+          'rgb(239, 68, 68, .9)',
+          'rgb(0,0,0, .9)',
         ],
         borderColor: [
           'rgb(252, 231, 30)',
@@ -125,19 +126,19 @@ const Statistics = observer(() => {
             value={statistics.totalNodes}
             text="nodes"
             icon="FaProjectDiagram"
-            className="bg-gradient-to-r from-green-300 to-blue-400 text-white"
+            className="bg-gradient-to-r from-indigo-300 to-indigo-400 text-white"
           />
           <NumberStat.Medium
             value={statistics.actionsTaken}
             text="actions taken"
             icon="FaArrowsAlt"
-            className="bg-gradient-to-r from-green-300 to-blue-400 text-white"
+            className="bg-gradient-to-r from-green-300 to-green-400 text-white"
           />
           <NumberStat.Medium
             value={statistics.users}
             text="users"
             icon="FaUsers"
-            className="bg-gradient-to-r from-green-300 to-blue-400 text-white"
+            className="bg-gradient-to-r from-yellow-300 to-yellow-400 text-white"
           />
         </Flex.Row>
         <Flex.Col>
@@ -187,6 +188,33 @@ const Statistics = observer(() => {
               data={barData}
             />
           </div>
+        </Flex.Col>
+        <Flex.Col>
+          <div className="text-2xl">Logs</div>
+          <Table>
+            <Table.Head className="bg-gray-200 dark:bg-gray-900">
+              <Table.Cell>Id</Table.Cell>
+              <Table.Cell>User</Table.Cell>
+              <Table.Cell>Date</Table.Cell>
+              <Table.Cell>Action</Table.Cell>
+              <Table.Cell>Node</Table.Cell>
+              <Table.Cell>Details</Table.Cell>
+            </Table.Head>
+            <Table.Body>
+              {project.logs.map((log, i) => {
+                return (
+                  <Table.Row key={i}>
+                    <Table.Cell>{log.id}</Table.Cell>
+                    <Table.Cell>{log.userId}</Table.Cell>
+                    <Table.Cell>{log.createdAt}</Table.Cell>
+                    <Table.Cell>{log.type}</Table.Cell>
+                    <Table.Cell>{log.nodeId}</Table.Cell>
+                    <Table.Cell>{JSON.stringify(log.details)}</Table.Cell>
+                  </Table.Row>
+                )
+              })}
+            </Table.Body>
+          </Table>
         </Flex.Col>
       </Flex.Col>
     </CanvasPage>

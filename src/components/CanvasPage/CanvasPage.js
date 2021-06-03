@@ -17,7 +17,7 @@ function CanvasPage({ className, topBar, ...props }) {
       <Flex.Row space="0" align="start" className="w-full h-full relative">
         <Menu />
         <Flex.Col space="0" className="w-full h-full">
-          <div className="w-full p-1 flex justify-between items-center shadow-2xl">
+          <div className="w-full p-1 flex justify-between items-center shadow">
             <Flex.Row>
               <MenuToggle />
               <Flex.Row space="2">
