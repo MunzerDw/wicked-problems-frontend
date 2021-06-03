@@ -8,34 +8,32 @@ import nodeEditor from 'models/NodeEditor'
 function Idea({ ...props }) {
   return (
     <Node {...props} color={'#F59E0B'} icon="FaLightbulb">
-      {(data, setData, onDoubleClick) => {
-        const vote = data.data?.vote
+      {(node, onDoubleClick) => {
+        const vote = node.data?.vote
         function handleNewVote(newVote) {
           if (!newVote) return
-          const oldVote = data.data.votes?.find((vote) => {
+          const oldVote = node.data.votes?.find((vote) => {
             return vote.id === newVote?.id
           })
           if (oldVote) {
-            const votesFiltered = data.data.votes?.filter((vote) => {
+            const votesFiltered = node.data.votes?.filter((vote) => {
               return vote.id !== oldVote.id
             })
-            setData({
-              ...data,
-              data: {
-                ...data.data,
+            project.editNode(
+              {
                 vote: newVote,
                 votes: [...votesFiltered, newVote],
               },
-            })
+              node.id
+            )
           } else {
-            setData({
-              ...data,
-              data: {
-                ...data.data,
-                votes: [...(data.data.votes || []), newVote],
+            project.editNode(
+              {
+                votes: [...(node.data.votes || []), newVote],
                 vote: newVote,
               },
-            })
+              node.id
+            )
           }
         }
 
@@ -74,14 +72,14 @@ function Idea({ ...props }) {
                         </Flex.Row>
                       ),
                       action: () => {
-                        project.deleteNodes([data.id])
+                        project.deleteNodes([node.id])
                       },
                     },
                   ]}
                 />
               </Flex.Row>
-              {data?.data?.text ? (
-                <div>{data?.data?.text}</div>
+              {node?.data?.text ? (
+                <div>{node?.data?.text}</div>
               ) : (
                 <div className="opacity-50">
                   {'Double click to edit the node'}
@@ -99,7 +97,7 @@ function Idea({ ...props }) {
                     e.stopPropagation()
                     console.log(vote?.vote)
                     const newVote = await project.vote({
-                      nodeId: data.id,
+                      nodeId: node.id,
                       vote: vote?.vote === true ? null : true,
                     })
                     handleNewVote(newVote)
@@ -107,7 +105,7 @@ function Idea({ ...props }) {
                 >
                   <Icon title="downvote" name="FaChevronUp" />
                   <div>
-                    {data.data?.votes?.filter((vote) => {
+                    {node.data?.votes?.filter((vote) => {
                       return vote.vote === true
                     }).length || '0'}
                   </div>
@@ -122,7 +120,7 @@ function Idea({ ...props }) {
                     e.preventDefault()
                     e.stopPropagation()
                     const newVote = await project.vote({
-                      nodeId: data.id,
+                      nodeId: node.id,
                       vote: vote?.vote === false ? null : false,
                     })
                     handleNewVote(newVote)
@@ -130,7 +128,7 @@ function Idea({ ...props }) {
                 >
                   <Icon title="downvote" name="FaChevronDown" />
                   <div>
-                    {data.data?.votes?.filter((vote) => {
+                    {node.data?.votes?.filter((vote) => {
                       return vote.vote === false
                     }).length || '0'}
                   </div>

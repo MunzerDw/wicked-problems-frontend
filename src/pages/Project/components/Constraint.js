@@ -7,7 +7,7 @@ import project from 'models/Project'
 function Constraint({ ...props }) {
   return (
     <Node {...props} color={''} icon="FaExclamationTriangle">
-      {(data, setData, onDoubleClick) => {
+      {(node, onDoubleClick) => {
         return (
           <>
             <Flex.Col
@@ -43,14 +43,14 @@ function Constraint({ ...props }) {
                         </Flex.Row>
                       ),
                       action: () => {
-                        project.deleteNodes([data.id])
+                        project.deleteNodes([node.id])
                       },
                     },
                   ]}
                 />
               </Flex.Row>
-              {data?.data?.text ? (
-                <div>{data?.data?.text}</div>
+              {node?.data?.text ? (
+                <div>{node?.data?.text}</div>
               ) : (
                 <div className="opacity-50">
                   {'Double click to edit the node'}

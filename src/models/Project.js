@@ -16,6 +16,10 @@ class Project {
     return this.project
   }
 
+  findNode(id) {
+    return this.nodes.find((node) => node.id === id)
+  }
+
   getNodes() {
     return this.nodes
   }

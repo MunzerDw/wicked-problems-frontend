@@ -11,7 +11,7 @@ function Argument({ ...props }) {
       color={props.data.for ? '#10B981' : '#EF4444'}
       icon={props.data.for ? 'FaCheck' : 'FaTimes'}
     >
-      {(data, setData, onDoubleClick) => {
+      {(node, onDoubleClick) => {
         return (
           <>
             <Flex.Col
@@ -47,14 +47,14 @@ function Argument({ ...props }) {
                         </Flex.Row>
                       ),
                       action: () => {
-                        project.deleteNodes([data.id])
+                        project.deleteNodes([node.id])
                       },
                     },
                   ]}
                 />
               </Flex.Row>
-              {data?.data?.text ? (
-                <div>{data?.data?.text}</div>
+              {node?.data?.text ? (
+                <div>{node?.data?.text}</div>
               ) : (
                 <div className="opacity-50">
                   {'Double click to edit the node'}

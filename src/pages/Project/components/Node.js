@@ -4,35 +4,29 @@ import { Handle } from 'react-flow-renderer'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import nodeEditor from 'models/NodeEditor'
+import { observer } from 'mobx-react'
+import project from 'models/Project'
 
-function Node({ icon, color, children, ...props }) {
+const Node = observer(({ icon, color, children, ...props }) => {
   const [x, setX] = useState()
   const [y, setY] = useState()
-  const [data, setData] = useState()
-
-  useEffect(() => {
-    console.log('hello effect')
-    setData({
-      ...props,
-      data: {
-        ...props.data,
-        vote: props.data?.votes?.find((vote) => {
-          return vote.userId === props.data?.userId
-        }),
-      },
-    })
-    // eslint-disable-next-line
-  }, [])
-
+  const nodeData = project.findNode(props.id) || {}
+  const node = {
+    ...nodeData,
+    data: {
+      ...nodeData.data,
+      x: props.xPos,
+      y: props.yPos,
+      vote: nodeData.data?.votes?.find((vote) => {
+        return vote.userId === nodeData.data?.userId
+      }),
+    },
+  }
   // eslint-disable-next-line
   useEffect(() => {
     if (nodeEditor.getEditorNode()?.id === props.id) {
       if (props.selected) {
-        nodeEditor.setEditorNode({
-          ...nodeEditor.getEditorNode(),
-          xPos: props.xPos,
-          yPos: props.yPos,
-        })
+        nodeEditor.setEditorNode(node)
       } else {
         nodeEditor.setOpen(false)
       }
@@ -51,12 +45,9 @@ function Node({ icon, color, children, ...props }) {
   })
 
   const onDoubleClick = () => {
-    if (data.id !== nodeEditor.getEditorNode().id) {
-      nodeEditor.setOnChange((editorNode) => {
-        setData(editorNode)
-      })
+    if (node.id !== nodeEditor.getEditorNode().id) {
       nodeEditor.setOpen(true)
-      nodeEditor.setEditorNode(data)
+      nodeEditor.setEditorNode(node)
     }
   }
 
@@ -77,10 +68,10 @@ function Node({ icon, color, children, ...props }) {
         <Icon size={50} name={icon} className="m-auto" color={color} />
       </div>
       <div className="w-full h-full">
-        {children({ ...data }, setData, onDoubleClick)}
+        {children({ ...node }, onDoubleClick)}
       </div>
     </Flex.Row>
   )
-}
+})
 
 export default Node
