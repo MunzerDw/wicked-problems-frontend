@@ -1,5 +1,5 @@
 import CanvasPage from 'components/CanvasPage/CanvasPage'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { observer } from 'mobx-react'
 import { trace } from 'mobx'
 import ReactFlow, {
@@ -17,8 +17,6 @@ import Argument from './components/Argument'
 import Constraint from './components/Constraint'
 import NodeEditor from './components/NodeEditor'
 import projectModel from 'models/Project'
-import Icon from 'components/Icon'
-import Flex from 'components/Flex'
 
 // HELPERS
 const nodeTypes = {
@@ -30,14 +28,8 @@ const nodeTypes = {
 }
 
 const Project = observer(() => {
-  const urlSafeName = window.location.pathname.split('/')[2]
   const reactFlowWrapper = useRef(null)
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
-
-  useEffect(() => {
-    projectModel.loadProjectAndNodes(urlSafeName)
-    // eslint-disable-next-line
-  }, [])
 
   const onLoad = (_reactFlowInstance) =>
     setReactFlowInstance(_reactFlowInstance)
@@ -45,9 +37,11 @@ const Project = observer(() => {
     const nodes = elementsToRemove.filter(
       (element) => !element.source && !element.target
     )
+    console.log(nodes)
     const edges = elementsToRemove.filter(
       (element) => element.source && element.target
     )
+    console.log(edges)
     nodes.length && projectModel.deleteNodes(nodes.map((element) => element.id))
     edges.length && projectModel.deleteEdges(edges.map((element) => element.id))
   }
@@ -82,16 +76,7 @@ const Project = observer(() => {
   }
   trace()
   return (
-    <CanvasPage
-      topBar={
-        <Flex.Row space="2">
-          <div>{projectModel.getProject()?.name}</div>
-          {projectModel.getProject()?.public && (
-            <Icon title="public" color="green" name="FaGlobeEurope" />
-          )}
-        </Flex.Row>
-      }
-    >
+    <CanvasPage>
       <div className="dndflow w-full h-full">
         <ReactFlowProvider>
           <div

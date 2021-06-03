@@ -15,7 +15,7 @@ const NodeEditor = observer(() => {
     if (node.id) {
       document.getElementById('editorTextarea').focus()
     }
-  })
+  }, [node.id])
 
   let icon, color
   switch (node.type) {
@@ -91,9 +91,11 @@ const NodeEditor = observer(() => {
                 }}
                 onBlur={(e) => {
                   console.log('focus out')
-                  project.updateNode({
-                    text: e.currentTarget.value,
-                  })
+                  if (nodeEditor?.editorNode?.id) {
+                    project.updateNode({
+                      text: e.currentTarget.value,
+                    })
+                  }
                 }}
               />
             </div>

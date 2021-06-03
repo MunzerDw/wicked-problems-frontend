@@ -13,8 +13,21 @@ function Small({ value, text, icon, ...props }) {
   )
 }
 
+function Medium({ value, text, icon, className, ...props }) {
+  return (
+    <div className={'h-48 w-48 rounded shadow-lg flex relative ' + className}>
+      <div className="absolute top-0 p-3 w-full flex justify-between">
+        <div>{text}</div>
+        <Icon name={icon} />
+      </div>
+      <div className="text-6xl m-auto font-bold">{value}</div>
+    </div>
+  )
+}
+
 const NumberStat = {
   Small,
+  Medium,
 }
 
 export default NumberStat
