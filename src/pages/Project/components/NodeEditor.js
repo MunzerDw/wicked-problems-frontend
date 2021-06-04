@@ -197,21 +197,24 @@ const NodeEditor = observer(() => {
                 </Button>
               </Flex.Row>
               <Flex.Col className="w-full" space="2">
-                {node.data.evidences.map((ev) => {
+                {node.data.evidences.map((ev, i) => {
                   return (
                     <Flex.Row
+                      key={i}
                       justify="between"
                       className="w-full p-2 bg-gray-200 dark:bg-gray-800 rounded"
                     >
                       <div>{ev.text}</div>
-                      <Button
-                        basic
-                        icon="FaTrashAlt"
-                        iconColor="yellow"
-                        onClick={() => {
-                          project.deleteEvidences([ev])
-                        }}
-                      />
+                      <Flex.Row space="0">
+                        <Button
+                          basic
+                          icon="FaTrashAlt"
+                          iconColor="yellow"
+                          onClick={() => {
+                            project.deleteEvidences([ev])
+                          }}
+                        />
+                      </Flex.Row>
                     </Flex.Row>
                   )
                 })}

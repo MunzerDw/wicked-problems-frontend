@@ -1,14 +1,10 @@
-import Toogle from 'components/Toogle'
 import Button from 'components/Button'
 import Flex from 'components/Flex'
 import Form from 'components/Form'
-import Input from 'components/Input'
 import Popup from 'components/Popup'
 import nodeEditor from 'models/NodeEditor'
 import Textarea from 'components/Textarea'
 import { observer } from 'mobx-react'
-import axios from 'axios'
-import Icon from 'components/Icon'
 import project from 'models/Project'
 
 const EvidenceEditor = observer(() => {
