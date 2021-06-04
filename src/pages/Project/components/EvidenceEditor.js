@@ -2,10 +2,11 @@ import Button from 'components/Button'
 import Flex from 'components/Flex'
 import Form from 'components/Form'
 import Popup from 'components/Popup'
-import nodeEditor from 'models/NodeEditor'
+import evidenceEditor from 'models/EvidenceEditor'
 import Textarea from 'components/Textarea'
 import { observer } from 'mobx-react'
 import project from 'models/Project'
+import nodeEditor from 'models/NodeEditor'
 
 const EvidenceEditor = observer(() => {
   const readFile = (e) => {
@@ -15,35 +16,32 @@ const EvidenceEditor = observer(() => {
     const reader = new FileReader()
     reader.onload = function (event) {
       const file = event.target.result
-      nodeEditor.setEditorEvidence({
-        ...nodeEditor.editorEvidence,
+      evidenceEditor.setEditorEvidence({
+        ...evidenceEditor.editorEvidence,
         file: file,
       })
     }
     reader.readAsDataURL(file)
   }
   return (
-    <Popup
-      state={nodeEditor.evidenceEditorOpen}
-      setState={nodeEditor.setEvidenceEditorOpen}
-    >
+    <Popup state={evidenceEditor.open} setState={evidenceEditor.setOpen}>
       <Form
         className="bg-gray-200 dark:bg-gray-700 shadow-lg rounded p-6"
         onSubmit={async () => {
           project.createEvidence({
-            ...nodeEditor.editorEvidence,
+            ...evidenceEditor.editorEvidence,
             nodeId: nodeEditor.editorNode.id,
           })
-          nodeEditor.setEvidenceEditorOpen(false)
+          evidenceEditor.setOpen(false)
         }}
       >
         <Textarea
           label="Text"
-          value={nodeEditor.editorEvidence?.text}
+          value={evidenceEditor.editorEvidence?.text}
           onChange={(e) => {
             const value = e.currentTarget.value
-            nodeEditor.setEditorEvidence({
-              ...nodeEditor.editorEvidence,
+            evidenceEditor.setEditorEvidence({
+              ...evidenceEditor.editorEvidence,
               text: value,
             })
           }}
@@ -53,7 +51,7 @@ const EvidenceEditor = observer(() => {
           {/* <div className="w-full h-64 flex items-center justify-center border rounded">
             <span className="">Drop or click here</span>
           </div> */}
-          {!nodeEditor.editorEvidence.file ? (
+          {!evidenceEditor.editorEvidence.file ? (
             <>
               <input
                 type="file"
@@ -98,8 +96,8 @@ const EvidenceEditor = observer(() => {
                   icon="FaTimes"
                   iconColor="red"
                   onClick={() => {
-                    nodeEditor.setEditorEvidence({
-                      ...nodeEditor.editorEvidence,
+                    evidenceEditor.setEditorEvidence({
+                      ...evidenceEditor.editorEvidence,
                       file: null,
                     })
                   }}
@@ -110,13 +108,13 @@ const EvidenceEditor = observer(() => {
         </Flex.Col>
         <Flex.Row space="2">
           <Button basic color="green" type="submit">
-            {nodeEditor.editorEvidence.id ? 'Save' : 'Add'}
+            {evidenceEditor.editorEvidence.id ? 'Save' : 'Add'}
           </Button>
           <Button
             basic
             color="gray"
             onClick={() => {
-              nodeEditor.setEvidenceEditorOpen(false)
+              evidenceEditor.setOpen(false)
             }}
           >
             Cancel

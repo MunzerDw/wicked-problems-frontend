@@ -8,6 +8,7 @@ import Toogle from 'components/Toogle'
 import project from 'models/Project'
 import Button from 'components/Button'
 import EvidenceEditor from './EvidenceEditor'
+import evidenceEditor from 'models/EvidenceEditor'
 
 const NodeEditor = observer(() => {
   const node = nodeEditor.editorNode || {}
@@ -190,7 +191,7 @@ const NodeEditor = observer(() => {
                   color="green"
                   basic
                   onClick={() => {
-                    nodeEditor.setEvidenceEditorOpen(true)
+                    evidenceEditor.setOpen(true)
                   }}
                 >
                   Add
