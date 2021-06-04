@@ -73,6 +73,19 @@ class Project {
       },
     ])
   }
+  addEvidence(evidence) {
+    const nodeIndex = this.nodes.findIndex((obj) => obj.id === evidence.nodeId)
+    this.nodes[nodeIndex].data.evidences = [
+      ...this.nodes[nodeIndex].data.evidences,
+      evidence,
+    ]
+  }
+  removeEvidence(ids, nodeId) {
+    const nodeIndex = this.nodes.findIndex((obj) => obj.id === nodeId)
+    this.nodes[nodeIndex].data.evidences = this.nodes[
+      nodeIndex
+    ].data.evidences.filter((ev) => !ids.includes(ev.id))
+  }
   removeEdges(ids) {
     this.setEdges(this.edges.filter((edge) => !ids.includes(edge.id)))
   }
@@ -229,6 +242,34 @@ class Project {
       if (!id) return
       const response = await axios('/logs?projectId=' + id)
       this.setLogs(response.data)
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+  async createEvidence(evidence) {
+    try {
+      const response = await axios.post('/evidences', {
+        ...evidence,
+        projectId: this.project.id,
+      })
+      this.addEvidence(response.data)
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+  async deleteEvidences(evidences) {
+    try {
+      const response = await axios.delete('/evidences', {
+        data: { ids: evidences.map((ev) => ev.id) },
+      })
+      if (response.status === 204) {
+        this.removeEvidence(
+          evidences.map((ev) => ev.id),
+          evidences[0]?.nodeId
+        )
+      } else {
+        alert(response.status)
+      }
     } catch (error) {
       alert(error.message)
     }
