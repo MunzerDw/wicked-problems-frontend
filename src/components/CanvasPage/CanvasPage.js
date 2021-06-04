@@ -47,6 +47,7 @@ function CanvasPage({ className, topBar, ...props }) {
                 <LinkTab to={'/projects/' + urlSafeName + '/publicanalysis'}>
                   Public Analysis
                 </LinkTab>
+                <LinkTab to={'/'}>Home</LinkTab>
               </Flex.Row>
             </div>
             <ThemeToogle />
