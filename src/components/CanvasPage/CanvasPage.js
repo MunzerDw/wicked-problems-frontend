@@ -1,10 +1,10 @@
 import Flex from 'components/Flex'
 import Icon from 'components/Icon'
+import LinkTab from 'components/LinkTab'
 import Menu from 'components/Menu/Menu'
 import ThemeToogle from 'components/ThemeToogle'
 import project from 'models/Project'
 import { useEffect } from 'react'
-import MenuToggle from './components/MenuToggle'
 
 function CanvasPage({ className, topBar, ...props }) {
   const urlSafeName = window.location.pathname.split('/')[2]
@@ -17,9 +17,9 @@ function CanvasPage({ className, topBar, ...props }) {
       <Flex.Row space="0" align="start" className="w-full h-full relative">
         <Menu />
         <Flex.Col space="0" className="w-full h-full">
-          <div className="w-full p-1 flex justify-between items-center shadow">
+          <div className="w-full p-1 px-2 flex justify-between items-center shadow">
             <Flex.Row>
-              <MenuToggle />
+              {/* <MenuToggle /> */}
               <Flex.Row space="2">
                 <div>{project.getProject()?.name}</div>
                 {project.getProject()?.public && (
@@ -28,6 +28,27 @@ function CanvasPage({ className, topBar, ...props }) {
               </Flex.Row>
               {topBar}
             </Flex.Row>
+            <div
+              style={{
+                position: 'absolute',
+                zIndex: '100',
+                left: '50%',
+                transform: 'translate(-50%)',
+              }}
+            >
+              <Flex.Row>
+                <LinkTab to={'/projects/' + urlSafeName}>Canvas</LinkTab>
+                <LinkTab to={'/projects/' + urlSafeName + '/statistics'}>
+                  Statistics
+                </LinkTab>
+                <LinkTab to={'/projects/' + urlSafeName + '/snapshots'}>
+                  Snapshots
+                </LinkTab>
+                <LinkTab to={'/projects/' + urlSafeName + '/publicanalysis'}>
+                  Public Analysis
+                </LinkTab>
+              </Flex.Row>
+            </div>
             <ThemeToogle />
           </div>
           <div className={'w-full h-full relative overflow-auto ' + className}>

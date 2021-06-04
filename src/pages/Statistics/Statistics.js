@@ -2,9 +2,28 @@ import CanvasPage from 'components/CanvasPage/CanvasPage'
 import Flex from 'components/Flex'
 import NumberStat from 'components/NumberStat'
 import project from 'models/Project'
-import { Bar } from 'react-chartjs-2'
+import { Bar, Line } from 'react-chartjs-2'
 import { observer } from 'mobx-react'
 import Table from 'components/Table'
+import Badge from 'components/Badge'
+import { FirebaseAuthConsumer } from '@react-firebase/auth'
+import { useDarkMode } from 'hooks/useDarkMode'
+
+function formatDate(date) {
+  return (
+    date.getDate() +
+    '/' +
+    (date.getMonth() + 1) +
+    '/' +
+    date.getFullYear() +
+    ' @ ' +
+    date.getHours() +
+    ':' +
+    date.getMinutes() +
+    ':' +
+    date.getSeconds()
+  )
+}
 
 function calculateStatistics() {
   const nodes = project.nodes
@@ -17,18 +36,7 @@ function calculateStatistics() {
     return node.type === 'ACTION' && node.data.done
   }).length
   result.users = 1
-  result.created =
-    date.getDate() +
-    '/' +
-    (date.getMonth() + 1) +
-    '/' +
-    date.getFullYear() +
-    ' @ ' +
-    date.getHours() +
-    ':' +
-    date.getMinutes() +
-    ':' +
-    date.getSeconds()
+  result.created = formatDate(date)
   const ideaNodesIds = nodes
     .filter((node) => node.type === 'IDEA')
     .map((node) => node.id)
@@ -66,7 +74,35 @@ function calculateStatistics() {
 }
 
 const Statistics = observer(() => {
+  const { darkMode } = useDarkMode()
   const statistics = calculateStatistics()
+  let logsDates = {}
+  project.logs.forEach((log) => {
+    // https://stackoverflow.com/questions/2013255/how-to-get-year-month-day-from-a-date-object
+    const dateObj = new Date(log.createdAt)
+    const month = dateObj.getUTCMonth() + 1 //months from 1-12
+    const day = dateObj.getUTCDate()
+    const year = dateObj.getUTCFullYear()
+    const formatedDate = day + '/' + month + '/' + year
+    logsDates[formatedDate] = isNaN(logsDates[formatedDate])
+      ? 0
+      : logsDates[formatedDate] + 1
+  })
+
+  const lineData = {
+    labels: Object.keys(logsDates),
+    datasets: [
+      {
+        lineTension: 0.3,
+        label: false,
+        borderColor: 'rgb(129, 140, 248)',
+        borderWidth: 5,
+        pointBorderWidth: 1,
+        pointRadius: 0,
+        data: Object.values(logsDates),
+      },
+    ],
+  }
   const barData = {
     labels: [
       'Questions',
@@ -104,8 +140,8 @@ const Statistics = observer(() => {
   }
   return (
     <CanvasPage className="p-12">
-      <Flex.Col space="16">
-        <div className="text-4xl font-medium">Statistics</div>
+      <div className="text-4xl font-medium mb-16">Statistics</div>
+      <div className="grid grid-cols-2 gap-16">
         <Flex.Col>
           <div className="text-2xl">Details</div>
           <div className="grid grid-cols-2 pa-y-2 gap-x-8 flex items-center">
@@ -150,7 +186,6 @@ const Statistics = observer(() => {
               minWidth: '700px',
             }}
           >
-            {/* https://stackoverflow.com/questions/37699485/skip-decimal-points-on-y-axis-in-chartjs */}
             <Bar
               options={{
                 responsive: true,
@@ -159,7 +194,7 @@ const Statistics = observer(() => {
                   yAxes: [
                     {
                       ticks: {
-                        fontColor: 'white',
+                        fontColor: darkMode ? 'white' : 'black',
                         beginAtZero: true,
                         userCallback: function (label, index, labels) {
                           if (Math.floor(label) === label) {
@@ -174,15 +209,16 @@ const Statistics = observer(() => {
                       ticks: {
                         beginAtZero: true,
                         stepSize: 1,
-                        fontColor: 'white',
+                        fontColor: darkMode ? 'white' : 'black',
+                      },
+                      gridLines: {
+                        display: false,
                       },
                     },
                   ],
                 },
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
+                legend: {
+                  display: false,
                 },
               }}
               data={barData}
@@ -190,10 +226,53 @@ const Statistics = observer(() => {
           </div>
         </Flex.Col>
         <Flex.Col>
+          <div className="text-2xl">Activity</div>
+          <div
+            className="text-white"
+            style={{
+              minHeight: '350px',
+              minWidth: '700px',
+              color: 'white',
+            }}
+          >
+            <Line
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                  display: false,
+                },
+                scales: {
+                  yAxes: [
+                    {
+                      ticks: {
+                        beginAtZero: true,
+                        display: false,
+                      },
+                    },
+                  ],
+                  xAxes: [
+                    {
+                      ticks: {
+                        fontColor: darkMode ? 'white' : 'black',
+                        maxRotation: 45,
+                        minRotation: 45,
+                      },
+                      gridLines: {
+                        display: false,
+                      },
+                    },
+                  ],
+                },
+              }}
+              data={lineData}
+            />
+          </div>
+        </Flex.Col>
+        <Flex.Col className="col-span-2">
           <div className="text-2xl">Logs</div>
           <Table>
             <Table.Head className="bg-gray-200 dark:bg-gray-900">
-              <Table.Cell>Id</Table.Cell>
               <Table.Cell>User</Table.Cell>
               <Table.Cell>Date</Table.Cell>
               <Table.Cell>Action</Table.Cell>
@@ -204,11 +283,43 @@ const Statistics = observer(() => {
               {project.logs.map((log, i) => {
                 return (
                   <Table.Row key={i}>
-                    <Table.Cell>{log.id}</Table.Cell>
-                    <Table.Cell>{log.userId}</Table.Cell>
-                    <Table.Cell>{log.createdAt}</Table.Cell>
-                    <Table.Cell>{log.type}</Table.Cell>
-                    <Table.Cell>{log.nodeId}</Table.Cell>
+                    <Table.Cell>
+                      <FirebaseAuthConsumer>
+                        {({ isSignedIn, user, providerId, ...authState }) => {
+                          return user.uid === log.userId
+                            ? 'Admin'
+                            : 'Collaborator'
+                        }}
+                      </FirebaseAuthConsumer>
+                    </Table.Cell>
+                    <Table.Cell>
+                      {formatDate(new Date(log.createdAt))}
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Badge
+                        color={
+                          log.type === 'CREATE'
+                            ? 'indigo-400'
+                            : log.type === 'UPDATE'
+                            ? 'yellow-500'
+                            : 'red-500'
+                        }
+                        text={log.type}
+                        className="text-white"
+                      />
+                    </Table.Cell>
+                    <Table.Cell>
+                      {log.nodeId ? (
+                        <>
+                          <span className="font-bold">{log.node.type}</span>
+                          <span>
+                            {log.node.text ? ': ' + log.node.text : ''}
+                          </span>
+                        </>
+                      ) : (
+                        '-'
+                      )}
+                    </Table.Cell>
                     <Table.Cell>{JSON.stringify(log.details)}</Table.Cell>
                   </Table.Row>
                 )
@@ -216,7 +327,7 @@ const Statistics = observer(() => {
             </Table.Body>
           </Table>
         </Flex.Col>
-      </Flex.Col>
+      </div>
     </CanvasPage>
   )
 })

@@ -24,10 +24,7 @@ const Head = (props) => {
       className={`w-full p-4 grid gap-x-8 break-words text-h4 rounded ${props.className}`}
       style={{
         ...props.style,
-        gridTemplateColumns:
-          props.children[0].length > 1
-            ? `200px repeat(${cols - 1}, minmax(100px, 1fr))`
-            : `50px repeat(${cols - 1}, minmax(100px, 1fr))`,
+        gridTemplateColumns: `repeat(${cols}, 1fr)`,
       }}
     >
       {props.children}
@@ -98,10 +95,7 @@ const Row = (props) => {
         }}
         style={{
           ...props.style,
-          gridTemplateColumns:
-            props.children[0].length > 1
-              ? `200px repeat(${cols - 1}, minmax(100px, 1fr))`
-              : `50px repeat(${cols - 1}, minmax(100px, 1fr))`,
+          gridTemplateColumns: `repeat(${cols}, 1fr)`,
         }}
       >
         {
