@@ -302,8 +302,15 @@ const Statistics = observer(() => {
                     <Table.Cell>
                       <FirebaseAuthConsumer>
                         {({ isSignedIn, user, providerId, ...authState }) => {
-                          return user.uid === log.userId
+                          return user.uid === log.userId &&
+                            user.uid === project.project.userId
+                            ? 'Admin (you)'
+                            : user.uid !== log.userId &&
+                              log.userId === project.project.userId
                             ? 'Admin'
+                            : user.uid === log.userId &&
+                              log.userId !== project.project.userId
+                            ? 'Collaborator (you)'
                             : 'Collaborator'
                         }}
                       </FirebaseAuthConsumer>

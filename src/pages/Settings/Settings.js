@@ -5,6 +5,7 @@ import projectModel from 'models/Project'
 import Flex from 'components/Flex'
 import InviteUser from './components/InviteUser'
 import Invite from './components/Invite'
+import firebase from 'firebase/app'
 
 function formatDate(date) {
   return (
@@ -24,6 +25,7 @@ function formatDate(date) {
 
 const Settings = observer(() => {
   const project = projectModel.project
+  const userId = firebase.auth()?.currentUser?.uid
   return (
     <CanvasPage className="p-12">
       <div className="text-4xl font-medium mb-16">Settings</div>
@@ -50,7 +52,7 @@ const Settings = observer(() => {
           </div>
         </div>
         <div className="text-2xl">Users</div>
-        <InviteUser />
+        {userId === project.userId && <InviteUser />}
         <Flex.Col>
           {project.invites?.map((invite) => {
             return <Invite invite={invite} />
