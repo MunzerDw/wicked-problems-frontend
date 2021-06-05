@@ -248,10 +248,13 @@ class Project {
   }
   async createEvidence(evidence) {
     try {
-      const response = await axios.post('/evidences', {
-        ...evidence,
-        projectId: this.project.id,
-      })
+      const data = new FormData()
+      const keys = Object.keys(evidence)
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i]
+        data.append(key, evidence[key])
+      }
+      const response = await axios.post('/evidences', data)
       this.addEvidence(response.data)
     } catch (error) {
       alert(error.message)

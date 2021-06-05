@@ -203,9 +203,30 @@ const NodeEditor = observer(() => {
                     <Flex.Row
                       key={i}
                       justify="between"
+                      align="start"
                       className="w-full p-2 bg-gray-200 dark:bg-gray-800 rounded"
                     >
-                      <div>{ev.text}</div>
+                      <Flex.Col>
+                        {ev.text && (
+                          <Flex.Col space="1">
+                            <div className="opacity-75 text-xs">text</div>
+                            <div>{ev.text}</div>
+                          </Flex.Col>
+                        )}
+                        {ev.file && (
+                          <Flex.Col space="1">
+                            <div className="opacity-75 text-xs flex space-x-2">
+                              <Icon name="FaFileAlt" /> <div>file</div>
+                            </div>
+                            <a
+                              href={'/uploads/' + ev.file.filename}
+                              className="hover:text-blue-400 cursor-pointer"
+                            >
+                              {ev.file.originalname}
+                            </a>
+                          </Flex.Col>
+                        )}
+                      </Flex.Col>
                       <Flex.Row space="0">
                         <Button
                           basic

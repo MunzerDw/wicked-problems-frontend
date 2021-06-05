@@ -7,22 +7,28 @@ import Textarea from 'components/Textarea'
 import { observer } from 'mobx-react'
 import project from 'models/Project'
 import nodeEditor from 'models/NodeEditor'
+import axios from 'axios'
 
 const EvidenceEditor = observer(() => {
   const readFile = (e) => {
     e.preventDefault()
     const files = e.target?.files || e.dataTransfer?.files
     const file = files[0]
-    const reader = new FileReader()
-    reader.onload = function (event) {
-      const file = event.target.result
-      evidenceEditor.setEditorEvidence({
-        ...evidenceEditor.editorEvidence,
-        file: file,
-      })
-    }
-    reader.readAsDataURL(file)
+    evidenceEditor.setEditorEvidence({
+      ...evidenceEditor.editorEvidence,
+      file: file,
+    })
+    // const reader = new FileReader()
+    // reader.onload = function (event) {
+    //   const file = event.target.result
+    //   evidenceEditor.setEditorEvidence({
+    //     ...evidenceEditor.editorEvidence,
+    //     file: file,
+    //   })
+    // }
+    // reader.readAsDataURL(file)
   }
+
   return (
     <Popup state={evidenceEditor.open} setState={evidenceEditor.setOpen}>
       <Form
@@ -54,9 +60,12 @@ const EvidenceEditor = observer(() => {
           {!evidenceEditor.editorEvidence.file ? (
             <>
               <input
+                id="file-input"
                 type="file"
-                style={{ display: 'none' }}
                 onChange={readFile}
+                style={{
+                  display: 'none',
+                }}
                 id="file-upload"
               />
               <div
