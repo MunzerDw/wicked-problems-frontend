@@ -9,6 +9,36 @@ import project from 'models/Project'
 import Button from 'components/Button'
 import EvidenceEditor from './EvidenceEditor'
 import evidenceEditor from 'models/EvidenceEditor'
+import axios from 'axios'
+
+// https://dev.to/nombrekeff/download-file-from-blob-21ho
+function downloadFile(blob, name) {
+  if (window.navigator && window.navigator.msSaveOrOpenBlob)
+    return window.navigator.msSaveOrOpenBlob(blob)
+
+  // For other browsers:
+  // Create a link pointing to the ObjectURL containing the blob.
+  const data = window.URL.createObjectURL(blob)
+
+  const link = document.createElement('a')
+  link.href = data
+  link.download = name
+
+  // this is necessary as link.click() does not work on the latest firefox
+  link.dispatchEvent(
+    new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    })
+  )
+
+  setTimeout(() => {
+    // For Firefox it is necessary to delay revoking the ObjectURL
+    window.URL.revokeObjectURL(data)
+    link.remove()
+  }, 100)
+}
 
 const NodeEditor = observer(() => {
   const node = nodeEditor.editorNode || {}
@@ -51,7 +81,7 @@ const NodeEditor = observer(() => {
     default:
       break
   }
-  console.log(node)
+
   return (
     <>
       <EvidenceEditor />
@@ -198,7 +228,7 @@ const NodeEditor = observer(() => {
                 </Button>
               </Flex.Row>
               <Flex.Col className="w-full" space="2">
-                {node.data.evidences.map((ev, i) => {
+                {node.data?.evidences?.map((ev, i) => {
                   return (
                     <Flex.Row
                       key={i}
@@ -218,16 +248,62 @@ const NodeEditor = observer(() => {
                             <div className="opacity-75 text-xs flex space-x-2">
                               <Icon name="FaFileAlt" /> <div>file</div>
                             </div>
-                            <a
-                              href={'/uploads/' + ev.file.filename}
+                            <div
+                              className="hover:text-blue-400 cursor-pointer"
+                              onClick={async () => {
+                                axios('/uploads/' + ev.file.filename, {
+                                  method: 'GET',
+                                  responseType: 'blob',
+                                })
+                                  .then((response) => {
+                                    const file = new Blob([response.data], {
+                                      type: ev.file.mimetype,
+                                    })
+                                    const fileURL = URL.createObjectURL(file)
+                                    window.open(fileURL)
+                                  })
+                                  .catch((error) => {
+                                    alert(error.message)
+                                  })
+                              }}
+                            >
+                              {ev.file.originalname}
+                            </div>
+                            {/* <a
+                              href={
+                                process.env.REACT_APP_BACKEND_URL +
+                                '/uploads/' +
+                                ev.file.filename
+                              }
                               className="hover:text-blue-400 cursor-pointer"
                             >
                               {ev.file.originalname}
-                            </a>
+                            </a> */}
                           </Flex.Col>
                         )}
                       </Flex.Col>
                       <Flex.Row space="0">
+                        {ev.file && (
+                          <Button
+                            basic
+                            icon="FaDownload"
+                            onClick={async () => {
+                              axios('/uploads/' + ev.file.filename, {
+                                method: 'GET',
+                                responseType: 'blob',
+                              })
+                                .then((response) => {
+                                  const file = new Blob([response.data], {
+                                    type: ev.file.mimetype,
+                                  })
+                                  downloadFile(file, ev.file.originalname)
+                                })
+                                .catch((error) => {
+                                  alert(error.message)
+                                })
+                            }}
+                          />
+                        )}
                         <Button
                           basic
                           icon="FaTrashAlt"

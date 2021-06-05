@@ -76,7 +76,7 @@ class Project {
   addEvidence(evidence) {
     const nodeIndex = this.nodes.findIndex((obj) => obj.id === evidence.nodeId)
     this.nodes[nodeIndex].data.evidences = [
-      ...this.nodes[nodeIndex].data.evidences,
+      ...(this.nodes[nodeIndex].data.evidences || []),
       evidence,
     ]
   }

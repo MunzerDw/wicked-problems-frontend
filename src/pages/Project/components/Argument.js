@@ -65,7 +65,7 @@ function Argument({ ...props }) {
                 <Badge
                   className="text-white"
                   color="gray-400"
-                  text={node.data.evidences.length + ' evidences'}
+                  text={(node.data?.evidences?.length || 0) + ' evidences'}
                 />
               </Flex.Row>
             </Flex.Col>

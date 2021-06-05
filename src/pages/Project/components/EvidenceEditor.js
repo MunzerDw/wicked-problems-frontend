@@ -7,7 +7,6 @@ import Textarea from 'components/Textarea'
 import { observer } from 'mobx-react'
 import project from 'models/Project'
 import nodeEditor from 'models/NodeEditor'
-import axios from 'axios'
 
 const EvidenceEditor = observer(() => {
   const readFile = (e) => {
@@ -18,15 +17,6 @@ const EvidenceEditor = observer(() => {
       ...evidenceEditor.editorEvidence,
       file: file,
     })
-    // const reader = new FileReader()
-    // reader.onload = function (event) {
-    //   const file = event.target.result
-    //   evidenceEditor.setEditorEvidence({
-    //     ...evidenceEditor.editorEvidence,
-    //     file: file,
-    //   })
-    // }
-    // reader.readAsDataURL(file)
   }
 
   return (
@@ -60,7 +50,6 @@ const EvidenceEditor = observer(() => {
           {!evidenceEditor.editorEvidence.file ? (
             <>
               <input
-                id="file-input"
                 type="file"
                 onChange={readFile}
                 style={{
@@ -100,7 +89,7 @@ const EvidenceEditor = observer(() => {
           ) : (
             <div className="h-64">
               <Flex.Row justify="between">
-                <div>file awdasd awd</div>
+                <div>{evidenceEditor.editorEvidence?.file?.name}</div>
                 <Button
                   icon="FaTimes"
                   iconColor="red"
