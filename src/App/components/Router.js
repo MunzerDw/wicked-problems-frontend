@@ -5,6 +5,7 @@ import Project from 'pages/Project/Project'
 import Projects from 'pages/projects/Projects'
 import PublicAnalysis from 'pages/PublicAnalysis/PublicAnalysis'
 import Snapshots from 'pages/Snapshots/Snapshots'
+import Settings from 'pages/Settings/Settings'
 
 function Router() {
   return (
@@ -24,6 +25,9 @@ function Router() {
         </Route>
         <Route exact path="/projects/:id/publicanalysis">
           <PublicAnalysis />
+        </Route>
+        <Route exact path="/projects/:id/settings">
+          <Settings />
         </Route>
         <Route>
           <NotFound />

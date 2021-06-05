@@ -1,16 +1,15 @@
 import Page from 'components/Page'
 import ProjectCard from './components/ProjectCard'
-import { contexts } from 'states'
-import { useContext, useEffect } from 'react'
+import { observer } from 'mobx-react'
+import { useEffect } from 'react'
 import ProjectEditor from './components/ProjectEditor'
 import Button from 'components/Button'
+import projectsModel from 'models/Projects'
+import projectEditor from 'models/ProjectEditor'
 
-function Projects() {
-  const { getProjects, projects, setEditorOpen, setEditorProject } = useContext(
-    contexts.ProjectsCtx
-  )
+const Projects = observer(() => {
   useEffect(() => {
-    getProjects()
+    projectsModel.loadProjects()
     // eslint-disable-next-line
   }, [])
   return (
@@ -21,8 +20,8 @@ function Projects() {
           <div className="text-2xl font-medium">Projects</div>
           <Button
             onClick={() => {
-              setEditorProject({ name: '' })
-              setEditorOpen(true)
+              projectEditor.setEditorProject({ name: '' })
+              projectEditor.setOpen(true)
             }}
             basic
             color="green"
@@ -31,15 +30,17 @@ function Projects() {
           </Button>
         </div>
         <div className="grid gap-6 grid-flow-row grid-cols-3 md:grid-cols-3 2xl:grid-cols-5 w-full px-4">
-          {projects
+          {projectsModel
+            .getProjects()
+            .slice()
             .sort((a, b) => new Date(b.date) - new Date(a.date))
             .map((project, i) => (
-              <ProjectCard key={i} project={project} />
+              <ProjectCard key={i} id={project.id} />
             ))}
         </div>
       </div>
     </Page>
   )
-}
+})
 
 export default Projects

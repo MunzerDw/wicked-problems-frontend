@@ -1,14 +1,17 @@
 import Button from 'components/Button'
 import Flex from 'components/Flex'
 import NumberStat from 'components/NumberStat'
-import ProjectsState from 'states/ProjectsState'
 import TimeAgo from 'javascript-time-ago'
 import { Link } from 'react-router-dom'
 import Icon from 'components/Icon'
+import projectEditor from 'models/ProjectEditor'
+import projects from 'models/Projects'
+import { observer } from 'mobx-react'
 
-function ProjectCard({ project }) {
-  const currentdate = new Date(project.createdAt)
+const ProjectCard = observer(({ id }) => {
   const timeAgo = new TimeAgo('en-EN')
+  const project = projects.findProject(id)
+  const currentdate = new Date(project.createdAt)
   const timeSince = timeAgo.format(currentdate)
   return (
     <>
@@ -25,31 +28,27 @@ function ProjectCard({ project }) {
             className="w-full"
           >
             <span className="text-h2 font-medium">{project.name}</span>
-            <ProjectsState.Context.Consumer>
-              {({ deleteProject, setEditorProject, setEditorOpen }) => (
-                <Flex.Row space="1">
-                  <Button
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      setEditorProject(project)
-                      setEditorOpen(true)
-                    }}
-                    icon="FaEdit"
-                    color="transparent"
-                  />
-                  <Button
-                    icon="FaTrashAlt"
-                    iconColor="yellow-500"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      deleteProject(project.id)
-                    }}
-                  />
-                </Flex.Row>
-              )}
-            </ProjectsState.Context.Consumer>
+            <Flex.Row space="1">
+              <Button
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  projectEditor.setEditorProject(project)
+                  projectEditor.setOpen(true)
+                }}
+                icon="FaEdit"
+                color="transparent"
+              />
+              <Button
+                icon="FaTrashAlt"
+                iconColor="yellow-500"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  projects.deleteProject(project.id)
+                }}
+              />
+            </Flex.Row>
           </Flex.Row>
           <hr />
           <br />
@@ -73,5 +72,5 @@ function ProjectCard({ project }) {
       </Link>
     </>
   )
-}
+})
 export default ProjectCard
