@@ -7,12 +7,14 @@ import Icon from 'components/Icon'
 import projectEditor from 'models/ProjectEditor'
 import projects from 'models/Projects'
 import { observer } from 'mobx-react'
+import firebase from 'firebase/app'
 
 const ProjectCard = observer(({ id }) => {
   const timeAgo = new TimeAgo('en-EN')
   const project = projects.findProject(id)
   const currentdate = new Date(project.createdAt)
   const timeSince = timeAgo.format(currentdate)
+  const userId = firebase.auth()?.currentUser?.uid
   return (
     <>
       <Link to={'/projects/' + project.urlSafeName} className="cursor-pointer">
@@ -39,15 +41,17 @@ const ProjectCard = observer(({ id }) => {
                 icon="FaEdit"
                 color="transparent"
               />
-              <Button
-                icon="FaTrashAlt"
-                iconColor="yellow-500"
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  projects.deleteProject(project.id)
-                }}
-              />
+              {userId === project.userId && (
+                <Button
+                  icon="FaTrashAlt"
+                  iconColor="yellow-500"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    projects.deleteProject(project.id)
+                  }}
+                />
+              )}
             </Flex.Row>
           </Flex.Row>
           <hr />

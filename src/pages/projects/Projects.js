@@ -44,7 +44,7 @@ const Projects = observer(() => {
               .filter((project) => project.userId !== user.uid)
             return (
               <>
-                <div>Own projects</div>
+                <div className="pl-4">Own projects</div>
                 <div className="grid gap-6 grid-flow-row grid-cols-3 md:grid-cols-3 2xl:grid-cols-5 w-full px-4">
                   {ownProjects.length ? (
                     ownProjects.map((project, i) => (
@@ -54,7 +54,7 @@ const Projects = observer(() => {
                     <div className="opacity-50">None</div>
                   )}
                 </div>
-                <div>Guest projects</div>
+                <div className="pl-4">Guest projects</div>
                 <div className="grid gap-6 grid-flow-row grid-cols-3 md:grid-cols-3 2xl:grid-cols-5 w-full px-4">
                   {guestProjects.length ? (
                     guestProjects.map((project, i) => (
