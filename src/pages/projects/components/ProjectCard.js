@@ -62,7 +62,11 @@ const ProjectCard = observer(({ id }) => {
             text="Public"
             icon="FaGlobeEurope"
           />
-          <NumberStat.Small value={4} text="Users" icon="FaUsers" />
+          <NumberStat.Small
+            value={(project.invites?.length || 0) + 1}
+            text="Users"
+            icon="FaUsers"
+          />
           <NumberStat.Small
             value={timeSince}
             text="Created"

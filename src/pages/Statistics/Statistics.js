@@ -28,14 +28,13 @@ function formatDate(date) {
 function calculateStatistics() {
   const nodes = project.nodes
   const edges = project.edges
-  console.log(project.logs)
   const date = new Date(project.project.createdAt)
   let result = {}
   result.totalNodes = nodes.length
   result.actionsTaken = nodes.filter((node) => {
     return node.type === 'ACTION' && node.data.done
   }).length
-  result.users = 1
+  result.users = (project.project.invites?.length || 0) + 1
   result.created = formatDate(date)
   const ideaNodesIds = nodes
     .filter((node) => node.type === 'IDEA')

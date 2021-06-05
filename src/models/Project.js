@@ -60,6 +60,19 @@ class Project {
   }
 
   // STATE FUNCTIONS
+  async updateProject(body) {
+    try {
+      const response = await axios.put('/projects/' + this.project.id, body)
+      if (response.status === 200) {
+        this.setProject({ ...this.project, ...body })
+        return response.data
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
   addNode(node) {
     this.setNodes([
       ...this.nodes,
@@ -283,6 +296,35 @@ class Project {
         this.removeEvidence(
           evidences.map((ev) => ev.id),
           evidences[0]?.nodeId
+        )
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+  async createInvite(email) {
+    try {
+      const response = await axios.post('/invites', {
+        email: email,
+        projectId: this.project.id,
+      })
+      if (response.status === 201) {
+        this.project?.invites?.push(response.data)
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.response?.data)
+    }
+  }
+  async deleteInvite(id) {
+    try {
+      const response = await axios.delete('/invites/' + id)
+      if (response.status === 204) {
+        this.project.invites = this.project?.invites?.filter(
+          (invite) => invite.id !== id
         )
       } else {
         alert(response.status)
