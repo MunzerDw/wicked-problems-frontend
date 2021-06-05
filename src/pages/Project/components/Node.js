@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import nodeEditor from 'models/NodeEditor'
 import { observer } from 'mobx-react'
 import project from 'models/Project'
+import firebase from 'firebase/app'
 
 const Node = observer(({ icon, color, children, ...props }) => {
   const [x, setX] = useState()
@@ -18,7 +19,7 @@ const Node = observer(({ icon, color, children, ...props }) => {
       x: props.xPos,
       y: props.yPos,
       vote: nodeData.data?.votes?.find((vote) => {
-        return vote.userId === nodeData.data?.userId
+        return vote.userId === firebase.auth()?.currentUser?.uid
       }),
     },
   }

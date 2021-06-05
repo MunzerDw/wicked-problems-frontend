@@ -8,7 +8,6 @@ class Project {
   project = {}
   nodes = []
   edges = []
-  logs = []
   socket
 
   constructor() {
@@ -53,10 +52,6 @@ class Project {
 
   setEdges(edges) {
     this.edges = edges
-  }
-
-  setLogs(logs) {
-    this.logs = logs
   }
 
   // STATE FUNCTIONS
@@ -264,15 +259,6 @@ class Project {
       alert(error.message)
     }
   }
-  async fetchLogs(id) {
-    try {
-      if (!id) return
-      const response = await axios('/logs?projectId=' + id)
-      this.setLogs(response.data)
-    } catch (error) {
-      alert(error.message)
-    }
-  }
   async createEvidence(evidence) {
     try {
       const data = new FormData()
@@ -337,9 +323,8 @@ class Project {
   // ONLOAD
   async loadProjectAndNodes(name) {
     const project = await this.fetchProject(name)
-    await this.fetchNodes(project.id)
-    await this.fetchEdges(project.id)
-    await this.fetchLogs(project.id)
+    await this.fetchNodes(project?.id)
+    await this.fetchEdges(project?.id)
   }
 }
 

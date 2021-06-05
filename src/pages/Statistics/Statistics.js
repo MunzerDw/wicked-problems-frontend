@@ -83,7 +83,7 @@ const Statistics = observer(() => {
   const { darkMode } = useDarkMode()
   const statistics = calculateStatistics()
   let logsDates = {}
-  project.logs.forEach((log) => {
+  project.project.logs?.forEach((log) => {
     // https://stackoverflow.com/questions/2013255/how-to-get-year-month-day-from-a-date-object
     const dateObj = new Date(log.createdAt)
     const month = dateObj.getUTCMonth() + 1 //months from 1-12
@@ -296,7 +296,7 @@ const Statistics = observer(() => {
               <Table.Cell>Details</Table.Cell>
             </Table.Head>
             <Table.Body>
-              {project.logs.map((log, i) => {
+              {project.project.logs?.map((log, i) => {
                 return (
                   <Table.Row key={i}>
                     <Table.Cell>
