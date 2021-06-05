@@ -31,8 +31,10 @@ const Project = observer(() => {
   const reactFlowWrapper = useRef(null)
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
 
-  const onLoad = (_reactFlowInstance) =>
+  const onLoad = (_reactFlowInstance) => {
     setReactFlowInstance(_reactFlowInstance)
+    // setTimeout(() => _reactFlowInstance.fitView(), 0)
+  }
   const onElementsRemove = (elementsToRemove) => {
     const nodes = elementsToRemove.filter(
       (element) => !element.source && !element.target
@@ -94,6 +96,7 @@ const Project = observer(() => {
               onLoad={onLoad}
               onDrop={onDrop}
               onDragOver={onDragOver}
+              defaultZoom={0}
             >
               <Background variant="dots" gap={12} />
               <MiniMap
