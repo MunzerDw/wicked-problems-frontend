@@ -50,6 +50,13 @@ function calculateStatistics() {
     })
   result.maxIdeasPerQuestion = Math.max(...questionsEdgesToIdeas)
   result.minIdeasPerQuestion = Math.min(...questionsEdgesToIdeas)
+  try {
+    result.avgIdeasPerQuestion =
+      questionsEdgesToIdeas.reduce((x, y) => x + y, 0) /
+      questionsEdgesToIdeas.length
+  } catch (error) {
+    result.avgIdeasPerQuestion = '-'
+  }
   result.nodes = [
     nodes.filter((node) => {
       return node.type === 'QUESTION'
@@ -145,11 +152,21 @@ const Statistics = observer(() => {
         <Flex.Col>
           <div className="text-2xl">Details</div>
           <div className="grid grid-cols-2 pa-y-2 gap-x-8 flex items-center">
-            <div className="opacity-75">Maximum ideas to a question</div>
+            <div className="opacity-75">
+              Average number of ideas to a question
+            </div>
+            <div className="font-bold text-lg">
+              {statistics.avgIdeasPerQuestion}
+            </div>
+            <div className="opacity-75">
+              Maximum number of ideas to a question
+            </div>
             <div className="font-bold text-lg">
               {statistics.maxIdeasPerQuestion}
             </div>
-            <div className="opacity-75">Minimum ideas to a question</div>
+            <div className="opacity-75">
+              Minimum number of ideas to a question
+            </div>
             <div className="font-bold text-lg">
               {statistics.minIdeasPerQuestion}
             </div>

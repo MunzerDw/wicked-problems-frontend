@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import axios from 'axios'
 import nodeEditor from './NodeEditor'
+import socketIOClient from 'socket.io-client'
 
 // Model the application state.
 class Project {
@@ -8,9 +9,22 @@ class Project {
   nodes = []
   edges = []
   logs = []
+  socket
 
   constructor() {
     makeAutoObservable(this)
+  }
+
+  connectSocket(auth) {
+    // Real Time
+    this.socket = socketIOClient(process.env.REACT_APP_BACKEND_URL, {
+      extraHeaders: {
+        authorization: auth,
+      },
+    })
+    this.socket.on('update-node', (id, body) => {
+      this.editNode(body, id)
+    })
   }
 
   getProject() {
