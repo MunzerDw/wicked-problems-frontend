@@ -31,7 +31,10 @@ class Projects {
   }
   editProject(newData, id) {
     const projectIndex = this.projects.findIndex((obj) => obj.id === id)
-    this.projects[projectIndex] = { ...this.projects[projectIndex], ...newData }
+    for (let i = 0; i < Object.keys(newData).length; i++) {
+      const key = Object.keys(newData)[i]
+      this.projects[projectIndex][key] = newData[key]
+    }
   }
 
   // API FUNCTIONS

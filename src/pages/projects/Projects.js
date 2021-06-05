@@ -12,6 +12,7 @@ const Projects = observer(() => {
     projectsModel.loadProjects()
     // eslint-disable-next-line
   }, [])
+  console.log('Projects')
   return (
     <Page>
       <ProjectEditor />
@@ -30,8 +31,7 @@ const Projects = observer(() => {
           </Button>
         </div>
         <div className="grid gap-6 grid-flow-row grid-cols-3 md:grid-cols-3 2xl:grid-cols-5 w-full px-4">
-          {projectsModel
-            .getProjects()
+          {projectsModel.projects
             .slice()
             .sort((a, b) => new Date(b.date) - new Date(a.date))
             .map((project, i) => (
