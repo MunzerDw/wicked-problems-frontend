@@ -7,7 +7,6 @@ import nodeEditor from 'models/NodeEditor'
 import { observer } from 'mobx-react'
 import project from 'models/Project'
 import firebase from 'firebase/app'
-import { trace } from 'mobx'
 
 const Node = observer(({ icon, color, children, ...props }) => {
   const [x, setX] = useState()
@@ -54,8 +53,6 @@ const Node = observer(({ icon, color, children, ...props }) => {
       nodeEditor.setEditorNode(node)
     }
   }
-  trace()
-  console.log(node.id)
   return (
     <Flex.Row
       space="0"

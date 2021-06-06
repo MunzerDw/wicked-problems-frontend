@@ -33,7 +33,22 @@ class Project {
       this.socket = null
     })
     this.socket.on('update-node', (id, body) => {
-      this.editNode(body, id)
+      if (Object.keys(body).includes('x')) {
+        this.nodes = this.nodes.map((node) => {
+          if (node.id !== id) return node
+          return {
+            id: node.id,
+            position: {
+              x: body.x,
+              y: body.y,
+            },
+            data: { ...node.data, label: '' },
+            type: node.type,
+          }
+        })
+      } else {
+        this.editNode(body, id)
+      }
     })
     this.socket.on('create-node', (node) => {
       this.addNode(node)
@@ -142,7 +157,10 @@ class Project {
   }
   editNode(newData, id) {
     const nodeIndex = this.nodes.findIndex((obj) => obj.id === id)
-    this.nodes[nodeIndex].data = { ...this.nodes[nodeIndex].data, ...newData }
+    if (this.nodes[nodeIndex] && this.nodes[nodeIndex].data) {
+      this.nodes[nodeIndex].data = { ...this.nodes[nodeIndex].data, ...newData }
+      console.log(newData)
+    }
   }
 
   // API FUNCTIONS

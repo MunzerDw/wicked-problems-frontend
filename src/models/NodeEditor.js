@@ -21,13 +21,14 @@ class NodeEditor {
 
   async setOpen(state) {
     this.open = state
+    console.log('called set oopn: ' + state)
     if (!state) {
-      project.deSelectNode(this.editorNode.id)
-      setTimeout(() => {
+      setTimeout(async () => {
+        const id = this.editorNode.id
         this.setEditorNode({})
-        this.setOnChange(null)
         evidenceEditor.setOpen(false)
-      }, 200)
+        await project.deSelectNode(id)
+      }, 100)
     }
   }
 
