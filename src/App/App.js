@@ -10,7 +10,6 @@ import axios from 'axios'
 import { States } from '../states'
 import LoadingPage from '../pages/LoadingPage/LoadingPage'
 import { DarkModeProvider } from '../hooks/useDarkMode'
-import project from 'models/Project'
 require('dotenv').config()
 
 function App() {
@@ -36,7 +35,6 @@ function App() {
                     axios.defaults.headers = {
                       authorization: 'Bearer ' + value,
                     }
-                    project.connectSocket('Bearer ' + value)
                   })
                   .catch((error) => console.log(error))
               }

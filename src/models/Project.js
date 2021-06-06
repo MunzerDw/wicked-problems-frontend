@@ -14,14 +14,22 @@ class Project {
     makeAutoObservable(this)
   }
 
-  connectSocket(auth) {
+  connectSocket() {
     // Real Time
+    console.log('connecting to socket')
     this.socket = socketIOClient(process.env.REACT_APP_BACKEND_URL, {
-      extraHeaders: {
-        authorization: auth,
+      auth: {
+        token: axios.defaults.headers.authorization.replace('Bearer ', ''),
+      },
+      query: {
+        projectId: this.project.id,
       },
     })
+    this.socket.on('connect', () => {
+      console.log('Socket connected', this.socket.id)
+    })
     this.socket.on('update-node', (id, body) => {
+      console.log('UPDATE NODE CALL')
       this.editNode(body, id)
     })
   }
@@ -322,9 +330,12 @@ class Project {
 
   // ONLOAD
   async loadProjectAndNodes(name) {
-    const project = await this.fetchProject(name)
-    await this.fetchNodes(project?.id)
-    await this.fetchEdges(project?.id)
+    if (!this.project.id) {
+      const project = await this.fetchProject(name)
+      await this.fetchNodes(project?.id)
+      await this.fetchEdges(project?.id)
+      this.connectSocket()
+    }
   }
 }
 
