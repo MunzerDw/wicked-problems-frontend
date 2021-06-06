@@ -285,7 +285,7 @@ const Statistics = observer(() => {
             />
           </div>
         </Flex.Col>
-        <Flex.Col className="col-span-2">
+        <Flex.Col className="col-span-2 max-h-96">
           <div className="text-2xl">Logs</div>
           <Table>
             <Table.Head className="bg-gray-200 dark:bg-gray-900">

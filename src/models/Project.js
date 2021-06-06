@@ -29,8 +29,25 @@ class Project {
       console.log('Socket connected', this.socket.id)
     })
     this.socket.on('update-node', (id, body) => {
-      console.log('UPDATE NODE CALL')
       this.editNode(body, id)
+    })
+    this.socket.on('create-node', (node) => {
+      this.addNode(node)
+    })
+    this.socket.on('delete-nodes', (ids) => {
+      this.removeNodes(ids)
+    })
+    this.socket.on('create-edge', (node) => {
+      this.addEdge(node)
+    })
+    this.socket.on('delete-edges', (ids) => {
+      this.removeEdges(ids)
+    })
+    this.socket.on('create-evidence', (evidence) => {
+      this.addEvidence(evidence)
+    })
+    this.socket.on('delete-evidences', (ids, nodeId) => {
+      this.removeEvidence(ids, nodeId)
     })
   }
 
@@ -330,10 +347,10 @@ class Project {
 
   // ONLOAD
   async loadProjectAndNodes(name) {
+    const project = await this.fetchProject(name)
+    await this.fetchNodes(project?.id)
+    await this.fetchEdges(project?.id)
     if (!this.project.id) {
-      const project = await this.fetchProject(name)
-      await this.fetchNodes(project?.id)
-      await this.fetchEdges(project?.id)
       this.connectSocket()
     }
   }
