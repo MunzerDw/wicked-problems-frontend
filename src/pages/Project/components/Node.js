@@ -7,10 +7,12 @@ import nodeEditor from 'models/NodeEditor'
 import { observer } from 'mobx-react'
 import project from 'models/Project'
 import firebase from 'firebase/app'
+import { trace } from 'mobx'
 
 const Node = observer(({ icon, color, children, ...props }) => {
   const [x, setX] = useState()
   const [y, setY] = useState()
+  const userId = firebase.auth()?.currentUser?.uid
   const nodeData = project.findNode(props.id) || {}
   const node = {
     ...nodeData,
@@ -19,7 +21,7 @@ const Node = observer(({ icon, color, children, ...props }) => {
       x: props.xPos,
       y: props.yPos,
       vote: nodeData.data?.votes?.find((vote) => {
-        return vote.userId === firebase.auth()?.currentUser?.uid
+        return vote.userId === userId
       }),
     },
   }
@@ -45,22 +47,27 @@ const Node = observer(({ icon, color, children, ...props }) => {
     }
   })
 
-  const onDoubleClick = () => {
+  const onDoubleClick = async () => {
     if (node.id !== nodeEditor.getEditorNode().id) {
+      await project.selectNode(node.id)
       nodeEditor.setOpen(true)
       nodeEditor.setEditorNode(node)
     }
   }
-
+  trace()
+  console.log(node.id)
   return (
     <Flex.Row
       space="0"
       onDoubleClick={onDoubleClick}
       className={
         'bg-gray-200 dark:bg-gray-500 w-96 border-2 rounded dark:border-none trans hover:shadow-lg ' +
-        (props.selected
-          ? ' border-gray-600 dark:border-white'
-          : 'border-gray-200 dark:border-gray-500')
+        ((node.data?.selectedBy && node.data?.selectedBy === userId) ||
+        props.selected
+          ? ' border-gray-600 dark:border-white '
+          : node.data?.selectedBy && node.data?.selectedBy !== userId
+          ? ' border-blue-600 dark:border-blue-500'
+          : 'border-gray-200 dark:border-gray-500 ')
       }
     >
       <Handle type="source" position="right" />

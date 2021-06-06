@@ -30,7 +30,7 @@ const nodeTypes = {
 const Project = observer(() => {
   const reactFlowWrapper = useRef(null)
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
-
+  console.log('Project')
   const onLoad = (_reactFlowInstance) => {
     setReactFlowInstance(_reactFlowInstance)
     // setTimeout(() => _reactFlowInstance.fitView(), 0)

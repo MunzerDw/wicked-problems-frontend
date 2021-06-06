@@ -22,11 +22,15 @@ class Project {
         token: axios.defaults.headers.authorization.replace('Bearer ', ''),
       },
       query: {
-        projectId: this.project.id,
+        projectId: this.project?.id,
       },
     })
     this.socket.on('connect', () => {
-      console.log('Socket connected', this.socket.id)
+      console.log('Socket connected', this.socket?.id)
+    })
+    this.socket.on('disconnect', () => {
+      console.log('Socket disconnected', this.socket?.id)
+      this.socket = null
     })
     this.socket.on('update-node', (id, body) => {
       this.editNode(body, id)
@@ -142,6 +146,38 @@ class Project {
   }
 
   // API FUNCTIONS
+  async selectNode(id) {
+    try {
+      const response = await axios.put(
+        '/nodes/select/' + (id || nodeEditor.editorNode.id),
+        { projectId: this.project.id }
+      )
+      if (response.status === 200) {
+        this.editNode(response.data, id || nodeEditor.editorNode.id)
+        return response.data
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+  async deSelectNode(id) {
+    try {
+      const response = await axios.put(
+        '/nodes/deselect/' + (id || nodeEditor.editorNode.id),
+        { projectId: this.project.id }
+      )
+      if (response.status === 200) {
+        this.editNode(response.data, id || nodeEditor.editorNode.id)
+        return response.data
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
   async updateNode(body, id) {
     try {
       const response = await axios.put(
@@ -350,7 +386,7 @@ class Project {
     const project = await this.fetchProject(name)
     await this.fetchNodes(project?.id)
     await this.fetchEdges(project?.id)
-    if (!this.project.id) {
+    if (!this.socket) {
       this.connectSocket()
     }
   }

@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import evidenceEditor from './EvidenceEditor'
+import project from './Project'
 
 // Model the application state.
 class NodeEditor {
@@ -18,9 +19,10 @@ class NodeEditor {
     this.editorNode = Object.assign({}, { ...editorNode })
   }
 
-  setOpen(state) {
+  async setOpen(state) {
     this.open = state
     if (!state) {
+      project.deSelectNode(this.editorNode.id)
       setTimeout(() => {
         this.setEditorNode({})
         this.setOnChange(null)
