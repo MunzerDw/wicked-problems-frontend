@@ -67,12 +67,22 @@ const Node = observer(({ icon, color, children, ...props }) => {
           : 'border-gray-200 dark:border-gray-500 ')
       }
     >
-      <Handle type="source" position="right" />
-      <Handle type="target" position="left" />
+      <Handle
+        id="a"
+        type="source"
+        position="right"
+        style={{ width: '20px', height: '20px' }}
+      />
+      <Handle
+        id="c"
+        type="target"
+        position="left"
+        style={{ width: '20px', height: '20px' }}
+      />
       <div className="flex p-4 rounded-full">
         <Icon size={50} name={icon} className="m-auto" color={color} />
       </div>
-      <div className="w-full h-full">
+      <div className="w-full h-full font-bold">
         {children({ ...node }, onDoubleClick)}
       </div>
     </Flex.Row>

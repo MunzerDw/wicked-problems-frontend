@@ -17,6 +17,7 @@ import Argument from './components/Argument'
 import Constraint from './components/Constraint'
 import NodeEditor from './components/NodeEditor'
 import projectModel from 'models/Project'
+import CustomEdge from './components/CustomEdge'
 
 // HELPERS
 const nodeTypes = {
@@ -25,6 +26,9 @@ const nodeTypes = {
   ACTION: Action,
   ARGUMENT: Argument,
   CONSTRAINT: Constraint,
+}
+const edgeTypes = {
+  custom: CustomEdge,
 }
 
 const Project = observer(() => {
@@ -97,6 +101,7 @@ const Project = observer(() => {
               onDrop={onDrop}
               onDragOver={onDragOver}
               defaultZoom={0}
+              edgeTypes={edgeTypes}
             >
               <Background variant="dots" gap={12} />
               <MiniMap

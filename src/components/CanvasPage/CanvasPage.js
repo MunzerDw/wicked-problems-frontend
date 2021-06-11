@@ -1,8 +1,10 @@
+import Badge from 'components/Badge'
 import Flex from 'components/Flex'
 import Icon from 'components/Icon'
 import LinkTab from 'components/LinkTab'
 import Menu from 'components/Menu/Menu'
 import ThemeToogle from 'components/ThemeToogle'
+import User from 'components/User'
 import project from 'models/Project'
 import { useEffect } from 'react'
 
@@ -53,7 +55,20 @@ function CanvasPage({ className, topBar, ...props }) {
                 <LinkTab to={'/'}>Home</LinkTab>
               </Flex.Row>
             </div>
-            <ThemeToogle />
+            <Flex.Row>
+              <Badge
+                className="opacity-75"
+                text={
+                  <Flex.Row space="1">
+                    <Icon name="FaUsers" />{' '}
+                    <div>{project.project?.invites?.length + 1} users</div>
+                  </Flex.Row>
+                }
+                color="transparent"
+              />
+              <ThemeToogle />
+              <User />
+            </Flex.Row>
           </div>
           <div className={'w-full h-full relative overflow-auto ' + className}>
             {props.children}

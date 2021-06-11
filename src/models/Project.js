@@ -136,6 +136,7 @@ class Project {
         id: edge.id,
         source: edge.source,
         target: edge.target,
+        type: 'custom',
       },
     ])
   }
@@ -309,6 +310,7 @@ class Project {
           id: edge.id,
           source: edge.source,
           target: edge.target,
+          type: 'custom',
         }))
       )
     } catch (error) {

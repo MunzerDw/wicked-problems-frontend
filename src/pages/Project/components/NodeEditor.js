@@ -100,7 +100,6 @@ const NodeEditor = observer(() => {
           size="25"
           onClick={() => {
             nodeEditor.setOpen(false)
-            nodeEditor.setEditorNode(null)
           }}
         />
         <div className="absolute top-0 right-0 cursor-pointer flex flex-col space-y-1 text-sm text-gray-500 m-1">

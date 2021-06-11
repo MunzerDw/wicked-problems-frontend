@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 const Table = (props) => {
   return (
     <div
-      className={'w-full flex flex-col space-y-2 overflow-auto'}
+      className={'w-full flex flex-col space-y-2 overflow-auto relative'}
       style={{
         minWidth: '1000px',
       }}
@@ -21,7 +21,7 @@ const Head = (props) => {
   )
   return (
     <div
-      className={`w-full p-4 grid gap-x-8 break-words text-h4 rounded ${props.className}`}
+      className={`sticky top-0 w-full p-4 grid gap-x-8 break-words text-h4 rounded ${props.className}`}
       style={{
         ...props.style,
         gridTemplateColumns: `repeat(${cols}, 1fr)`,

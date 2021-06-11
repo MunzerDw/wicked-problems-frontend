@@ -25,7 +25,7 @@ function Login() {
       <div
         className={
           'absolute w-screen h-screen bg-gray-100 dark:bg-gray-700 ' +
-          (darkMode ? 'opacity-90' : 'opacity-60')
+          (darkMode ? 'opacity-75' : 'opacity-60')
         }
       ></div>
       <ThemeToogle className="absolute top-0 right-0 ml-4 mt-4 z-50" />
