@@ -32,7 +32,7 @@ function calculateStatistics() {
   let result = {}
   result.totalNodes = nodes.length
   result.actionsTaken = nodes.filter((node) => {
-    return node.type === 'ACTION' && node.data.done
+    return node.type === 'ACTION' && node.data.doneAt
   }).length
   result.users = (project.project.invites?.length || 0) + 1
   result.created = formatDate(date)

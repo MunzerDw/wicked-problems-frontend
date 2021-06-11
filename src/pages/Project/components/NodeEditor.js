@@ -4,12 +4,17 @@ import nodeEditor from 'models/NodeEditor'
 import Icon from 'components/Icon'
 import Flex from 'components/Flex'
 import Textarea from 'components/Textarea'
-import Toogle from 'components/Toogle'
 import project from 'models/Project'
 import Button from 'components/Button'
 import EvidenceEditor from './EvidenceEditor'
 import evidenceEditor from 'models/EvidenceEditor'
 import axios from 'axios'
+import DatePicker from 'react-datepicker'
+import Badge from 'components/Badge'
+
+function formatDate(date) {
+  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+}
 
 // https://dev.to/nombrekeff/download-file-from-blob-21ho
 function downloadFile(blob, name) {
@@ -146,19 +151,65 @@ const NodeEditor = observer(() => {
           </div>
           {node.type === 'ACTION' && (
             <Flex.Col className="w-full" space="0">
-              <div className="text-lg">Has this action been taken?</div>
+              <div className="text-lg">When did this action occur?</div>
               <Flex.Row className="w-full" justify="between">
-                <div className="font-bold text-lg">
-                  {node.data.done ? 'Yes' : 'No'}
-                </div>
-                <Toogle
-                  checked={node.data.done}
-                  onChange={(val) =>
-                    project.updateNode({
-                      done: val,
-                    })
-                  }
-                />
+                <Flex.Row space="1">
+                  <Badge
+                    className="bg-gray-200 dark:bg-gray-600 py-1"
+                    text={
+                      <Flex.Row space="1">
+                        {node.data?.doneAt ? (
+                          <>
+                            <Icon
+                              className="opacity-75 hover:opacity-100 cursor-pointer"
+                              name="FaTimes"
+                              onClick={async (date) => {
+                                await project.updateNode(
+                                  {
+                                    doneAt: null,
+                                  },
+                                  node.id
+                                )
+                              }}
+                            />
+                            <div className="font-normal">occured at: </div>{' '}
+                            <div>{formatDate(new Date(node.data?.doneAt))}</div>
+                          </>
+                        ) : (
+                          'no date selected'
+                        )}
+                      </Flex.Row>
+                    }
+                  />
+                  <DatePicker
+                    selected={
+                      node.data?.doneAt ? new Date(node.data?.doneAt) : null
+                    }
+                    showIcon={false}
+                    onChange={async (date) => {
+                      project.updateNode({
+                        doneAt: date,
+                      })
+                    }}
+                    title="When has this action been taken?"
+                    customInput={
+                      <Button
+                        className="opacity-75 hover:opacity-100"
+                        icon="FaCalendarAlt"
+                      />
+                    }
+                    customStyles={{
+                      dateInput: {
+                        width: 0,
+                        height: 0,
+                        borderWidth: 0,
+                      },
+                    }}
+                    style={{ width: 0, height: 0, display: 'none' }}
+                  >
+                    <div>When has this action been taken?</div>
+                  </DatePicker>
+                </Flex.Row>
               </Flex.Row>
             </Flex.Col>
           )}

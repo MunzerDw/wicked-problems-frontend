@@ -4,12 +4,20 @@ import Flex from 'components/Flex'
 import Icon from 'components/Icon'
 import project from 'models/Project'
 import Node from './Node'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import Badge from 'components/Badge'
+
+function formatDate(date) {
+  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+}
 
 function Action({ ...props }) {
   return (
     <Node {...props} color={'#818CF8'} icon="FaArrowsAlt">
       {(node, onDoubleClick) => {
         const vote = node.data?.vote
+        console.log(new Date(node.data?.doneAt))
         return (
           <>
             <Flex.Col
@@ -21,21 +29,62 @@ function Action({ ...props }) {
               }}
             >
               <Flex.Row justify="end" className="w-full h-8" space="1">
-                <Button
-                  title="Action has been taken?"
-                  icon="FaBullseye"
-                  iconColor={node.data?.done ? 'red' : 'gray'}
-                  onClick={async (e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
+                {node.data?.doneAt && (
+                  <Badge
+                    className="bg-white dark:bg-gray-600 py-1"
+                    text={
+                      <Flex.Row space="1">
+                        <Icon
+                          className="opacity-75 hover:opacity-100 cursor-pointer"
+                          name="FaTimes"
+                          onClick={async (date) => {
+                            await project.updateNode(
+                              {
+                                doneAt: null,
+                              },
+                              node.id
+                            )
+                          }}
+                        />
+                        <div className="font-normal">occured at: </div>{' '}
+                        <div>{formatDate(new Date(node.data?.doneAt))}</div>
+                      </Flex.Row>
+                    }
+                  />
+                )}
+                <DatePicker
+                  selected={
+                    node.data?.doneAt ? new Date(node.data?.doneAt) : null
+                  }
+                  showIcon={false}
+                  onChange={async (date) => {
                     await project.updateNode(
                       {
-                        done: !node.data?.done,
+                        doneAt: date,
                       },
                       node.id
                     )
                   }}
-                />
+                  title="When has this action been taken?"
+                  customInput={
+                    <Button
+                      className="opacity-75 hover:opacity-100"
+                      icon="FaCalendarAlt"
+                    />
+                  }
+                  customStyles={{
+                    dateInput: {
+                      width: 0,
+                      height: 0,
+                      borderWidth: 0,
+                    },
+                  }}
+                  style={{ width: 0, height: 0, display: 'none' }}
+                >
+                  <div className="w-full text-center">
+                    When has this action been taken?
+                  </div>
+                </DatePicker>
                 <Dropdown
                   trigger={
                     <Icon name="FaEllipsisV" className="cursor-pointer" />
