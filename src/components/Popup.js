@@ -30,7 +30,7 @@ function Popup({ className, trigger, state, setState, onClose, ...props }) {
           }}
         >
           <div
-            className="w-full flex items-center justify-center"
+            className="w-full flex items-center justify-center overflow-hidden"
             style={{
               height: '90%',
             }}

@@ -4,6 +4,7 @@ import Flex from 'components/Flex'
 import { observer } from 'mobx-react'
 import snapshotEditor from 'models/SnapshotEditor'
 import snapshots from 'models/Snapshots'
+import ImportData from './components/ImportData'
 import Snapshot from './components/Snapshot'
 import SnapshotEditor from './components/SnapshotEditor'
 
@@ -17,7 +18,7 @@ const Snapshots = observer(() => {
       <Flex.Col
         className="w-full"
         style={{
-          maxWidth: '700px',
+          maxWidth: '800px',
         }}
         space="16"
       >
@@ -37,8 +38,10 @@ const Snapshots = observer(() => {
         {snapshots.snapshots?.map((snaphshot, i) => {
           return <Snapshot key={i} id={snaphshot.id} />
         })}
+        <div className="opacity-0">I have to add this I dont know why lol</div>
       </Flex.Col>
       <SnapshotEditor />
+      <ImportData />
     </CanvasPage>
   )
 })
