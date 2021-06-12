@@ -8,10 +8,11 @@ import User from 'components/User'
 import project from 'models/Project'
 import { useEffect } from 'react'
 
-function CanvasPage({ className, topBar, ...props }) {
+function CanvasPage({ className, topBar, onLoad, ...props }) {
   const urlSafeName = window.location.pathname.split('/')[2]
   useEffect(() => {
     project.loadProjectAndNodes(urlSafeName)
+    onLoad && onLoad()
     // eslint-disable-next-line
   }, [])
   return (

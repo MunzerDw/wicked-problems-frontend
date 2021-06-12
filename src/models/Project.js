@@ -99,19 +99,6 @@ class Project {
   }
 
   // STATE FUNCTIONS
-  async updateProject(body) {
-    try {
-      const response = await axios.put('/projects/' + this.project.id, body)
-      if (response.status === 200) {
-        this.setProject({ ...this.project, ...body })
-        return response.data
-      } else {
-        alert(response.status)
-      }
-    } catch (error) {
-      alert(error.message)
-    }
-  }
   addNode(node) {
     this.setNodes([
       ...this.nodes,
@@ -165,6 +152,19 @@ class Project {
   }
 
   // API FUNCTIONS
+  async updateProject(body) {
+    try {
+      const response = await axios.put('/projects/' + this.project.id, body)
+      if (response.status === 200) {
+        this.setProject({ ...this.project, ...body })
+        return response.data
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
   async selectNode(id) {
     try {
       const response = await axios.put(
