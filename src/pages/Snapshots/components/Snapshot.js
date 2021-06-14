@@ -44,8 +44,21 @@ const Snapshot = observer(({ id, ...props }) => {
   const actions = project
     .getNodes()
     ?.filter((node) => node.data.type === 'ACTION' && node.data.doneAt)
+  let dates = [...(snapshot.data?.map((d) => d.date) || [])]
+    ?.slice()
+    .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
+  console.log(dates.length)
+  for (let i = 0; i < dates.length; i++) {
+    const date = dates[i]
+    const nextDate = dates[i + 1]
+    if (nextDate) {
+      if (moment(nextDate).diff(moment(date), 'days') > 1) {
+        dates.splice(i + 1, 0, moment(date).add(1, 'days').toDate())
+      }
+    }
+  }
+  console.log(dates.length)
   const data = snapshot.data || []
-  const dates = snapshot.data?.map((d) => d.date) || []
   const lineData = {
     labels: dates?.map((date) => formatDate(new Date(date))),
     datasets: [
@@ -57,8 +70,9 @@ const Snapshot = observer(({ id, ...props }) => {
         borderWidth: 2,
         pointBorderWidth: 1,
         pointRadius: 2,
-        data: data?.map((d) => {
-          return d.value
+        data: dates?.map((d) => {
+          const value = data.find((da) => da.date === d)?.value
+          return value
         }),
       },
     ],
