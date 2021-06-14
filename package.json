@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
     "chart.js": "^2.9.3",
+    "chartjs-plugin-annotation": "^1.0.2",
     "dotenv": "^9.0.2",
     "firebase": "^8.6.2",
     "javascript-time-ago": "^2.3.5",

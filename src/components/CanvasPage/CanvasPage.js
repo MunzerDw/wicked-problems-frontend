@@ -11,8 +11,11 @@ import { useEffect } from 'react'
 function CanvasPage({ className, topBar, onLoad, ...props }) {
   const urlSafeName = window.location.pathname.split('/')[2]
   useEffect(() => {
-    project.loadProjectAndNodes(urlSafeName)
-    onLoad && onLoad()
+    async function load() {
+      await project.loadProjectAndNodes(urlSafeName)
+      onLoad && (await onLoad())
+    }
+    load()
     // eslint-disable-next-line
   }, [])
   return (

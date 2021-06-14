@@ -1,10 +1,5 @@
 import React, { useState } from 'react'
-import {
-  faTimes,
-  faAngleDown,
-  faAngleUp,
-} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Icon from './Icon'
 
 export default function SelectMultiple({
   label,
@@ -16,7 +11,7 @@ export default function SelectMultiple({
   flowRight,
 }) {
   const [active, setActive] = useState(false)
-
+  console.log(data)
   document.addEventListener(
     'click',
     function (event) {
@@ -28,16 +23,20 @@ export default function SelectMultiple({
   )
   return (
     <div
-      className={'flex flex-col space-y-2 justify-between w-full ' + className}
+      className={'flex flex-col space-y-2 justify-between ' + className}
+      style={{ maxWidth: '500px' }}
     >
       <label className="text-h5">{label}</label>
-      <div className="relative border border-secondary-200 rounded">
+      <div className="relative border border-gray-500 rounded">
         <button
           className={
             'selectMultiple w-full focus:outline-none trans flex justify-between items-center space-x-1 px-3 p-2 ' +
             (!selectedItems.length && 'cursor-pointer')
           }
-          onClick={() => setActive(!active)}
+          onClick={(e) => {
+            e.stopPropagation()
+            setActive(!active)
+          }}
         >
           <div className="flex space-x-1 truncate">
             {selectedItems.length ? (
@@ -60,15 +59,15 @@ export default function SelectMultiple({
             )}
           </div>
           <div className="selectMultiple inline-flex items-center px-3 cursor-pointer ">
-            <FontAwesomeIcon
+            <Icon
               className="pointer-events-none"
-              icon={active ? faAngleUp : faAngleDown}
+              name={active ? 'FaAngleUp' : 'FaAngleDown'}
             />
           </div>
         </button>
         <div
           className={
-            'selectMultiple absolute max-h-64 w-64 mt-1 overflow-auto flex flex-col shadow trans rounded origin-bottom-left z-40 bg-white ' +
+            'selectMultiple absolute max-h-64 w-64 mt-1 overflow-auto flex flex-col shadow trans rounded origin-bottom-left z-40 bg-white dark:bg-gray-600 ' +
             (active
               ? 'opacity-100 scale-100 visible'
               : 'opacity-0 scale-75 hidden') +
@@ -81,7 +80,8 @@ export default function SelectMultiple({
             return (
               <Item
                 key={i}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation()
                   !selected
                     ? setSelectedItems([...selectedItems, item])
                     : setSelectedItems(
@@ -104,7 +104,7 @@ function Item({ selected, ...props }) {
   return (
     <div
       className={
-        'selectMultiple text-h5 cursor-pointer trans px-3 py-2 hover:bg-secondary-100 ' +
+        'selectMultiple text-h5 cursor-pointer trans px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-500 trans ' +
         (!selected && 'opacity-50 bg-secondary-50')
       }
       {...props}
@@ -116,10 +116,10 @@ function Item({ selected, ...props }) {
 
 function Selected({ item, onDelete }) {
   return (
-    <div className="flex space-x-2 whitespace-nowrap bg-gray-500 px-1 rounded text-h5">
+    <div className="flex space-x-2 whitespace-nowrap bg-gray-300 dark:bg-gray-500 px-1 rounded text-h5">
       {item.key}
       <div className="inline-flex items-center px-3 cursor-pointer ">
-        <FontAwesomeIcon icon={faTimes} onClick={onDelete} />
+        <Icon name={'FaTimes'} onClick={onDelete} />
       </div>
     </div>
   )

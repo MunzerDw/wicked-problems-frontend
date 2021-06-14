@@ -9,118 +9,90 @@ import { Chart, Bar, Line } from 'react-chartjs-2'
 import { useDarkMode } from 'hooks/useDarkMode'
 import project from 'models/Project'
 import moment from 'moment'
+import SelectMultiple from 'components/SelectMultiple'
 
 function formatDate(date) {
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
 }
-Chart.pluginService.register({
-  id: 'actions',
-  beforeDraw: function (chart, args, options) {
-    const nodes = options.nodes
-    const ctx = chart.ctx
-    const topY = chart.scales['y-axis-0'].top
-    const bottomY = chart.scales['y-axis-0'].bottom
-    for (let i = 0; i < nodes?.length; i++) {
-      const node = nodes[i]
-      const x = chart.scales['x-axis-0'].getPixelForValue(
-        formatDate(new Date(node.data.doneAt))
-      )
-      ctx.save()
-      ctx.beginPath()
-      ctx.moveTo(x, topY)
-      ctx.lineTo(x, bottomY)
-      ctx.lineWidth = 2
-      ctx.strokeStyle = '#e23fa9'
-      ctx.stroke()
-      ctx.restore()
-    }
-  },
-})
+function getColor(i) {
+  const blueShades = [
+    '#5F9EA0',
+    '#4682B4',
+    '#B0C4DE',
+    '#ADD8E6',
+    '#B0E0E6',
+    '#87CEFA',
+    '#87CEEB',
+    '#6495ED',
+    '#00BFFF',
+    '#1E90FF',
+    '#4169E1',
+    '#0000FF',
+    '#0000CD',
+    '#00008B',
+  ]
+  return blueShades[i % blueShades.length]
+}
 
-const Snapshot = observer(({ id, ...props }) => {
+const SnapshotsCombined = observer(() => {
   const { darkMode } = useDarkMode()
   const [expanded, setExpanded] = useState(true)
-  const snapshot = snapshots.findSnapshot(id)
   const actions = project
     .getNodes()
     ?.filter((node) => node.data.type === 'ACTION' && node.data.doneAt)
-  const data = snapshot.data || []
-  const dates = snapshot.data?.map((d) => d.date) || []
+  const dates = snapshots.dates
   const lineData = {
     labels: dates?.map((date) => formatDate(new Date(date))),
-    datasets: [
-      {
-        label: 'line',
+    datasets: snapshots.filteredSnapshots.map((ss, i) => {
+      const values = ss.data.map((d) => d.value)
+      const maxValue = Math.max(...values)
+      let dataObject = {}
+      ss.data.forEach((d) => {
+        dataObject[formatDate(new Date(d.date))] = d.value
+      })
+      return {
+        label: ss.name,
         lineTension: 0.3,
-        label: false,
-        borderColor: 'rgb(129, 140, 248)',
+        borderColor: getColor(i),
         borderWidth: 2,
         pointBorderWidth: 1,
-        pointRadius: 2,
-        data: data?.map((d) => {
-          return d.value
+        pointRadius: 1,
+        data: dates?.map((date) => {
+          const value = dataObject[formatDate(new Date(date))]
+          if (value) {
+            return (value * 100) / maxValue
+          }
+          return
         }),
-      },
-    ],
+      }
+    }),
   }
-
   return (
     <Flex.Col className="w-full rounded bg-gray-200 dark:bg-gray-900 shadow-md trans hover:shadow-lg">
       <Flex.Row
-        align="start"
         justify="between"
         className="w-full p-4 cursor-pointer"
         onClick={() => setExpanded(!expanded)}
       >
-        <Flex.Col space="1">
-          <div className="text-3xl font-bold">{snapshot.name}</div>
-          {(dates.length && (
-            <div className="">
-              {formatDate(new Date(dates[0])) +
-                ' to ' +
-                formatDate(new Date(dates[dates.length - 1]))}
-            </div>
-          )) ||
-            ''}
-        </Flex.Col>
+        <div className="text-3xl">Snapshots combined</div>
         <Flex.Row space="0">
-          <Button
-            basic
-            icon="FaEdit"
-            color="indigo"
-            onClick={() => {
-              snapshotEditor.setEditorSnapshot(snapshot)
-              snapshotEditor.setOpen(true)
-            }}
-          />
-          <Button
-            basic
-            icon="FaTrashAlt"
-            color="yellow"
-            onClick={() => {
-              snapshots.deleteSnapshot(id)
-            }}
-          />
-          <Button
-            basic
-            icon="FaDatabase"
-            color="green"
-            onClick={() => {
-              importData.setSnapshotId(id)
-              importData.setOpen(true)
-            }}
-          />
-          <Button
-            basic
-            icon="FaMinus"
-            color="yellow"
-            onClick={() => {
-              snapshots.deleteSnapshotData(id)
-            }}
+          <SelectMultiple
+            label="filter snapshots"
+            data={snapshots.snapshots.map((s) => ({
+              key: s.name,
+              value: s,
+            }))}
+            selectedItems={snapshots.filteredSnapshots.map((s) => ({
+              key: s.name,
+              value: s,
+            }))}
+            setSelectedItems={(data) =>
+              snapshots.setFilteredSnapshots(data.map((d) => d.value))
+            }
           />
         </Flex.Row>
       </Flex.Row>
-      {(expanded && data.length && (
+      {expanded && (
         <div className="w-full p-4" style={{ minHeight: '500px' }}>
           <Line
             options={{
@@ -129,12 +101,14 @@ const Snapshot = observer(({ id, ...props }) => {
                   nodes: JSON.parse(JSON.stringify(actions)),
                 },
               },
-              lineAtIndex: [2, 4, 30],
+              legend: {
+                display: true,
+                labels: {
+                  fontColor: darkMode ? 'white' : 'black',
+                },
+              },
               responsive: true,
               maintainAspectRatio: false,
-              legend: {
-                display: false,
-              },
               tooltips: {
                 callbacks: {
                   beforeTitle: (items, data) => {
@@ -202,10 +176,9 @@ const Snapshot = observer(({ id, ...props }) => {
             data={lineData}
           />
         </div>
-      )) ||
-        ''}
+      )}
     </Flex.Col>
   )
 })
 
-export default Snapshot
+export default SnapshotsCombined

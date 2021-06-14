@@ -17,7 +17,6 @@ function Action({ ...props }) {
     <Node {...props} color={'#818CF8'} icon="FaArrowsAlt">
       {(node, onDoubleClick) => {
         const vote = node.data?.vote
-        console.log(new Date(node.data?.doneAt))
         return (
           <>
             <Flex.Col

@@ -1,17 +1,38 @@
 import { makeAutoObservable } from 'mobx'
 import axios from 'axios'
 import project from './Project'
+import moment from 'moment'
 
 // Model the application state.
 class Snapshots {
   snapshots = []
+  view = 'list'
+  dates = []
+  filteredSnapshots = []
+  filteredActions = []
 
   constructor() {
     makeAutoObservable(this)
   }
 
+  getView() {
+    return this.view
+  }
+
   getDatGroups() {
     return this.snapshots
+  }
+
+  setFilteredSnapshots(filteredSnapshots) {
+    this.filteredSnapshots = filteredSnapshots
+  }
+
+  setFilteredActions(filteredActions) {
+    this.filteredActions = filteredActions
+  }
+
+  setView(view) {
+    this.view = view
   }
 
   setSnapshots(snapshots) {
@@ -43,6 +64,32 @@ class Snapshots {
       if (!name) return
       const response = await axios('/snapshots?urlSafeName=' + name)
       this.setSnapshots(response.data)
+
+      const actions = project
+        .getNodes()
+        ?.filter((node) => node.data.type === 'ACTION' && node.data.doneAt)
+      const data = [].concat.apply(
+        [],
+        response.data?.map((obj) => obj.data)
+      )
+      let dates = [
+        ...data.map((obj) => new Date(obj.date)),
+        ...actions.map((action) => new Date(action.data.doneAt)),
+      ]
+        ?.slice()
+        .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
+      console.log(dates.length)
+      for (let i = 0; i < dates.length; i++) {
+        const date = dates[i]
+        const nextDate = dates[i + 1]
+        if (nextDate) {
+          if (moment(nextDate).diff(moment(date), 'days') > 1) {
+            dates.splice(i + 1, 0, moment(date).add(1, 'days').toDate())
+          }
+        }
+      }
+      console.log(dates.length)
+      this.dates = dates
     } catch (error) {
       alert(error.message)
     }
@@ -63,6 +110,18 @@ class Snapshots {
       const response = await axios.delete('/snapshots/' + id)
       if (response.status === 204) {
         this.removeSnapshot(id)
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+  async deleteSnapshotData(id) {
+    try {
+      const response = await axios.delete('/snapshots/' + id + '/data')
+      if (response.status === 204) {
+        this.editSnapshot({ data: [] }, id)
       } else {
         alert(response.status)
       }

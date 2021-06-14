@@ -8,8 +8,9 @@ import Table from 'components/Table'
 import Badge from 'components/Badge'
 import { FirebaseAuthConsumer } from '@react-firebase/auth'
 import { useDarkMode } from 'hooks/useDarkMode'
+import moment from 'moment'
 
-function formatDate(date) {
+function formatDateHrs(date) {
   return (
     date.getDate() +
     '/' +
@@ -23,6 +24,10 @@ function formatDate(date) {
     ':' +
     date.getSeconds()
   )
+}
+
+function formatDate(date) {
+  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
 }
 
 function calculateStatistics() {
@@ -84,32 +89,37 @@ const Statistics = observer(() => {
   const statistics = calculateStatistics()
   let logsDates = {}
   project.project.logs?.forEach((log) => {
-    // https://stackoverflow.com/questions/2013255/how-to-get-year-month-day-from-a-date-object
     const dateObj = new Date(log.createdAt)
-    const month = dateObj.getUTCMonth() + 1 //months from 1-12
-    const day = dateObj.getUTCDate()
-    const year = dateObj.getUTCFullYear()
-    const formatedDate = day + '/' + month + '/' + year
+    const formatedDate = new Date(dateObj.setHours(0, 0, 0, 0))
     logsDates[formatedDate] = isNaN(logsDates[formatedDate])
       ? 0
       : logsDates[formatedDate] + 1
   })
 
+  let dates = Object.keys(logsDates)
+    ?.slice()
+    .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
+  for (let i = 0; i < dates.length; i++) {
+    const date = dates[i]
+    const nextDate = dates[i + 1]
+    if (nextDate) {
+      if (moment(nextDate).diff(moment(date), 'days') > 1) {
+        dates.splice(i + 1, 0, moment(date).add(1, 'days').toDate())
+      }
+    }
+  }
+
   const lineData = {
-    labels: Object.keys(logsDates).sort(
-      (a, b) => new Date(a).getTime() - new Date(b).getTime()
-    ),
+    labels: dates.map((d) => formatDate(new Date(d))),
     datasets: [
       {
         lineTension: 0.3,
         label: false,
         borderColor: 'rgb(129, 140, 248)',
-        borderWidth: 5,
+        borderWidth: 1,
         pointBorderWidth: 1,
-        pointRadius: 0,
-        data: Object.keys(logsDates)
-          .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
-          .map((date) => logsDates[date]),
+        pointRadius: 2,
+        data: dates.map((date) => logsDates[date] || 0),
       },
     ],
   }
@@ -264,6 +274,7 @@ const Statistics = observer(() => {
                         fontColor: darkMode ? 'white' : 'black',
                         maxRotation: 45,
                         minRotation: 45,
+                        maxTicksLimit: 10,
                       },
                       gridLines: {
                         display: false,

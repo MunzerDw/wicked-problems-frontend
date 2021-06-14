@@ -29,6 +29,62 @@ const ImportData = observer(() => {
           importData.setOpen(false)
         }}
       >
+        <Flex.Col space="2">
+          <div>CSV File</div>
+          {!importData.file ? (
+            <>
+              <input
+                type="file"
+                onChange={readFile}
+                style={{
+                  display: 'none',
+                }}
+                id="data-upload"
+              />
+              <div
+                style={{
+                  maxWidth: '1000px',
+                }}
+                className={
+                  'flex justify-center items-center h-32 w-full rounded border hover:bg-gray-300 dark:hover:bg-gray-800 trans '
+                }
+                onDragEnter={() => {
+                  // setHighlighted(true)
+                }}
+                onDragLeave={() => {
+                  // setHighlighted(false)
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault()
+                }}
+                onMouseUp={() => {
+                  // setHighlighted(false)
+                }}
+                onDrop={readFile}
+                onClick={() => {
+                  document.getElementById('data-upload').click()
+                }}
+              >
+                <div className="w-full h-full border border-dashed rounded border-gray-400 flex items-center justify-center italic">
+                  Drop file or click here
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="h-32">
+              <Flex.Row justify="between">
+                <div>{importData?.file?.name}</div>
+                <Button
+                  icon="FaTimes"
+                  iconColor="red"
+                  onClick={() => {
+                    importData.setFile('')
+                  }}
+                />
+              </Flex.Row>
+            </div>
+          )}
+        </Flex.Col>
         <Input
           label="Date format"
           placeholder="default is YYYY-MM-DD"
@@ -53,62 +109,6 @@ const ImportData = observer(() => {
           value={importData.separator}
           onChange={(e) => importData.setSeparator(e.currentTarget.value)}
         />
-        <Flex.Col>
-          <div>CSV File</div>
-          {!importData.file ? (
-            <>
-              <input
-                type="file"
-                onChange={readFile}
-                style={{
-                  display: 'none',
-                }}
-                id="data-upload"
-              />
-              <div
-                style={{
-                  maxWidth: '1000px',
-                }}
-                className={
-                  'flex justify-center items-center h-32 w-full rounded border hover:bg-gray-100 dark:hover:bg-gray-800 trans '
-                }
-                onDragEnter={() => {
-                  // setHighlighted(true)
-                }}
-                onDragLeave={() => {
-                  // setHighlighted(false)
-                }}
-                onDragOver={(e) => {
-                  e.preventDefault()
-                }}
-                onMouseUp={() => {
-                  // setHighlighted(false)
-                }}
-                onDrop={readFile}
-                onClick={() => {
-                  document.getElementById('data-upload').click()
-                }}
-              >
-                <div className="w-full h-full border border-dashed border-secondary-200 flex items-center justify-center italic">
-                  Drop file or click here
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="h-32">
-              <Flex.Row justify="between">
-                <div>{importData?.file?.name}</div>
-                <Button
-                  icon="FaTimes"
-                  iconColor="red"
-                  onClick={() => {
-                    importData.setFile('')
-                  }}
-                />
-              </Flex.Row>
-            </div>
-          )}
-        </Flex.Col>
         <Flex.Row space="2">
           <Button basic color="green" type="submit">
             Add
