@@ -15,7 +15,7 @@ const SnapshotEditor = observer(() => {
         onSubmit={async () => {
           if (snapshotEditor.editorSnapshot.id) {
             snapshots.updateSnapshot(
-              snapshotEditor.editorSnapshot,
+              { name: snapshotEditor.editorSnapshot.name },
               snapshotEditor.editorSnapshot.id
             )
           } else {
