@@ -21,7 +21,7 @@ ENV REACT_APP_FIREBASE_AUTH_DOMAIN=wicked-problems.firebaseapp.com
 COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install --silent
-RUN yarn install react-scripts@3.4.1 -g --silent
+RUN yarn add react-scripts@3.4.1 -g --silent
 
 # add app
 COPY . ./
