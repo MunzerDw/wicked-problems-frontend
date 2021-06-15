@@ -19,7 +19,7 @@ ENV REACT_APP_FIREBASE_AUTH_DOMAIN=wicked-problems.firebaseapp.com
 
 # install app dependencies
 COPY package.json ./
-COPY yarn.json ./
+COPY yarn.lock ./
 RUN npm install --silent
 RUN npm install react-scripts@3.4.1 -g --silent
 
