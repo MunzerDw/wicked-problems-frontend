@@ -19,7 +19,7 @@ ENV REACT_APP_FIREBASE_AUTH_DOMAIN=wicked-problems.firebaseapp.com
 
 # install app dependencies
 COPY package.json ./
-RUN yarn install
+RUN yarn install --network-timeout 1000000
 RUN yarn add react-scripts@4.0.3 -g
 
 # add app
