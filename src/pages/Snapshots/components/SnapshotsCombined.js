@@ -20,15 +20,12 @@ function getColor(i) {
     '#4682B4',
     '#B0C4DE',
     '#ADD8E6',
-    '#B0E0E6',
     '#87CEFA',
-    '#87CEEB',
     '#6495ED',
     '#00BFFF',
     '#1E90FF',
     '#4169E1',
     '#0000FF',
-    '#0000CD',
     '#00008B',
   ]
   return blueShades[i % blueShades.length]
@@ -75,6 +72,7 @@ const SnapshotsCombined = observer(() => {
           borderWidth: 2,
           pointBorderWidth: 1,
           pointRadius: 1,
+          spanGaps: true,
           data: dates?.map((date) => {
             const value = dataObject[formatDate(new Date(date))]
             if (value) {

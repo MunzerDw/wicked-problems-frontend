@@ -65,11 +65,12 @@ const Snapshot = observer(({ id, ...props }) => {
       {
         label: 'line',
         lineTension: 0.3,
-        label: false,
+        label: 'data',
         borderColor: 'rgb(129, 140, 248)',
         borderWidth: 2,
         pointBorderWidth: 1,
         pointRadius: 2,
+        spanGaps: true,
         data: dates?.map((d) => {
           const value = data.find((da) => da.date === d)?.value
           return value
@@ -78,7 +79,7 @@ const Snapshot = observer(({ id, ...props }) => {
       {
         label: 'bar',
         lineTension: 0.3,
-        label: false,
+        label: 'actions',
         borderColor: '#e23fa9',
         backgroundColor: '#e23fa9',
         borderWidth: 4,
