@@ -15,7 +15,7 @@ jobs:
         uses: JimCronqvist/action-ssh@master
         with:
           hosts: 'munzer@${{ secrets.DEVELOPMENT_HOST }}'
-          privateKey: ${{ secrets.MUNZER__SSH_PRIVATE_KEY }}
+          privateKey: ${{ secrets.MUNZER_SSH_PRIVATE_KEY }}
           debug: false
           command: |
             docker stop frontend
