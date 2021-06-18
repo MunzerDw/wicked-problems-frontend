@@ -47,7 +47,6 @@ const Snapshot = observer(({ id, ...props }) => {
   let dates = [...(snapshot.data?.map((d) => d.date) || [])]
     ?.slice()
     .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
-  console.log(dates.length)
   for (let i = 0; i < dates.length; i++) {
     const date = dates[i]
     const nextDate = dates[i + 1]
@@ -57,8 +56,8 @@ const Snapshot = observer(({ id, ...props }) => {
       }
     }
   }
-  console.log(dates.length)
   const data = snapshot.data || []
+  const maxValue = Math.max(...data.map((d) => d.value))
   const lineData = {
     labels: dates?.map((date) => formatDate(new Date(date))),
     datasets: [
@@ -73,6 +72,24 @@ const Snapshot = observer(({ id, ...props }) => {
         data: dates?.map((d) => {
           const value = data.find((da) => da.date === d)?.value
           return value
+        }),
+      },
+      {
+        label: 'bar',
+        lineTension: 0.3,
+        label: false,
+        borderColor: '#e23fa9',
+        backgroundColor: '#e23fa9',
+        borderWidth: 4,
+        pointBorderWidth: 4,
+        pointRadius: 4,
+        data: dates?.map((d) => {
+          const actionExists = actions.find(
+            (action) =>
+              formatDate(new Date(action.data.doneAt)) ===
+              formatDate(new Date(d))
+          )
+          return actionExists ? maxValue : null
         }),
       },
     ],
@@ -100,6 +117,7 @@ const Snapshot = observer(({ id, ...props }) => {
         <Flex.Row space="0">
           <Button
             basic
+            title="edit snapshot"
             icon="FaEdit"
             color="indigo"
             onClick={() => {
@@ -109,6 +127,7 @@ const Snapshot = observer(({ id, ...props }) => {
           />
           <Button
             basic
+            title="delete snapshot and its data"
             icon="FaTrashAlt"
             color="yellow"
             onClick={() => {
@@ -117,6 +136,7 @@ const Snapshot = observer(({ id, ...props }) => {
           />
           <Button
             basic
+            title="import data"
             icon="FaDatabase"
             color="green"
             onClick={() => {
@@ -126,6 +146,7 @@ const Snapshot = observer(({ id, ...props }) => {
           />
           <Button
             basic
+            title="delete imported data"
             icon="FaMinus"
             color="yellow"
             onClick={() => {
@@ -138,11 +159,11 @@ const Snapshot = observer(({ id, ...props }) => {
         <div className="w-full p-4" style={{ minHeight: '500px' }}>
           <Line
             options={{
-              plugins: {
-                actions: {
-                  nodes: JSON.parse(JSON.stringify(actions)),
-                },
-              },
+              // plugins: {
+              //   actions: {
+              //     nodes: JSON.parse(JSON.stringify(actions)),
+              //   },
+              // },
               lineAtIndex: [2, 4, 30],
               responsive: true,
               maintainAspectRatio: false,
@@ -152,7 +173,6 @@ const Snapshot = observer(({ id, ...props }) => {
               tooltips: {
                 callbacks: {
                   beforeTitle: (items, data) => {
-                    console.log(items, data)
                     const date = items[0].xLabel
                     const filteredActions = actions.filter(
                       (action) =>
@@ -170,6 +190,9 @@ const Snapshot = observer(({ id, ...props }) => {
                   },
                   label: (item, data) => {
                     try {
+                      if (item['datasetIndex'] === 1) {
+                        return null
+                      }
                       const value = JSON.parse(item.value)
                       if (typeof value === 'number') {
                         return value.toLocaleString('de-DE')
@@ -199,6 +222,7 @@ const Snapshot = observer(({ id, ...props }) => {
                 ],
                 xAxes: [
                   {
+                    barPercentage: 0.4,
                     ticks: {
                       fontColor: darkMode ? 'white' : 'black',
                       maxRotation: 45,

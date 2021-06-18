@@ -3,6 +3,22 @@ import axios from 'axios'
 import project from './Project'
 import moment from 'moment'
 
+// https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+function uniq_fast(a) {
+  var seen = {}
+  var out = []
+  var len = a.length
+  var j = 0
+  for (var i = 0; i < len; i++) {
+    var item = a[i]
+    if (seen[item] !== 1) {
+      seen[item] = 1
+      out[j++] = item
+    }
+  }
+  return out
+}
+
 // Model the application state.
 class Snapshots {
   snapshots = []
@@ -73,12 +89,19 @@ class Snapshots {
         response.data?.map((obj) => obj.data)
       )
       let dates = [
-        ...data.map((obj) => new Date(obj.date)),
-        ...actions.map((action) => new Date(action.data.doneAt)),
+        ...new Set([
+          ...data.map(
+            (obj) => new Date(new Date(obj.date).setHours(0, 0, 0, 0))
+          ),
+          ...actions.map(
+            (action) =>
+              new Date(new Date(action.data.doneAt).setHours(0, 0, 0, 0))
+          ),
+        ]),
       ]
         ?.slice()
         .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
-      console.log(dates.length)
+      dates = uniq_fast(dates)
       for (let i = 0; i < dates.length; i++) {
         const date = dates[i]
         const nextDate = dates[i + 1]

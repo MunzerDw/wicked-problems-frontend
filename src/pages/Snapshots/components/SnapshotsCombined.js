@@ -43,30 +43,51 @@ const SnapshotsCombined = observer(() => {
   const dates = snapshots.dates
   const lineData = {
     labels: dates?.map((date) => formatDate(new Date(date))),
-    datasets: snapshots.filteredSnapshots.map((ss, i) => {
-      const values = ss.data.map((d) => d.value)
-      const maxValue = Math.max(...values)
-      let dataObject = {}
-      ss.data.forEach((d) => {
-        dataObject[formatDate(new Date(d.date))] = d.value
-      })
-      return {
-        label: ss.name,
-        lineTension: 0.3,
-        borderColor: getColor(i),
+    datasets: [
+      {
+        label: 'bar',
+        label: 'Actions',
+        borderColor: '#e23fa9',
+        backgroundColor: '#e23fa9',
         borderWidth: 2,
-        pointBorderWidth: 1,
-        pointRadius: 1,
-        data: dates?.map((date) => {
-          const value = dataObject[formatDate(new Date(date))]
-          if (value) {
-            return (value * 100) / maxValue
-          }
-          return
+        pointBorderWidth: 4,
+        pointRadius: 4,
+        data: dates?.map((d) => {
+          const actionExists = actions.find(
+            (action) =>
+              formatDate(new Date(action.data.doneAt)) ===
+              formatDate(new Date(d))
+          )
+          return actionExists ? 100 : null
         }),
-      }
-    }),
+      },
+      ...snapshots.filteredSnapshots.map((ss, i) => {
+        const values = ss.data.map((d) => d.value)
+        const maxValue = Math.max(...values)
+        let dataObject = {}
+        ss.data.forEach((d) => {
+          dataObject[formatDate(new Date(d.date))] = d.value
+        })
+        return {
+          label: ss.name,
+          lineTension: 0.3,
+          borderColor: getColor(i),
+          borderWidth: 2,
+          pointBorderWidth: 1,
+          pointRadius: 1,
+          data: dates?.map((date) => {
+            const value = dataObject[formatDate(new Date(date))]
+            if (value) {
+              return (value * 100) / maxValue
+            }
+            return
+          }),
+        }
+      }),
+    ],
   }
+  console.log(lineData)
+  console.log(snapshots.filteredSnapshots)
   return (
     <Flex.Col className="w-full rounded bg-gray-200 dark:bg-gray-900 shadow-md trans hover:shadow-lg">
       <Flex.Row
@@ -96,11 +117,11 @@ const SnapshotsCombined = observer(() => {
         <div className="w-full p-4" style={{ minHeight: '500px' }}>
           <Line
             options={{
-              plugins: {
-                actions: {
-                  nodes: JSON.parse(JSON.stringify(actions)),
-                },
-              },
+              // plugins: {
+              //   actions: {
+              //     nodes: JSON.parse(JSON.stringify(actions)),
+              //   },
+              // },
               legend: {
                 display: true,
                 labels: {
@@ -112,7 +133,6 @@ const SnapshotsCombined = observer(() => {
               tooltips: {
                 callbacks: {
                   beforeTitle: (items, data) => {
-                    console.log(items, data)
                     const date = items[0].xLabel
                     const filteredActions = actions.filter(
                       (action) =>
@@ -130,6 +150,7 @@ const SnapshotsCombined = observer(() => {
                   },
                   label: (item, data) => {
                     try {
+                      if (item['datasetIndex'] === 0) return null
                       const value = JSON.parse(item.value)
                       if (typeof value === 'number') {
                         return value.toLocaleString('de-DE')
@@ -147,9 +168,9 @@ const SnapshotsCombined = observer(() => {
                     ticks: {
                       callback: (val, index) => {
                         if (typeof val === 'number') {
-                          return val.toLocaleString('de-DE')
+                          return val.toLocaleString('de-DE') + ' %'
                         } else {
-                          return val
+                          return val + ' %'
                         }
                       },
                       fontColor: darkMode ? 'white' : 'black',
