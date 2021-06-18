@@ -117,11 +117,12 @@ const SnapshotsCombined = observer(() => {
         <div className="w-full p-4" style={{ minHeight: '500px' }}>
           <Line
             options={{
-              // plugins: {
-              //   actions: {
-              //     nodes: JSON.parse(JSON.stringify(actions)),
-              //   },
-              // },
+              plugins: {
+                actions: {
+                  nodes: JSON.parse(JSON.stringify(actions)),
+                  maxValue: 100,
+                },
+              },
               legend: {
                 display: true,
                 labels: {

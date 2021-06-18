@@ -17,8 +17,9 @@ Chart.pluginService.register({
   id: 'actions',
   beforeDraw: function (chart, args, options) {
     const nodes = options.nodes
+    const maxValue = options.maxValue
     const ctx = chart.ctx
-    const topY = chart.scales['y-axis-0'].top
+    const topY = chart.scales['y-axis-0'].getPixelForValue(maxValue)
     const bottomY = chart.scales['y-axis-0'].bottom
     for (let i = 0; i < nodes?.length; i++) {
       const node = nodes[i]
@@ -131,7 +132,11 @@ const Snapshot = observer(({ id, ...props }) => {
             icon="FaTrashAlt"
             color="yellow"
             onClick={() => {
-              snapshots.deleteSnapshot(id)
+              if (
+                window.confirm('Are you sure you want to delete this snapshot?')
+              ) {
+                snapshots.deleteSnapshot(id)
+              }
             }}
           />
           <Button
@@ -150,7 +155,13 @@ const Snapshot = observer(({ id, ...props }) => {
             icon="FaMinus"
             color="yellow"
             onClick={() => {
-              snapshots.deleteSnapshotData(id)
+              if (
+                window.confirm(
+                  'Are you sure you want to delete the data of this snapshot?'
+                )
+              ) {
+                snapshots.deleteSnapshotData(id)
+              }
             }}
           />
         </Flex.Row>
@@ -159,11 +170,12 @@ const Snapshot = observer(({ id, ...props }) => {
         <div className="w-full p-4" style={{ minHeight: '500px' }}>
           <Line
             options={{
-              // plugins: {
-              //   actions: {
-              //     nodes: JSON.parse(JSON.stringify(actions)),
-              //   },
-              // },
+              plugins: {
+                actions: {
+                  nodes: JSON.parse(JSON.stringify(actions)),
+                  maxValue: maxValue,
+                },
+              },
               lineAtIndex: [2, 4, 30],
               responsive: true,
               maintainAspectRatio: false,
