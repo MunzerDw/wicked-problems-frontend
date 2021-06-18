@@ -105,7 +105,7 @@ const Project = observer(() => {
             >
               <Background variant="dots" gap={12} />
               <MiniMap
-                maskColor="#1F2937"
+                maskColor="rgb(227, 227, 227, 0.5)"
                 style={{
                   backgroundColor: 'white',
                   border: 'none',
@@ -123,8 +123,12 @@ const Project = observer(() => {
                 }}
                 nodeColor={(n) => {
                   if (n.style?.background) return n.style.background
-
-                  return 'transparent'
+                  if (n.type === 'CONSTRAINT') return 'black'
+                  if (n.type === 'IDEA') return 'orange'
+                  if (n.type === 'ARGUMENT' && !n.data.for) return 'red'
+                  if (n.type === 'ARGUMENT' && n.data.for) return 'green'
+                  if (n.type === 'ACTION') return 'indigo'
+                  if (n.type === 'QUESTION') return 'orange'
                 }}
                 nodeBorderRadius={2}
               />

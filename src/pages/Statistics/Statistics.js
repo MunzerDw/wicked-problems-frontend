@@ -56,8 +56,10 @@ function calculateStatistics() {
   result.minIdeasPerQuestion = Math.min(...questionsEdgesToIdeas)
   try {
     result.avgIdeasPerQuestion =
-      questionsEdgesToIdeas.reduce((x, y) => x + y, 0) /
-      questionsEdgesToIdeas.length
+      Math.round(
+        (questionsEdgesToIdeas.reduce((x, y) => x + y, 0) * 100) /
+          questionsEdgesToIdeas.length
+      ) / 100
   } catch (error) {
     result.avgIdeasPerQuestion = '-'
   }
@@ -177,12 +179,6 @@ const Statistics = observer(() => {
             <div className="font-bold text-lg">
               {statistics.maxIdeasPerQuestion}
             </div>
-            <div className="opacity-75">
-              Minimum number of ideas to a question
-            </div>
-            <div className="font-bold text-lg">
-              {statistics.minIdeasPerQuestion}
-            </div>
             <div className="opacity-75">Project created at</div>
             <div className="font-bold text-lg">{statistics.created}</div>
           </div>
@@ -192,19 +188,19 @@ const Statistics = observer(() => {
             value={statistics.totalNodes}
             text="nodes"
             icon="FaProjectDiagram"
-            className="bg-gradient-to-r from-indigo-300 to-indigo-400 text-white"
+            className="bg-gradient-to-r from-indigo-300 to-indigo-400 text-white w-full"
           />
           <NumberStat.Medium
             value={statistics.actionsTaken}
             text="actions taken"
             icon="FaArrowsAlt"
-            className="bg-gradient-to-r from-green-300 to-green-400 text-white"
+            className="bg-gradient-to-r from-green-300 to-green-400 text-white w-full"
           />
           <NumberStat.Medium
             value={statistics.users}
             text="users"
             icon="FaUsers"
-            className="bg-gradient-to-r from-yellow-300 to-yellow-400 text-white"
+            className="bg-gradient-to-r from-yellow-300 to-yellow-400 text-white w-full"
           />
         </Flex.Row>
         <Flex.Col>
