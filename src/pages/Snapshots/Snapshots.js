@@ -14,7 +14,7 @@ const Snapshots = observer(() => {
   return (
     <CanvasPage
       onLoad={() => snapshots.loadSnapshots(name)}
-      className="flex justify-center p-12"
+      className="flex justify-center p-12 pb-4"
     >
       <Flex.Col className="w-full" style={{}} space="16">
         <Flex.Col space="1" className="w-full">
@@ -52,13 +52,45 @@ const Snapshots = observer(() => {
           </Flex.Row>
         </Flex.Col>
         {snapshots.view === 'list' ? (
-          snapshots.snapshots?.map((snaphshot, i) => {
-            return <Snapshot key={i} id={snaphshot.id} />
-          })
+          <Flex.Row className="w-full overflow-hidden" align="start">
+            <Flex.Col justify="start" space="0">
+              {snapshots.snapshots?.map((snapshot, i) => {
+                return (
+                  <div
+                    onClick={() => {
+                      document.getElementById(snapshot.id) &&
+                        document.getElementById(snapshot.id).scrollIntoView()
+                    }}
+                    className={
+                      'w-full p-2 cursor-pointer bg-gray-200 dark:bg-gray-500 hover:bg-gray-300 dark:hover:bg-gray-600 trans ' +
+                      (i === 0
+                        ? 'rounded-t'
+                        : i === snapshots.snapshots?.length - 1
+                        ? 'rounded-b'
+                        : '')
+                    }
+                    key={i}
+                  >
+                    {snapshot.name}
+                  </div>
+                )
+              })}
+            </Flex.Col>
+            <Flex.Col
+              className="w-full h-full overflow-auto p-2 pb-4"
+              style={{
+                maxHeight: '100%',
+              }}
+              space="16"
+            >
+              {snapshots.snapshots?.map((snaphshot, i) => {
+                return <Snapshot key={i} id={snaphshot.id} />
+              })}
+            </Flex.Col>
+          </Flex.Row>
         ) : (
           <SnapshotsCombined />
         )}
-        <div className="opacity-0">I have to add this I dont know why lol</div>
       </Flex.Col>
       <SnapshotEditor />
       <ImportData />
