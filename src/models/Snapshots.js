@@ -26,6 +26,7 @@ class Snapshots {
   dates = []
   filteredSnapshots = []
   filteredActions = []
+  timelineOpen = false
 
   constructor() {
     makeAutoObservable(this)
@@ -37,6 +38,10 @@ class Snapshots {
 
   getDatGroups() {
     return this.snapshots
+  }
+
+  setTimelineOpen(state) {
+    this.timelineOpen = state
   }
 
   setFilteredSnapshots(filteredSnapshots) {

@@ -8,6 +8,7 @@ import ImportData from './components/ImportData'
 import Snapshot from './components/Snapshot'
 import SnapshotEditor from './components/SnapshotEditor'
 import SnapshotsCombined from './components/SnapshotsCombined'
+import Timeline from './components/Timeline'
 
 const Snapshots = observer(() => {
   const name = window.location.pathname.split('/')[2]
@@ -16,20 +17,31 @@ const Snapshots = observer(() => {
       onLoad={() => snapshots.loadSnapshots(name)}
       className="flex justify-center p-12 pb-4"
     >
+      <Timeline />
       <Flex.Col className="w-full" style={{}} space="16">
         <Flex.Col space="1" className="w-full">
           <Flex.Row className="w-full" justify="between">
             <div className="text-4xl font-medium">Snapshots</div>
-            <Button
-              basic
-              color="green"
-              onClick={() => {
-                snapshotEditor.setEditorSnapshot({ name: '' })
-                snapshotEditor.setOpen(true)
-              }}
-            >
-              Add Snapshot
-            </Button>
+            <Flex.Row>
+              <Button
+                basic
+                onClick={() => {
+                  snapshots.setTimelineOpen(true)
+                }}
+              >
+                View Actions Timeline
+              </Button>
+              <Button
+                basic
+                color="green"
+                onClick={() => {
+                  snapshotEditor.setEditorSnapshot({ name: '' })
+                  snapshotEditor.setOpen(true)
+                }}
+              >
+                Add Snapshot
+              </Button>
+            </Flex.Row>
           </Flex.Row>
           <Flex.Row space="0">
             <div>view: </div>
