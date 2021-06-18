@@ -62,7 +62,7 @@ const Snapshots = observer(() => {
                         document.getElementById(snapshot.id).scrollIntoView()
                     }}
                     className={
-                      'w-full p-2 cursor-pointer bg-gray-200 dark:bg-gray-500 hover:bg-gray-300 dark:hover:bg-gray-600 trans ' +
+                      'w-full p-2 cursor-pointer bg-gray-200 dark:bg-gray-900 hover:bg-gray-300 dark:hover:bg-gray-800 trans ' +
                       (i === 0
                         ? 'rounded-t'
                         : i === snapshots.snapshots?.length - 1
