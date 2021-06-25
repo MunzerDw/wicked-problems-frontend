@@ -11,6 +11,33 @@ import Badge from 'components/Badge'
 function formatDate(date) {
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
 }
+// https://renatello.com/javascript-array-of-years/
+function generateArrayOfYears() {
+  var max = new Date().getFullYear()
+  var min = 1970
+  var years = []
+
+  for (var i = max; i >= min; i--) {
+    years.push(i)
+  }
+  return years
+}
+
+const years = generateArrayOfYears()
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
 
 function Action({ ...props }) {
   return (
@@ -52,6 +79,72 @@ function Action({ ...props }) {
                   />
                 )}
                 <DatePicker
+                  renderCustomHeader={({
+                    customHeaderCount,
+                    date,
+                    changeYear,
+                    changeMonth,
+                    decreaseMonth,
+                    increaseMonth,
+                    prevMonthButtonDisabled,
+                    nextMonthButtonDisabled,
+                  }) => (
+                    <div
+                      style={{
+                        margin: 10,
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <button
+                        onClick={decreaseMonth}
+                        disabled={prevMonthButtonDisabled}
+                      >
+                        {'<'}
+                      </button>
+                      <select
+                        value={
+                          (date.getMonth() + customHeaderCount) %
+                            months.length ===
+                          0
+                            ? date.getFullYear() + customHeaderCount
+                            : date.getFullYear()
+                        }
+                        onChange={({ target: { value } }) => changeYear(value)}
+                      >
+                        {years.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+
+                      <select
+                        value={
+                          months[
+                            (date.getMonth() + customHeaderCount) %
+                              months.length
+                          ]
+                        }
+                        onChange={({ target: { value } }) =>
+                          changeMonth(months.indexOf(value))
+                        }
+                      >
+                        {months.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+
+                      <button
+                        onClick={increaseMonth}
+                        disabled={nextMonthButtonDisabled}
+                      >
+                        {'>'}
+                      </button>
+                    </div>
+                  )}
                   selected={
                     node.data?.doneAt ? new Date(node.data?.doneAt) : null
                   }
