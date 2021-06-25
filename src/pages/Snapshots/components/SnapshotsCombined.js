@@ -10,6 +10,9 @@ import { useDarkMode } from 'hooks/useDarkMode'
 import project from 'models/Project'
 import moment from 'moment'
 import SelectMultiple from 'components/SelectMultiple'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import Icon from 'components/Icon'
 
 function formatDate(date) {
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
@@ -30,6 +33,33 @@ function getColor(i) {
   ]
   return blueShades[i % blueShades.length]
 }
+// https://renatello.com/javascript-array-of-years/
+function generateArrayOfYears() {
+  var max = new Date().getFullYear()
+  var min = 1970
+  var years = []
+
+  for (var i = max; i >= min; i--) {
+    years.push(i)
+  }
+  return years
+}
+
+const years = generateArrayOfYears()
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
 
 const SnapshotsCombined = observer(() => {
   const { darkMode } = useDarkMode()
@@ -37,7 +67,24 @@ const SnapshotsCombined = observer(() => {
   const actions = project
     .getNodes()
     ?.filter((node) => node.data.type === 'ACTION' && node.data.doneAt)
-  const dates = snapshots.dates
+  const datesUnfiltered = snapshots.dates
+  const minDate = new Date(datesUnfiltered[0])
+  const maxDate = new Date(datesUnfiltered[datesUnfiltered.length - 1])
+  const [startDate, setStartDate] = useState(minDate)
+  const [endDate, setEndDate] = useState(maxDate)
+  const dates = snapshots.dates?.filter((date) => {
+    if (startDate) {
+      if (startDate.getTime() > new Date(date).getTime()) {
+        return false
+      }
+    }
+    if (endDate) {
+      if (endDate.getTime() < new Date(date).getTime()) {
+        return false
+      }
+    }
+    return true
+  })
   const lineData = {
     labels: dates?.map((date) => formatDate(new Date(date))),
     datasets: [
@@ -88,13 +135,116 @@ const SnapshotsCombined = observer(() => {
   console.log(snapshots.filteredSnapshots)
   return (
     <Flex.Col className="w-full rounded bg-gray-200 dark:bg-gray-900 shadow-md trans hover:shadow-lg">
-      <Flex.Row
-        justify="between"
-        className="w-full p-4 cursor-pointer"
-        onClick={() => setExpanded(!expanded)}
-      >
-        <div className="text-3xl">Snapshots combined</div>
-        <Flex.Row space="0">
+      <Flex.Row justify="between" className="w-full p-4">
+        <Flex.Row>
+          <div
+            className="text-3xl cursor-default hover:underline"
+            onClick={() => setExpanded(!expanded)}
+          >
+            Snapshots combined
+          </div>
+          <DatePicker
+            renderCustomHeader={({
+              customHeaderCount,
+              date,
+              changeYear,
+              changeMonth,
+              decreaseMonth,
+              increaseMonth,
+              prevMonthButtonDisabled,
+              nextMonthButtonDisabled,
+            }) => (
+              <div
+                style={{
+                  margin: 10,
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <button
+                  onClick={decreaseMonth}
+                  disabled={prevMonthButtonDisabled}
+                >
+                  {'<'}
+                </button>
+                <select
+                  value={
+                    (date.getMonth() + customHeaderCount) % months.length === 0
+                      ? date.getFullYear() + customHeaderCount
+                      : date.getFullYear()
+                  }
+                  onChange={({ target: { value } }) => changeYear(value)}
+                >
+                  {years.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={
+                    months[
+                      (date.getMonth() + customHeaderCount) % months.length
+                    ]
+                  }
+                  onChange={({ target: { value } }) =>
+                    changeMonth(months.indexOf(value))
+                  }
+                >
+                  {months.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+
+                <button
+                  onClick={increaseMonth}
+                  disabled={nextMonthButtonDisabled}
+                >
+                  {'>'}
+                </button>
+              </div>
+            )}
+            monthsShown={2}
+            selected={startDate}
+            onChange={(dates, e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              const [start, end] = dates
+              setStartDate(start)
+              setEndDate(end)
+            }}
+            customInput={
+              <Flex.Row
+                space="1"
+                className="rounded p-2 py-1 dark:bg-gray-700 dark:hover:bg-gray-600 bg-gray-100 hover:bg-white shadow-md cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                }}
+              >
+                <div>Date range</div>
+                <Icon name="FaCalendarAlt" />
+                {startDate && (
+                  <div>
+                    from <b>{formatDate(startDate)}</b>
+                  </div>
+                )}
+                {endDate && (
+                  <div>
+                    to <b>{formatDate(endDate)}</b>
+                  </div>
+                )}
+              </Flex.Row>
+            }
+            startDate={startDate}
+            endDate={endDate}
+            selectsRange
+          />
+        </Flex.Row>
+        <Flex.Row space="2">
           <SelectMultiple
             label="filter snapshots"
             data={snapshots.snapshots.map((s) => ({
