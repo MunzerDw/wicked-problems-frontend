@@ -131,8 +131,6 @@ const SnapshotsCombined = observer(() => {
       }),
     ],
   }
-  console.log(lineData)
-  console.log(snapshots.filteredSnapshots)
   return (
     <Flex.Col className="w-full rounded bg-gray-200 dark:bg-gray-900 shadow-md trans hover:shadow-lg">
       <Flex.Row justify="between" className="w-full p-4">
@@ -265,10 +263,45 @@ const SnapshotsCombined = observer(() => {
         <div className="w-full p-4" style={{ minHeight: '500px' }}>
           <Line
             options={{
+              animation: {
+                duration: 200,
+              },
               plugins: {
                 actions: {
                   nodes: JSON.parse(JSON.stringify(actions)),
                   maxValue: 100,
+                },
+                tooltip: {
+                  callbacks: {
+                    beforeTitle: (items, data) => {
+                      const date = items[0].label
+                      const filteredActions = actions.filter(
+                        (action) =>
+                          formatDate(new Date(action.data.doneAt)) === date &&
+                          action.data.text
+                      )
+                      let result = '\n\nActions:\n\n'
+                      for (let i = 0; i < filteredActions.length; i++) {
+                        const action = filteredActions[i]
+                        if (action.data.text) {
+                          result += i + 1 + ') ' + action.data.text + '\n\n'
+                        }
+                      }
+                      return filteredActions.length ? result : ''
+                    },
+                    label: (item, data) => {
+                      try {
+                        if (item['datasetIndex'] === 0) return null
+                        const value = JSON.parse(item.raw)
+                        if (typeof value === 'number') {
+                          return value.toLocaleString('de-DE') + ' %'
+                        }
+                        return value
+                      } catch (error) {
+                        return item.value
+                      }
+                    },
+                  },
                 },
               },
               legend: {
@@ -279,38 +312,6 @@ const SnapshotsCombined = observer(() => {
               },
               responsive: true,
               maintainAspectRatio: false,
-              tooltips: {
-                callbacks: {
-                  beforeTitle: (items, data) => {
-                    const date = items[0].xLabel
-                    const filteredActions = actions.filter(
-                      (action) =>
-                        formatDate(new Date(action.data.doneAt)) === date &&
-                        action.data.text
-                    )
-                    let result = '\n\nActions:\n\n'
-                    for (let i = 0; i < filteredActions.length; i++) {
-                      const action = filteredActions[i]
-                      if (action.data.text) {
-                        result += i + 1 + ') ' + action.data.text + '\n\n'
-                      }
-                    }
-                    return filteredActions.length ? result : ''
-                  },
-                  label: (item, data) => {
-                    try {
-                      if (item['datasetIndex'] === 0) return null
-                      const value = JSON.parse(item.value)
-                      if (typeof value === 'number') {
-                        return value.toLocaleString('de-DE')
-                      }
-                      return value
-                    } catch (error) {
-                      return item.value
-                    }
-                  },
-                },
-              },
               scales: {
                 y: {
                   beginAtZero: true,

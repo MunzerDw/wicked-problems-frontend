@@ -210,35 +210,36 @@ const Statistics = observer(() => {
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
-                scales: {
-                  yAxes: [
-                    {
-                      ticks: {
-                        fontColor: darkMode ? 'white' : 'black',
-                        beginAtZero: true,
-                        userCallback: function (label, index, labels) {
-                          if (Math.floor(label) === label) {
-                            return label
-                          }
-                        },
-                      },
-                    },
-                  ],
-                  xAxes: [
-                    {
-                      ticks: {
-                        beginAtZero: true,
-                        stepSize: 1,
-                        fontColor: darkMode ? 'white' : 'black',
-                      },
-                      gridLines: {
-                        display: false,
-                      },
-                    },
-                  ],
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
                 },
-                legend: {
-                  display: false,
+                scales: {
+                  y: {
+                    ticks: {
+                      color: darkMode ? 'white' : 'black',
+                      beginAtZero: true,
+                      userCallback: function (label, index, labels) {
+                        if (Math.floor(label) === label) {
+                          return label
+                        }
+                      },
+                    },
+                    grid: {
+                      color: 'gray',
+                    },
+                  },
+                  x: {
+                    ticks: {
+                      beginAtZero: true,
+                      stepSize: 1,
+                      color: darkMode ? 'white' : 'black',
+                    },
+                    grid: {
+                      display: false,
+                    },
+                  },
                 },
               }}
               data={barData}
@@ -252,31 +253,32 @@ const Statistics = observer(() => {
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
-                legend: {
-                  display: false,
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
                 },
                 scales: {
-                  yAxes: [
-                    {
-                      ticks: {
-                        beginAtZero: true,
-                        display: false,
-                      },
+                  y: {
+                    ticks: {
+                      beginAtZero: true,
+                      display: false,
                     },
-                  ],
-                  xAxes: [
-                    {
-                      ticks: {
-                        fontColor: darkMode ? 'white' : 'black',
-                        maxRotation: 45,
-                        minRotation: 45,
-                        maxTicksLimit: 10,
-                      },
-                      gridLines: {
-                        display: false,
-                      },
+                    grid: {
+                      color: 'gray',
                     },
-                  ],
+                  },
+                  x: {
+                    ticks: {
+                      color: darkMode ? 'white' : 'black',
+                      maxRotation: 45,
+                      minRotation: 45,
+                      maxTicksLimit: 10,
+                    },
+                    gridLines: {
+                      display: false,
+                    },
+                  },
                 },
               }}
               data={lineData}

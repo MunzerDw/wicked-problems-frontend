@@ -19,7 +19,6 @@ Chart.register({
     const nodes = options.nodes
     const maxValue = options.maxValue
     const ctx = chart.ctx
-    console.log(chart.scales)
     const topY = chart.scales['y'].getPixelForValue(maxValue)
     const bottomY = chart.scales['y'].bottom
     for (let i = 0; i < nodes?.length; i++) {
@@ -27,14 +26,18 @@ Chart.register({
       const x = chart.scales['x'].getPixelForValue(
         formatDate(new Date(node.data.doneAt))
       )
-      ctx.save()
-      ctx.beginPath()
-      ctx.moveTo(x, topY)
-      ctx.lineTo(x, bottomY)
-      ctx.lineWidth = 2
-      ctx.strokeStyle = '#e23fa9'
-      ctx.stroke()
-      ctx.restore()
+      console.log(x, formatDate(new Date(node.data.doneAt)))
+      if (x) {
+        console.log(x)
+        ctx.save()
+        ctx.beginPath()
+        ctx.moveTo(x, topY)
+        ctx.lineTo(x, bottomY)
+        ctx.lineWidth = 2
+        ctx.strokeStyle = '#e23fa9'
+        ctx.stroke()
+        ctx.restore()
+      }
     }
   },
 })
@@ -175,10 +178,48 @@ const Snapshot = observer(({ id, ...props }) => {
         <div className="w-full p-4" style={{ minHeight: '500px' }}>
           <Line
             options={{
+              animation: {
+                duration: 200,
+              },
               plugins: {
                 actions: {
                   nodes: JSON.parse(JSON.stringify(actions)),
                   maxValue: maxValue,
+                },
+                tooltip: {
+                  callbacks: {
+                    beforeTitle: (items) => {
+                      const date = items[0].label
+                      const filteredActions = actions.filter(
+                        (action) =>
+                          formatDate(new Date(action.data.doneAt)) === date &&
+                          action.data.text
+                      )
+                      let result = '\n\nActions:\n\n'
+                      for (let i = 0; i < filteredActions.length; i++) {
+                        const action = filteredActions[i]
+                        if (action.data.text) {
+                          result += i + 1 + ') ' + action.data.text + '\n\n'
+                        }
+                      }
+                      return filteredActions.length ? result : ''
+                    },
+                    label: (item, data) => {
+                      try {
+                        console.log(item)
+                        if (item['datasetIndex'] === 1) {
+                          return null
+                        }
+                        const value = JSON.parse(item.raw)
+                        if (typeof value === 'number') {
+                          return value.toLocaleString('de-DE')
+                        }
+                        return value
+                      } catch (error) {
+                        return item.value
+                      }
+                    },
+                  },
                 },
               },
               lineAtIndex: [2, 4, 30],
@@ -186,40 +227,6 @@ const Snapshot = observer(({ id, ...props }) => {
               maintainAspectRatio: false,
               legend: {
                 display: false,
-              },
-              tooltips: {
-                callbacks: {
-                  beforeTitle: (items, data) => {
-                    const date = items[0].xLabel
-                    const filteredActions = actions.filter(
-                      (action) =>
-                        formatDate(new Date(action.data.doneAt)) === date &&
-                        action.data.text
-                    )
-                    let result = '\n\nActions:\n\n'
-                    for (let i = 0; i < filteredActions.length; i++) {
-                      const action = filteredActions[i]
-                      if (action.data.text) {
-                        result += i + 1 + ') ' + action.data.text + '\n\n'
-                      }
-                    }
-                    return filteredActions.length ? result : ''
-                  },
-                  label: (item, data) => {
-                    try {
-                      if (item['datasetIndex'] === 1) {
-                        return null
-                      }
-                      const value = JSON.parse(item.value)
-                      if (typeof value === 'number') {
-                        return value.toLocaleString('de-DE')
-                      }
-                      return value
-                    } catch (error) {
-                      return item.value
-                    }
-                  },
-                },
               },
               scales: {
                 y: {
