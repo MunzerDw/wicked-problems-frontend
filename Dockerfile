@@ -11,7 +11,7 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # env
-ENV REACT_APP_BACKEND_URL=http://temp.flashaio.com:4000
+ENV REACT_APP_BACKEND_URL=/api
 ENV REACT_APP_FIREBASE_API_KEY=AIzaSyB8CR98CQGJlDWEYavEJOr0xrTUeVIOE8Y
 ENV REACT_APP_FIREBASE_PROJECT_ID=wicked-problems
 ENV REACT_APP_FIREBASE_DATABASE_URL=https://wicked-problems.firebaseio.com
