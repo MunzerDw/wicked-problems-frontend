@@ -75,7 +75,7 @@ class ImportData {
       snapshots.editSnapshot({ data: response.data }, this.snapshotId)
       return response.data
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
 }

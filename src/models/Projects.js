@@ -48,7 +48,7 @@ class Projects {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async fetchProjects() {
@@ -56,7 +56,7 @@ class Projects {
       const response = await axios('/projects')
       this.setProjects(response.data)
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async createProject(project) {
@@ -66,7 +66,7 @@ class Projects {
       })
       this.addProject(response.data)
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async deleteProject(id) {
@@ -78,7 +78,7 @@ class Projects {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
 

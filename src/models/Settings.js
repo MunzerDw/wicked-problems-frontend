@@ -60,7 +60,7 @@ class Settings {
       this.setLabels(response.data)
       return response.data
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async createLabel(label) {
@@ -71,7 +71,7 @@ class Settings {
       })
       this.addLabel(response.data)
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async updateLabel(body, id) {
@@ -88,7 +88,7 @@ class Settings {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async deleteLabel(id) {
@@ -101,7 +101,7 @@ class Settings {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
 

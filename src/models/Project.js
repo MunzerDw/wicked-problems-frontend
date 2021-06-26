@@ -180,7 +180,7 @@ class Project {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async selectNode(id) {
@@ -196,7 +196,7 @@ class Project {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async deSelectNode(id) {
@@ -212,7 +212,7 @@ class Project {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async updateNode(body, id) {
@@ -228,7 +228,7 @@ class Project {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async vote(body) {
@@ -265,7 +265,7 @@ class Project {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async fetchProject(name) {
@@ -274,7 +274,7 @@ class Project {
       this.setProject(response.data)
       return response.data
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async fetchNodes(id) {
@@ -293,7 +293,7 @@ class Project {
         }))
       )
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async createNode(node) {
@@ -304,7 +304,7 @@ class Project {
       })
       this.addNode(response.data)
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async deleteNodes(ids) {
@@ -316,7 +316,7 @@ class Project {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async fetchEdges(id) {
@@ -332,7 +332,7 @@ class Project {
         }))
       )
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async createEdge(edge) {
@@ -343,19 +343,19 @@ class Project {
       })
       this.addEdge(response.data)
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async deleteEdges(ids) {
     try {
-      const response = await axios.delete('/edges', { data: { ids: ids } })
+      const response = await axios.delete('/edges', { data: { ids: ['ids'] } })
       if (response.status === 204) {
         this.removeEdges(ids)
       } else {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async createEvidence(evidence) {
@@ -369,7 +369,7 @@ class Project {
       const response = await axios.post('/evidences', data)
       this.addEvidence(response.data)
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async deleteEvidences(evidences) {
@@ -386,7 +386,7 @@ class Project {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async createInvite(email) {
@@ -401,7 +401,7 @@ class Project {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.response?.data)
+      alert(error.response?.data?.message)
     }
   }
   async deleteInvite(id) {
@@ -415,7 +415,7 @@ class Project {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
 

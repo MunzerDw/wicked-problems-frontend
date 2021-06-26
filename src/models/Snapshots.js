@@ -130,7 +130,7 @@ class Snapshots {
       }
       this.dates = dates
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async createSnapshot(snapshot) {
@@ -141,7 +141,7 @@ class Snapshots {
       })
       this.addSnapshot(response.data)
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async deleteSnapshot(id) {
@@ -153,7 +153,7 @@ class Snapshots {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async deleteSnapshotData(id) {
@@ -165,7 +165,7 @@ class Snapshots {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
   async updateSnapshot(body, id) {
@@ -178,7 +178,7 @@ class Snapshots {
         alert(response.status)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message)
     }
   }
 
