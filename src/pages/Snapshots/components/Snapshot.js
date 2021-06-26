@@ -175,7 +175,7 @@ const Snapshot = observer(({ id, ...props }) => {
           <Line
             options={{
               animation: {
-                duration: 200,
+                duration: 0,
               },
               plugins: {
                 actions: {

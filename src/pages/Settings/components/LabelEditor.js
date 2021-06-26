@@ -9,7 +9,6 @@ import { ChromePicker } from 'react-color'
 import Badge from 'components/Badge'
 import Icon from 'components/Icon'
 import { useState } from 'react'
-import project from 'models/Project'
 
 const LabelEditor = observer(() => {
   const editorLabel = settings.getEditorLabel()
