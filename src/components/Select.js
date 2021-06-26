@@ -36,7 +36,7 @@ export default function Select({
           ) : (
             <button
               className={
-                'selectSingle w-full focus:outline-none trans flex items-center justify-between space-x-2 px-3 p-2 ' +
+                'selectSingle w-full focus:outline-none trans flex items-center justify-between space-x-2 px-3 p-2 pr-0 ' +
                 (!disabled ? 'cursor-pointer' : 'cursor-default')
               }
               disabled={disabled}

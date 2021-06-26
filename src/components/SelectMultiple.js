@@ -26,11 +26,11 @@ export default function SelectMultiple({
       className={'flex flex-col space-y-2 justify-between ' + className}
       style={{ maxWidth: '500px' }}
     >
-      <label className="text-h5">{label}</label>
+      {label && <label className="text-h5">{label}</label>}
       <div className="relative border border-gray-500 rounded">
         <button
           className={
-            'selectMultiple w-full focus:outline-none trans flex justify-between items-center space-x-1 px-3 p-2 ' +
+            'selectMultiple w-full focus:outline-none trans flex justify-between items-center space-x-1 h-8 px-3 pr-0 ' +
             (!selectedItems.length && 'cursor-pointer')
           }
           onClick={(e) => {

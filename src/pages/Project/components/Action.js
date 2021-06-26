@@ -268,7 +268,7 @@ function Action({ ...props }) {
                             backgroundColor: label.color,
                           }}
                           text={
-                            <Flex.Row space="1">
+                            <Flex.Row justify="center" space="1">
                               <div className="font-normal text-xs">
                                 {label.text}
                               </div>

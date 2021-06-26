@@ -10,17 +10,37 @@ import Snapshot from './components/Snapshot'
 import SnapshotEditor from './components/SnapshotEditor'
 import SnapshotsCombined from './components/SnapshotsCombined'
 import Timeline from './components/Timeline'
+import settings from 'models/Settings'
+import project from 'models/Project'
+import SelectMultiple from 'components/SelectMultiple'
 
 const Snapshots = observer(() => {
   trace()
   return (
-    <CanvasPage className="flex justify-center p-12 pb-4">
+    <CanvasPage className="flex justify-center p-12">
       <Timeline />
-      <Flex.Col className="w-full" style={{}} space="16">
+      <Flex.Col className="w-full" style={{}} space="8">
         <Flex.Col space="1" className="w-full">
           <Flex.Row className="w-full" justify="between">
             <div className="text-4xl font-medium">Snapshots</div>
             <Flex.Row>
+              <SelectMultiple
+                placeholder="filter actions"
+                data={[
+                  ...settings.labels.map((s) => ({
+                    key: s?.text,
+                    value: s,
+                  })),
+                  { key: 'NO LABEL', value: null },
+                ]}
+                selectedItems={snapshots.filteredLabels.map((s) => ({
+                  key: s?.text || 'NO LABEL',
+                  value: s,
+                }))}
+                setSelectedItems={(data) => {
+                  snapshots.setFilteredLabels(data.map((d) => d.value))
+                }}
+              />
               <Button
                 basic
                 onClick={() => {
@@ -62,7 +82,13 @@ const Snapshots = observer(() => {
           </Flex.Row>
         </Flex.Col>
         {snapshots.view === 'list' ? (
-          <Flex.Row className="w-full overflow-hidden" align="start">
+          <Flex.Row
+            className="w-full overflow-hidden"
+            align="start"
+            style={{
+              minHeight: '600px',
+            }}
+          >
             <Flex.Col justify="start" space="0">
               {snapshots.snapshots?.map((snapshot, i) => {
                 return (
@@ -86,20 +112,17 @@ const Snapshots = observer(() => {
                 )
               })}
             </Flex.Col>
-            <Flex.Col
-              className="w-full h-full overflow-auto p-2 pb-4"
-              style={{
-                maxHeight: '100%',
-              }}
-              space="16"
-            >
+            <Flex.Col className="w-full h-full overflow-auto p-2" space="16">
               {snapshots.snapshots?.map((snaphshot, i) => {
                 return <Snapshot key={i} id={snaphshot.id} />
               })}
             </Flex.Col>
           </Flex.Row>
         ) : (
-          <SnapshotsCombined />
+          <>
+            <SnapshotsCombined />
+            <div className="opacity-0">This has to be here for some reason</div>
+          </>
         )}
       </Flex.Col>
       <SnapshotEditor />

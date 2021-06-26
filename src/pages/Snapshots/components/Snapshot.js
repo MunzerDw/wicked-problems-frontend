@@ -44,9 +44,7 @@ const Snapshot = observer(({ id, ...props }) => {
   const { darkMode } = useDarkMode()
   const [expanded, setExpanded] = useState(true)
   const snapshot = snapshots.findSnapshot(id)
-  const actions = project
-    .getNodes()
-    ?.filter((node) => node.data.type === 'ACTION' && node.data.doneAt)
+  const actions = snapshots.getFilteredActions()
   let dates = [...(snapshot.data?.map((d) => d.date) || [])]
     ?.slice()
     .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
@@ -80,8 +78,8 @@ const Snapshot = observer(({ id, ...props }) => {
       {
         lineTension: 0.3,
         label: 'actions',
-        borderColor: '#e23fa9',
-        backgroundColor: '#e23fa9',
+        borderColor: '#6B7280',
+        backgroundColor: '#6B7280',
         borderWidth: 4,
         pointBorderWidth: 4,
         pointRadius: 4,
@@ -102,14 +100,14 @@ const Snapshot = observer(({ id, ...props }) => {
       id={id}
       className="w-full rounded bg-gray-200 dark:bg-gray-900 shadow-md trans hover:shadow-lg"
     >
-      <Flex.Row
-        align="start"
-        justify="between"
-        className="w-full p-4 cursor-pointer"
-        onClick={() => setExpanded(!expanded)}
-      >
+      <Flex.Row align="start" justify="between" className="w-full p-4">
         <Flex.Col space="1">
-          <div className="text-3xl font-bold">{snapshot.name}</div>
+          <div
+            className="text-3xl font-bold hover:underline cursor-default"
+            onClick={() => setExpanded(!expanded)}
+          >
+            {snapshot.name}
+          </div>
           {(dates.length && (
             <div className="">
               {formatDate(new Date(dates[0])) +

@@ -25,7 +25,7 @@ class Snapshots {
   view = 'list'
   dates = []
   filteredSnapshots = []
-  filteredActions = []
+  filteredLabels = []
   timelineOpen = false
 
   constructor() {
@@ -48,8 +48,8 @@ class Snapshots {
     this.filteredSnapshots = filteredSnapshots
   }
 
-  setFilteredActions(filteredActions) {
-    this.filteredActions = filteredActions
+  setFilteredLabels(filteredLabels) {
+    this.filteredLabels = filteredLabels
   }
 
   setView(view) {
@@ -62,6 +62,18 @@ class Snapshots {
 
   findSnapshot(id) {
     return this.snapshots.find((snapshot) => snapshot.id === id)
+  }
+
+  getFilteredActions() {
+    const labelIds = this.filteredLabels.map((label) => label?.id || null)
+    return project
+      .getNodes()
+      ?.filter(
+        (node) =>
+          node.data.type === 'ACTION' &&
+          node.data.doneAt &&
+          labelIds.includes(node.data.labelId)
+      )
   }
 
   // STATE FUNCTIONS

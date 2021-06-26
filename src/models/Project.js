@@ -431,6 +431,7 @@ class Project {
         this.connectSocket()
       }
       this.fetchedData = true
+      snapshots.setFilteredLabels(settings.labels)
     }
   }
 }

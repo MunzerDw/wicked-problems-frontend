@@ -60,9 +60,7 @@ const months = [
 const SnapshotsCombined = observer(() => {
   const { darkMode } = useDarkMode()
   const [expanded, setExpanded] = useState(true)
-  const actions = project
-    .getNodes()
-    ?.filter((node) => node.data.type === 'ACTION' && node.data.doneAt)
+  const actions = snapshots.getFilteredActions()
   const datesUnfiltered = snapshots.dates
   const minDate = new Date(datesUnfiltered[0])
   const maxDate = new Date(datesUnfiltered[datesUnfiltered.length - 1])
@@ -86,8 +84,8 @@ const SnapshotsCombined = observer(() => {
     datasets: [
       {
         label: 'Actions',
-        borderColor: '#e23fa9',
-        backgroundColor: '#e23fa9',
+        borderColor: '#6B7280',
+        backgroundColor: '#6B7280',
         borderWidth: 2,
         pointBorderWidth: 4,
         pointRadius: 4,
@@ -259,7 +257,7 @@ const SnapshotsCombined = observer(() => {
           <Line
             options={{
               animation: {
-                duration: 200,
+                duration: 0,
               },
               plugins: {
                 actions: {
