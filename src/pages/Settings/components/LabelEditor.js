@@ -1,4 +1,3 @@
-import Toogle from 'components/Toogle'
 import Button from 'components/Button'
 import Flex from 'components/Flex'
 import Form from 'components/Form'
@@ -6,20 +5,20 @@ import Input from 'components/Input'
 import Popup from 'components/Popup'
 import { observer } from 'mobx-react'
 import settings from 'models/Settings'
-import { HuePicker, ChromePicker } from 'react-color'
+import { ChromePicker } from 'react-color'
 import Badge from 'components/Badge'
 import Icon from 'components/Icon'
+import { useState } from 'react'
+import project from 'models/Project'
 
 const LabelEditor = observer(() => {
   const editorLabel = settings.getEditorLabel()
-  console.log(editorLabel.color, {
+  const [color, setColor] = useState({
     rgb: {
-      r: parseInt(editorLabel.color?.split('(')[1].split(',')[0]),
+      r: editorLabel.color?.split('(')[1].split(',')[0],
       g: editorLabel.color?.split('(')[1].split(',')[1],
       b: editorLabel.color?.split('(')[1].split(',')[2],
-      a: parseInt(
-        editorLabel.color?.split('(')[1].split(',')[3].replace(')', '')
-      ),
+      a: editorLabel.color?.split('(')[1].split(',')[3].replace(')', ''),
     },
   })
   return (
@@ -75,20 +74,11 @@ const LabelEditor = observer(() => {
         <Flex.Col space="2">
           <label>Color</label>
           <ChromePicker
-            color={{
-              rgb: {
-                r: editorLabel.color?.split('(')[1].split(',')[0],
-                g: editorLabel.color?.split('(')[1].split(',')[1],
-                b: editorLabel.color?.split('(')[1].split(',')[2],
-                a: editorLabel.color
-                  ?.split('(')[1]
-                  .split(',')[3]
-                  .replace(')', ''),
-              },
-            }}
+            color={color}
             onChange={(color) => {
               console.log(color)
               const rgb = color.rgb
+              setColor(color)
               settings.setEditorLabel({
                 ...editorLabel,
                 color: `rgb(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`,

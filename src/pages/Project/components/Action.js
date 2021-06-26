@@ -7,6 +7,9 @@ import Node from './Node'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import Badge from 'components/Badge'
+import SimpleButton from 'components/SimpleButton'
+import Select from 'components/Select'
+import settings from 'models/Settings'
 
 function formatDate(date) {
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
@@ -215,49 +218,113 @@ function Action({ ...props }) {
                 </div>
               )}
               <Flex.Row justify="end" className="w-full h-8" space="2">
-                <Flex.Row
-                  space="1"
-                  className={
-                    'hover:text-indigo-400 cursor-pointer w-8 ' +
-                    (vote?.vote === true && 'text-indigo-400')
-                  }
-                  onClick={async (e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    await project.vote({
-                      nodeId: node.id,
-                      vote: vote?.vote === true ? null : true,
-                    })
+                <Select
+                  setSelectedItem={async (obj) => {
+                    await project.updateNode(
+                      {
+                        labelId: obj.value,
+                      },
+                      node.id
+                    )
                   }}
-                >
-                  <Icon title="downvote" name="FaChevronUp" />
-                  <div>
-                    {node.data?.votes?.filter((vote) => {
-                      return vote.vote === true
-                    }).length || '0'}
-                  </div>
-                </Flex.Row>
-                <Flex.Row
-                  space="1"
-                  className={
-                    'hover:text-red-500 cursor-pointer w-8 ' +
-                    (vote?.vote === false && 'text-red-500')
+                  trigger={
+                    node.data?.labelId ? (
+                      <Badge
+                        className="py-1 text-white rounded mx-auto"
+                        style={{
+                          backgroundColor: node.data?.label?.color,
+                        }}
+                        text={
+                          <Flex.Row space="1">
+                            <Icon
+                              className="opacity-75 hover:opacity-100 cursor-pointer"
+                              name="FaTimes"
+                              onClick={async (e) => {
+                                e.stopPropagation()
+                                await project.updateNode(
+                                  {
+                                    labelId: null,
+                                  },
+                                  node.id
+                                )
+                              }}
+                            />
+                            <div className="font-normal">
+                              {node.data?.label?.text}
+                            </div>
+                          </Flex.Row>
+                        }
+                      />
+                    ) : (
+                      <SimpleButton className="px-1" text="select label" />
+                    )
                   }
-                  onClick={async (e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    await project.vote({
-                      nodeId: node.id,
-                      vote: vote?.vote === false ? null : false,
-                    })
-                  }}
-                >
-                  <Icon title="downvote" name="FaChevronDown" />
-                  <div>
-                    {node.data?.votes?.filter((vote) => {
-                      return vote.vote === false
-                    }).length || '0'}
-                  </div>
+                  data={settings.labels.map((label) => {
+                    return {
+                      key: (
+                        <Badge
+                          className=" text-white rounded mx-auto w-full"
+                          style={{
+                            backgroundColor: label.color,
+                          }}
+                          text={
+                            <Flex.Row space="1">
+                              <div className="font-normal text-xs">
+                                {label.text}
+                              </div>
+                            </Flex.Row>
+                          }
+                        />
+                      ),
+                      value: label.id,
+                    }
+                  })}
+                />
+                <Flex.Row space="2">
+                  <Flex.Row
+                    space="1"
+                    className={
+                      'hover:text-indigo-400 cursor-pointer w-8 ' +
+                      (vote?.vote === true && 'text-indigo-400')
+                    }
+                    onClick={async (e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      await project.vote({
+                        nodeId: node.id,
+                        vote: vote?.vote === true ? null : true,
+                      })
+                    }}
+                  >
+                    <Icon title="downvote" name="FaChevronUp" />
+                    <div>
+                      {node.data?.votes?.filter((vote) => {
+                        return vote.vote === true
+                      }).length || '0'}
+                    </div>
+                  </Flex.Row>
+                  <Flex.Row
+                    space="1"
+                    className={
+                      'hover:text-red-500 cursor-pointer w-8 ' +
+                      (vote?.vote === false && 'text-red-500')
+                    }
+                    onClick={async (e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      await project.vote({
+                        nodeId: node.id,
+                        vote: vote?.vote === false ? null : false,
+                      })
+                    }}
+                  >
+                    <Icon title="downvote" name="FaChevronDown" />
+                    <div>
+                      {node.data?.votes?.filter((vote) => {
+                        return vote.vote === false
+                      }).length || '0'}
+                    </div>
+                  </Flex.Row>
                 </Flex.Row>
               </Flex.Row>
             </Flex.Col>

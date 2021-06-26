@@ -4,27 +4,12 @@ import NumberStat from 'components/NumberStat'
 import project from 'models/Project'
 import { Bar, Line } from 'react-chartjs-2'
 import { observer } from 'mobx-react'
+import { trace } from 'mobx'
 import Table from 'components/Table'
 import Badge from 'components/Badge'
 import { FirebaseAuthConsumer } from '@react-firebase/auth'
 import { useDarkMode } from 'hooks/useDarkMode'
 import moment from 'moment'
-
-function formatDateHrs(date) {
-  return (
-    date.getDate() +
-    '/' +
-    (date.getMonth() + 1) +
-    '/' +
-    date.getFullYear() +
-    ' @ ' +
-    date.getHours() +
-    ':' +
-    date.getMinutes() +
-    ':' +
-    date.getSeconds()
-  )
-}
 
 function formatDate(date) {
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
@@ -87,6 +72,8 @@ function calculateStatistics() {
 }
 
 const Statistics = observer(() => {
+  console.log('statistics')
+  trace()
   const { darkMode } = useDarkMode()
   const statistics = calculateStatistics()
   let logsDates = {}
@@ -208,6 +195,9 @@ const Statistics = observer(() => {
           <div className="w-full" style={{ minHeight: '400px' }}>
             <Bar
               options={{
+                animation: {
+                  duration: 0,
+                },
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
@@ -251,6 +241,9 @@ const Statistics = observer(() => {
           <div className="w-full" style={{ minHeight: '400px' }}>
             <Line
               options={{
+                animation: {
+                  duration: 0,
+                },
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {

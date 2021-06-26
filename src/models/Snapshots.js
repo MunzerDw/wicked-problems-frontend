@@ -116,7 +116,6 @@ class Snapshots {
           }
         }
       }
-      console.log(dates.length)
       this.dates = dates
     } catch (error) {
       alert(error.message)

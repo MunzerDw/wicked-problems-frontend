@@ -1,14 +1,10 @@
-import Button from 'components/Button'
 import Flex from 'components/Flex'
 import { observer } from 'mobx-react'
-import importData from 'models/ImportData'
-import snapshotEditor from 'models/SnapshotEditor'
 import snapshots from 'models/Snapshots'
 import { useState } from 'react'
-import { Chart, Bar, Line } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 import { useDarkMode } from 'hooks/useDarkMode'
 import project from 'models/Project'
-import moment from 'moment'
 import SelectMultiple from 'components/SelectMultiple'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -89,7 +85,6 @@ const SnapshotsCombined = observer(() => {
     labels: dates?.map((date) => formatDate(new Date(date))),
     datasets: [
       {
-        label: 'bar',
         label: 'Actions',
         borderColor: '#e23fa9',
         backgroundColor: '#e23fa9',
@@ -125,7 +120,7 @@ const SnapshotsCombined = observer(() => {
             if (value) {
               return (value * 100) / maxValue
             }
-            return
+            return null
           }),
         }
       }),

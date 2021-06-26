@@ -3,6 +3,7 @@ import axios from 'axios'
 import nodeEditor from './NodeEditor'
 import socketIOClient from 'socket.io-client'
 import settings from './Settings'
+import snapshots from './Snapshots'
 
 // Model the application state.
 class Project {
@@ -10,6 +11,7 @@ class Project {
   nodes = []
   edges = []
   socket
+  fetchedData = false
 
   constructor() {
     makeAutoObservable(this)
@@ -151,6 +153,21 @@ class Project {
       console.log(newData)
     }
   }
+  updateLabels(newData, id) {
+    const nodes = this.nodes.filter((obj) => obj.data.labelId === id)
+    for (let i = 0; i < nodes.length; i++) {
+      let node = nodes[i]
+      node.data.label = { ...node.data.label, ...newData }
+    }
+  }
+  deleteLabels(id) {
+    const nodes = this.nodes.filter((obj) => obj.data.labelId === id)
+    for (let i = 0; i < nodes.length; i++) {
+      let node = nodes[i]
+      node.data.label = null
+      node.data.labelId = null
+    }
+  }
 
   // API FUNCTIONS
   async updateProject(body) {
@@ -271,7 +288,7 @@ class Project {
             x: node.x,
             y: node.y,
           },
-          data: { ...node, label: '' },
+          data: { ...node, label: node.label || '' },
           type: node.type,
         }))
       )
@@ -404,12 +421,16 @@ class Project {
 
   // ONLOAD
   async loadProjectAndNodes(name) {
-    const project = await this.fetchProject(name)
-    await this.fetchNodes(project?.id)
-    await this.fetchEdges(project?.id)
-    await settings.fetchLabels(name)
-    if (!this.socket) {
-      this.connectSocket()
+    if (!this.fetchedData) {
+      const project = await this.fetchProject(name)
+      await this.fetchNodes(project?.id)
+      await this.fetchEdges(project?.id)
+      await settings.fetchLabels(name)
+      await snapshots.loadSnapshots(name)
+      if (!this.socket) {
+        this.connectSocket()
+      }
+      this.fetchedData = true
     }
   }
 }

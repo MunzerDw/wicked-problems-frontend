@@ -2,6 +2,7 @@ import Button from 'components/Button'
 import CanvasPage from 'components/CanvasPage/CanvasPage'
 import Flex from 'components/Flex'
 import { observer } from 'mobx-react'
+import { trace } from 'mobx'
 import snapshotEditor from 'models/SnapshotEditor'
 import snapshots from 'models/Snapshots'
 import ImportData from './components/ImportData'
@@ -11,12 +12,9 @@ import SnapshotsCombined from './components/SnapshotsCombined'
 import Timeline from './components/Timeline'
 
 const Snapshots = observer(() => {
-  const name = window.location.pathname.split('/')[2]
+  trace()
   return (
-    <CanvasPage
-      onLoad={() => snapshots.loadSnapshots(name)}
-      className="flex justify-center p-12 pb-4"
-    >
+    <CanvasPage className="flex justify-center p-12 pb-4">
       <Timeline />
       <Flex.Col className="w-full" style={{}} space="16">
         <Flex.Col space="1" className="w-full">

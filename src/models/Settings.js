@@ -82,6 +82,7 @@ class Settings {
       )
       if (response.status === 200) {
         this.editLabel(response.data, id || this.editorLabel.id)
+        project.updateLabels(response.data, id || this.editorLabel.id)
         return response.data
       } else {
         alert(response.status)
@@ -95,6 +96,7 @@ class Settings {
       const response = await axios.delete('/labels/' + id)
       if (response.status === 204) {
         this.removeLabel(id)
+        project.deleteLabels(id || this.editorLabel.id)
       } else {
         alert(response.status)
       }

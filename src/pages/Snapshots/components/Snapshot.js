@@ -5,7 +5,7 @@ import importData from 'models/ImportData'
 import snapshotEditor from 'models/SnapshotEditor'
 import snapshots from 'models/Snapshots'
 import { useState } from 'react'
-import { Chart, Bar, Line } from 'react-chartjs-2'
+import { Chart, Line } from 'react-chartjs-2'
 import { useDarkMode } from 'hooks/useDarkMode'
 import project from 'models/Project'
 import moment from 'moment'
@@ -26,15 +26,13 @@ Chart.register({
       const x = chart.scales['x'].getPixelForValue(
         formatDate(new Date(node.data.doneAt))
       )
-      console.log(x, formatDate(new Date(node.data.doneAt)))
       if (x) {
-        console.log(x)
         ctx.save()
         ctx.beginPath()
         ctx.moveTo(x, topY)
         ctx.lineTo(x, bottomY)
         ctx.lineWidth = 2
-        ctx.strokeStyle = '#e23fa9'
+        ctx.strokeStyle = node.data.label?.color || '#e23fa9'
         ctx.stroke()
         ctx.restore()
       }
@@ -67,7 +65,6 @@ const Snapshot = observer(({ id, ...props }) => {
     labels: dates?.map((date) => formatDate(new Date(date))),
     datasets: [
       {
-        label: 'line',
         lineTension: 0.3,
         label: 'data',
         borderColor: 'rgb(129, 140, 248)',
@@ -81,7 +78,6 @@ const Snapshot = observer(({ id, ...props }) => {
         }),
       },
       {
-        label: 'bar',
         lineTension: 0.3,
         label: 'actions',
         borderColor: '#e23fa9',
