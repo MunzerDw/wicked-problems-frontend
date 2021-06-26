@@ -80,7 +80,6 @@ const Project = observer(() => {
     }
     projectModel.createNode(newNodeFormated)
   }
-  trace()
   return (
     <CanvasPage>
       <div className="dndflow w-full h-full">

@@ -15,7 +15,6 @@ import project from 'models/Project'
 import SelectMultiple from 'components/SelectMultiple'
 
 const Snapshots = observer(() => {
-  trace()
   return (
     <CanvasPage className="flex justify-center p-12">
       <Timeline />

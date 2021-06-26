@@ -73,7 +73,6 @@ function calculateStatistics() {
 
 const Statistics = observer(() => {
   console.log('statistics')
-  trace()
   const { darkMode } = useDarkMode()
   const statistics = calculateStatistics()
   let logsDates = {}

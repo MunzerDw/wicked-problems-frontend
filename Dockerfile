@@ -26,5 +26,8 @@ RUN yarn add react-scripts@4.0.3 -g
 # add app
 COPY . ./
 
+# build app
+RUN yarn build
+
 # start app
-CMD ["yarn", "start"]
+CMD ["yarn", "serve", "-s", "build", "-l", "3000"]
