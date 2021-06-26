@@ -13,17 +13,18 @@ import moment from 'moment'
 function formatDate(date) {
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
 }
-Chart.pluginService.register({
+Chart.register({
   id: 'actions',
   beforeDraw: function (chart, args, options) {
     const nodes = options.nodes
     const maxValue = options.maxValue
     const ctx = chart.ctx
-    const topY = chart.scales['y-axis-0'].getPixelForValue(maxValue)
-    const bottomY = chart.scales['y-axis-0'].bottom
+    console.log(chart.scales)
+    const topY = chart.scales['y'].getPixelForValue(maxValue)
+    const bottomY = chart.scales['y'].bottom
     for (let i = 0; i < nodes?.length; i++) {
       const node = nodes[i]
-      const x = chart.scales['x-axis-0'].getPixelForValue(
+      const x = chart.scales['x'].getPixelForValue(
         formatDate(new Date(node.data.doneAt))
       )
       ctx.save()
@@ -221,36 +222,33 @@ const Snapshot = observer(({ id, ...props }) => {
                 },
               },
               scales: {
-                yAxes: [
-                  {
-                    ticks: {
-                      callback: (val, index) => {
-                        if (typeof val === 'number') {
-                          return val.toLocaleString('de-DE')
-                        } else {
-                          return val
-                        }
-                      },
-                      fontColor: darkMode ? 'white' : 'black',
-                      beginAtZero: true,
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: (val, index) => {
+                      if (typeof val === 'number') {
+                        return val.toLocaleString('de-DE')
+                      } else {
+                        return val
+                      }
                     },
+                    color: darkMode ? 'white' : 'black',
+                    beginAtZero: true,
                   },
-                ],
-                xAxes: [
-                  {
-                    barPercentage: 0.4,
-                    ticks: {
-                      fontColor: darkMode ? 'white' : 'black',
-                      maxRotation: 45,
-                      minRotation: 45,
-                      maxTicksLimit: 20,
-                    },
-                    gridLines: {
-                      color: 'gray',
-                      lineWidth: 1,
-                    },
+                  grid: {
+                    color: 'gray',
+                    lineWidth: 1,
                   },
-                ],
+                },
+                x: {
+                  barPercentage: 0.4,
+                  ticks: {
+                    color: darkMode ? 'white' : 'black',
+                    maxRotation: 45,
+                    minRotation: 45,
+                    maxTicksLimit: 20,
+                  },
+                },
               },
             }}
             data={lineData}

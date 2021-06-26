@@ -312,35 +312,33 @@ const SnapshotsCombined = observer(() => {
                 },
               },
               scales: {
-                yAxes: [
-                  {
-                    ticks: {
-                      callback: (val, index) => {
-                        if (typeof val === 'number') {
-                          return val.toLocaleString('de-DE') + ' %'
-                        } else {
-                          return val + ' %'
-                        }
-                      },
-                      fontColor: darkMode ? 'white' : 'black',
-                      beginAtZero: true,
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: (val, index) => {
+                      if (typeof val === 'number') {
+                        return val.toLocaleString('de-DE') + ' %'
+                      } else {
+                        return val + ' %'
+                      }
                     },
+                    color: darkMode ? 'white' : 'black',
+                    beginAtZero: true,
                   },
-                ],
-                xAxes: [
-                  {
-                    ticks: {
-                      fontColor: darkMode ? 'white' : 'black',
-                      maxRotation: 45,
-                      minRotation: 45,
-                      maxTicksLimit: 20,
-                    },
-                    gridLines: {
-                      color: 'gray',
-                      lineWidth: 1,
-                    },
+                  grid: {
+                    color: 'gray',
+                    lineWidth: 1,
                   },
-                ],
+                },
+                x: {
+                  barPercentage: 0.4,
+                  ticks: {
+                    color: darkMode ? 'white' : 'black',
+                    maxRotation: 45,
+                    minRotation: 45,
+                    maxTicksLimit: 20,
+                  },
+                },
               },
             }}
             data={lineData}

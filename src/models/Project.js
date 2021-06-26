@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import axios from 'axios'
 import nodeEditor from './NodeEditor'
 import socketIOClient from 'socket.io-client'
+import settings from './Settings'
 
 // Model the application state.
 class Project {
@@ -406,6 +407,7 @@ class Project {
     const project = await this.fetchProject(name)
     await this.fetchNodes(project?.id)
     await this.fetchEdges(project?.id)
+    await settings.fetchLabels(name)
     if (!this.socket) {
       this.connectSocket()
     }
