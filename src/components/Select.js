@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Icon from './Icon'
+import useOutsideAlerter from 'hooks/useOutsideAlerter'
 
 export default function Select({
   setSelectedItem,
@@ -12,18 +13,13 @@ export default function Select({
   disabled,
 }) {
   const [active, setActive] = useState(false)
-
-  // document.addEventListener(
-  //   'click',
-  //   function (event) {
-  //     if (!event.target.matches('[class*="selectSingle"]')) {
-  //       active && setActive(false)
-  //     }
-  //   },
-  //   false
-  // )
+  const wrapperRef = useRef(null)
+  useOutsideAlerter(wrapperRef, () => {
+    setActive(false)
+  })
   return (
     <div
+      ref={wrapperRef}
       className={
         'flex flex-col space-y-1 justify-between cursor-pointer ' + className
       }

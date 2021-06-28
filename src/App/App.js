@@ -1,4 +1,3 @@
-import Login from '../pages/Login/Login'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import {
@@ -10,6 +9,10 @@ import axios from 'axios'
 import { States } from '../states'
 import LoadingPage from '../pages/LoadingPage/LoadingPage'
 import { DarkModeProvider } from '../hooks/useDarkMode'
+import Signin from 'pages/Signin/Signin'
+import Signup from 'pages/Signup/Signup'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import NotFound from 'pages/NotFound/NotFound'
 require('dotenv').config()
 
 function App() {
@@ -28,15 +31,11 @@ function App() {
           <FirebaseAuthConsumer>
             {({ isSignedIn, user, providerId, ...authState }) => {
               if (isSignedIn) {
-                firebase
-                  .auth()
-                  .currentUser.getIdToken()
-                  .then((value) => {
-                    axios.defaults.headers = {
-                      authorization: 'Bearer ' + value,
-                    }
-                  })
-                  .catch((error) => console.log(error))
+                console.log(user)
+                const accessToken = user?.za
+                axios.defaults.headers = {
+                  authorization: 'Bearer ' + accessToken,
+                }
               }
               return !providerId && !isSignedIn ? (
                 <LoadingPage />
@@ -45,7 +44,19 @@ function App() {
                   <Router />
                 </States>
               ) : (
-                <Login />
+                <BrowserRouter>
+                  <Switch>
+                    <Route exact path="/">
+                      <Signin />
+                    </Route>
+                    <Route exact path="/signup">
+                      <Signup />
+                    </Route>
+                    <Route>
+                      <NotFound />
+                    </Route>
+                  </Switch>
+                </BrowserRouter>
               )
             }}
           </FirebaseAuthConsumer>

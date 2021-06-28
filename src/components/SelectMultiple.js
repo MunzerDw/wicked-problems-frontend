@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Icon from './Icon'
+import useOutsideAlerter from 'hooks/useOutsideAlerter'
 
 export default function SelectMultiple({
   label,
@@ -11,18 +12,14 @@ export default function SelectMultiple({
   flowRight,
 }) {
   const [active, setActive] = useState(false)
-  console.log(data)
-  document.addEventListener(
-    'click',
-    function (event) {
-      if (!event.target.matches('[class*="selectMultiple"]')) {
-        active && setActive(false)
-      }
-    },
-    false
-  )
+  const wrapperRef = useRef(null)
+  useOutsideAlerter(wrapperRef, () => {
+    setActive(false)
+  })
+
   return (
     <div
+      ref={wrapperRef}
       className={'flex flex-col space-y-2 justify-between ' + className}
       style={{ maxWidth: '500px' }}
     >

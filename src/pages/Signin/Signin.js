@@ -1,13 +1,18 @@
 import firebase from 'firebase/app'
 import { useState } from 'react'
-import Button from '../../components/Button'
-import Form from '../../components/Form'
-import Input from '../../components/Input'
-import LoginBg from '../../assets/loginBg.jpg'
-import ThemeToogle from '../../components/ThemeToogle'
-import { useDarkMode } from '../../hooks/useDarkMode'
+import Button from 'components/Button'
+import Form from 'components/Form'
+import Input from 'components/Input'
+import LoginBg from 'assets/loginBg.jpg'
+import ThemeToogle from 'components/ThemeToogle'
+import { useDarkMode } from 'hooks/useDarkMode'
+import Flex from 'components/Flex'
+import SimpleButton from 'components/SimpleButton'
+import general from 'models/General'
+import { useHistory } from 'react-router'
 
-function Login() {
+function Signin() {
+  const history = useHistory()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -43,6 +48,7 @@ function Login() {
           setLoading(false)
         }}
       >
+        <div className="text-4xl">Sign In</div>
         <div className="space-y-2">
           <Input
             label="E-mail"
@@ -69,6 +75,16 @@ function Login() {
         <Button loading={loading} basic type="submit" className="w-full">
           Sign in
         </Button>
+        <Flex.Row space="2">
+          <div>Don't have an account?</div>
+          <SimpleButton
+            onClick={() => {
+              history.push('/signup')
+            }}
+            text="Sign up"
+            className="font-bold text-gray-900 dark:text-indigo-100"
+          />
+        </Flex.Row>
         <Button
           icon="FaGoogle"
           className="text-white"
@@ -85,4 +101,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Signin

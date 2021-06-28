@@ -1,7 +1,6 @@
 import TopMenu from './TopMenu'
 
 function Page({ className, children }) {
-  console.log('Page')
   return (
     <div className="h-screen w-screen overflow-hidden">
       <TopMenu />

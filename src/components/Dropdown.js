@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import useOutsideAlerter from 'hooks/useOutsideAlerter'
+import React, { useState, useRef } from 'react'
 import Icon from './Icon'
 
 export default function Dropdown({
@@ -9,20 +10,12 @@ export default function Dropdown({
   trigger,
 }) {
   const [active, setActive] = useState(false)
-
-  // document.addEventListener(
-  //   'click',
-  //   function (event) {
-  //     if (!event.target.matches('[class*="dropdownAction"]')) {
-  //       if (active) {
-  //         setActive(false)
-  //       }
-  //     }
-  //   },
-  //   false
-  // )
+  const wrapperRef = useRef(null)
+  useOutsideAlerter(wrapperRef, () => {
+    setActive(false)
+  })
   return (
-    <div className={'flex flex-col ' + className}>
+    <div ref={wrapperRef} className={'flex flex-col ' + className}>
       {label && <label className="block text-h5">{label}</label>}
       <div className="relative">
         {React.cloneElement(

@@ -1,5 +1,5 @@
 import Statistics from 'pages/Statistics/Statistics'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import NotFound from 'pages/NotFound/NotFound'
 import Project from 'pages/Project/Project'
 import Projects from 'pages/projects/Projects'
@@ -10,6 +10,7 @@ import Settings from 'pages/Settings/Settings'
 function Router() {
   return (
     <BrowserRouter>
+      <Redirect from="/signup" to="/" />
       <Switch>
         <Route exact path="/">
           <Projects />

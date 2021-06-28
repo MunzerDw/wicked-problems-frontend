@@ -7,6 +7,7 @@ import Button from 'components/Button'
 import projectsModel from 'models/Projects'
 import projectEditor from 'models/ProjectEditor'
 import { FirebaseAuthConsumer } from '@react-firebase/auth'
+import Flex from 'components/Flex'
 
 const Projects = observer(() => {
   useEffect(() => {
@@ -43,28 +44,32 @@ const Projects = observer(() => {
               .sort((a, b) => new Date(b.date) - new Date(a.date))
               .filter((project) => project.userId !== user.uid)
             return (
-              <>
-                <div className="pl-4">Own projects</div>
-                <div className="grid gap-6 grid-flow-row grid-cols-3 md:grid-cols-3 2xl:grid-cols-5 w-full px-4">
-                  {ownProjects.length ? (
-                    ownProjects.map((project, i) => (
-                      <ProjectCard key={i} id={project.id} />
-                    ))
-                  ) : (
-                    <div className="opacity-50">None</div>
-                  )}
-                </div>
-                <div className="pl-4">Guest projects</div>
-                <div className="grid gap-6 grid-flow-row grid-cols-3 md:grid-cols-3 2xl:grid-cols-5 w-full px-4">
-                  {guestProjects.length ? (
-                    guestProjects.map((project, i) => (
-                      <ProjectCard key={i} id={project.id} />
-                    ))
-                  ) : (
-                    <div className="opacity-50">None</div>
-                  )}
-                </div>
-              </>
+              <Flex.Col space="16">
+                <Flex.Col>
+                  <div className="pl-4">Own projects</div>
+                  <div className="grid gap-6 grid-flow-row grid-cols-3 md:grid-cols-3 2xl:grid-cols-5 w-full px-4">
+                    {ownProjects.length ? (
+                      ownProjects.map((project, i) => (
+                        <ProjectCard key={i} id={project.id} />
+                      ))
+                    ) : (
+                      <div className="opacity-50">None</div>
+                    )}
+                  </div>
+                </Flex.Col>
+                <Flex.Col>
+                  <div className="pl-4">Guest projects</div>
+                  <div className="grid gap-6 grid-flow-row grid-cols-3 md:grid-cols-3 2xl:grid-cols-5 w-full px-4">
+                    {guestProjects.length ? (
+                      guestProjects.map((project, i) => (
+                        <ProjectCard key={i} id={project.id} />
+                      ))
+                    ) : (
+                      <div className="opacity-50">None</div>
+                    )}
+                  </div>
+                </Flex.Col>
+              </Flex.Col>
             )
           }}
         </FirebaseAuthConsumer>
