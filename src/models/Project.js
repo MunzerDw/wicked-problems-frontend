@@ -150,6 +150,12 @@ class Project {
   removeEdges(ids) {
     this.setEdges(this.edges.filter((edge) => !ids.includes(edge.id)))
   }
+  editEdge(newData, id) {
+    const edgeIndex = this.edges.findIndex((obj) => obj.id === id)
+    if (this.edges[edgeIndex]) {
+      this.edges[edgeIndex] = { ...this.edges[edgeIndex], ...newData }
+    }
+  }
   editNode(newData, id) {
     const nodeIndex = this.nodes.findIndex((obj) => obj.id === id)
     if (this.nodes[nodeIndex] && this.nodes[nodeIndex].data) {
@@ -180,9 +186,10 @@ class Project {
   hideQuestionBranch(id, hiddenState) {
     const qnode = this.findNode(id)
     if (qnode.type === 'QUESTION') {
-      this.editNode({ isHidden: hiddenState }, id)
+      this.updateNode({ isHidden: hiddenState }, id)
       this.recursiveHide(qnode, hiddenState)
     }
+    console.log(this.edges.length)
   }
   recursiveHide(node, hiddenState) {
     const connectedNodes = this.findConnectedNodesWithIndex(node.id)
@@ -201,12 +208,14 @@ class Project {
     if (node.type !== 'QUESTION') {
       const nodeIndex = this.nodes.findIndex((obj) => obj.id === id)
       this.nodes[nodeIndex] = { ...node, isHidden: hiddenState }
+      this.updateNode({ isHidden: hiddenState }, id)
     }
   }
   hideEdge(id, hiddenState) {
     const edge = this.findEdge(id)
     const edgeIndex = this.edges.findIndex((obj) => obj.id === id)
     this.edges[edgeIndex] = { ...edge, isHidden: hiddenState }
+    this.updateEdge({ isHidden: hiddenState }, id)
   }
   nodesConnected(id1, id2) {
     return this.edges.filter(
@@ -217,6 +226,8 @@ class Project {
   }
   findConnectedNodesWithIndex(id) {
     const edges = this.edges.filter((edge) => edge.source === id)
+    const edgest = this.edges.filter((edge) => !edge.source)
+    console.log(edgest, id)
     return edges.map((edge, i) => ({
       edgeId: edge.id,
       id: edge.target,
@@ -343,6 +354,7 @@ class Project {
             x: node.x,
             y: node.y,
           },
+          isHidden: node.type !== 'QUESTION' ? node.isHidden : false,
           data: { ...node, label: node.label || '' },
           type: node.type,
         }))
@@ -383,9 +395,23 @@ class Project {
           id: edge.id,
           source: edge.source,
           target: edge.target,
+          isHidden: edge.isHidden,
           type: 'custom',
         }))
       )
+    } catch (error) {
+      alert(error.response?.data?.message)
+    }
+  }
+  async updateEdge(body, id) {
+    try {
+      const response = await axios.put('/edges/' + id, body)
+      if (response.status === 200) {
+        this.editEdge(response.data, id)
+        return response.data
+      } else {
+        alert(response.status)
+      }
     } catch (error) {
       alert(error.response?.data?.message)
     }
