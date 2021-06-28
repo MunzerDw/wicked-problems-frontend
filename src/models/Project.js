@@ -81,6 +81,10 @@ class Project {
     return this.nodes.find((node) => node.id === id)
   }
 
+  findEdge(id) {
+    return this.edges.find((edge) => edge.id === id)
+  }
+
   getNodes() {
     return this.nodes
   }
@@ -150,7 +154,6 @@ class Project {
     const nodeIndex = this.nodes.findIndex((obj) => obj.id === id)
     if (this.nodes[nodeIndex] && this.nodes[nodeIndex].data) {
       this.nodes[nodeIndex].data = { ...this.nodes[nodeIndex].data, ...newData }
-      console.log(newData)
     }
   }
   updateLabels(newData, id) {
@@ -167,6 +170,52 @@ class Project {
       node.data.label = null
       node.data.labelId = null
     }
+  }
+  hideQuestionBranch(id, hiddenState) {
+    const qnode = this.findNode(id)
+    if (qnode.type === 'QUESTION') {
+      this.editNode({ isHidden: hiddenState }, id)
+      this.recursiveHide(qnode, hiddenState)
+    }
+  }
+  recursiveHide(node, hiddenState) {
+    const connectedNodes = this.findConnectedNodesWithIndex(node.id)
+    if (connectedNodes.length === 0) return
+    for (let i = 0; i < connectedNodes.length; i++) {
+      const connectedNode = connectedNodes[i]
+      this.hideNode(connectedNode.id, hiddenState)
+      this.hideEdge(connectedNode.edgeId, hiddenState)
+      this.recursiveHide(connectedNode, hiddenState)
+    }
+  }
+
+  // HELPERS
+  hideNode(id, hiddenState) {
+    const node = this.findNode(id)
+    if (node.type !== 'QUESTION') {
+      const nodeIndex = this.nodes.findIndex((obj) => obj.id === id)
+      this.nodes[nodeIndex] = { ...node, isHidden: hiddenState }
+    }
+  }
+  hideEdge(id, hiddenState) {
+    const edge = this.findEdge(id)
+    const edgeIndex = this.edges.findIndex((obj) => obj.id === id)
+    this.edges[edgeIndex] = { ...edge, isHidden: hiddenState }
+  }
+  nodesConnected(id1, id2) {
+    return this.edges.filter(
+      (edge) =>
+        (edge.source === id1 && edge.target === id2) ||
+        (edge.source === id2 && edge.target === id1)
+    )
+  }
+  findConnectedNodesWithIndex(id) {
+    const edges = this.edges.filter((edge) => edge.source === id)
+    return edges.map((edge, i) => ({
+      edgeId: edge.id,
+      id: edge.target,
+      index: i,
+    }))
   }
 
   // API FUNCTIONS
@@ -348,7 +397,7 @@ class Project {
   }
   async deleteEdges(ids) {
     try {
-      const response = await axios.delete('/edges', { data: { ids: ['ids'] } })
+      const response = await axios.delete('/edges', { data: { ids: ids } })
       if (response.status === 204) {
         this.removeEdges(ids)
       } else {

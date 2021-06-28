@@ -3,6 +3,7 @@ import Dropdown from 'components/Dropdown'
 import Flex from 'components/Flex'
 import Icon from 'components/Icon'
 import project from 'models/Project'
+import Button from 'components/Button'
 
 function Question({ ...props }) {
   return (
@@ -56,11 +57,16 @@ function Question({ ...props }) {
                   {'Double click to edit the node'}
                 </div>
               )}
-              <Flex.Row
-                justify="end"
-                className="w-full h-8"
-                space="2"
-              ></Flex.Row>
+              <Flex.Row justify="end" className="w-full h-8" space="2">
+                <Button
+                  icon={node.data.isHidden ? 'FaEyeSlash' : 'FaEye'}
+                  onClick={() => {
+                    node.data.isHidden
+                      ? project.hideQuestionBranch(node.id, false)
+                      : project.hideQuestionBranch(node.id, true)
+                  }}
+                />
+              </Flex.Row>
             </Flex.Col>
           </>
         )
