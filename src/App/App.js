@@ -13,6 +13,7 @@ import Signin from 'pages/Signin/Signin'
 import Signup from 'pages/Signup/Signup'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import NotFound from 'pages/NotFound/NotFound'
+
 require('dotenv').config()
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
         projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
         databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
         authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+        measurementId: process.env.REACT_APP_FIREBASE_MEASURMENT_ID,
+        messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+        appId: process.env.REACT_APP_FIREBASE_APP_ID,
+        storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
       }}
     >
       <div className="dark:text-white">

@@ -10,8 +10,8 @@ import Settings from 'pages/Settings/Settings'
 function Router() {
   return (
     <BrowserRouter>
-      <Redirect from="/signup" to="/" />
       <Switch>
+        <Redirect exact from="/signup" to="/" />
         <Route exact path="/">
           <Projects />
         </Route>

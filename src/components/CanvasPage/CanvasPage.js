@@ -7,10 +7,19 @@ import ThemeToogle from 'components/ThemeToogle'
 import User from 'components/User'
 import project from 'models/Project'
 import { useEffect } from 'react'
+import { initFirebaseAnalytics } from 'services/analytics'
 
 function CanvasPage({ className, topBar, onLoad, ...props }) {
   const urlSafeName = window.location.pathname.split('/')[2]
   useEffect(() => {
+    initFirebaseAnalytics().then((fa) => {
+      fa.logEvent(
+        'visit_page_' +
+          window.location.pathname.split('/')[
+            window.location.pathname.split('/').length - 1
+          ]
+      )
+    })
     async function load() {
       await project.loadProjectAndNodes(urlSafeName)
       onLoad && (await onLoad())

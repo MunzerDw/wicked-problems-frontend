@@ -46,9 +46,10 @@ function Signup() {
             return
           }
           try {
-            await firebase
+            const response = await firebase
               .auth()
               .createUserWithEmailAndPassword(email, password)
+            await response?.user?.sendEmailVerification()
             await firebase.auth().signInWithEmailAndPassword(email, password)
             // history.push('/')
           } catch (error) {
