@@ -1,7 +1,6 @@
 import CanvasPage from 'components/CanvasPage/CanvasPage'
 import React, { useRef, useState } from 'react'
 import { observer } from 'mobx-react'
-import { trace } from 'mobx'
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -18,7 +17,6 @@ import Constraint from './components/Constraint'
 import NodeEditor from './components/NodeEditor'
 import projectModel from 'models/Project'
 import CustomEdge from './components/CustomEdge'
-import project from 'models/Project'
 
 // HELPERS
 const nodeTypes = {
@@ -35,7 +33,6 @@ const edgeTypes = {
 const Project = observer(() => {
   const reactFlowWrapper = useRef(null)
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
-  const urlSafeName = window.location.pathname.split('/')[2]
   console.log('Project')
   const onLoad = (_reactFlowInstance) => {
     setReactFlowInstance(_reactFlowInstance)

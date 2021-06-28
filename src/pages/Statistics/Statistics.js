@@ -4,7 +4,6 @@ import NumberStat from 'components/NumberStat'
 import project from 'models/Project'
 import { Bar, Line } from 'react-chartjs-2'
 import { observer } from 'mobx-react'
-import { trace } from 'mobx'
 import Table from 'components/Table'
 import Badge from 'components/Badge'
 import { FirebaseAuthConsumer } from '@react-firebase/auth'
@@ -72,7 +71,6 @@ function calculateStatistics() {
 }
 
 const Statistics = observer(() => {
-  console.log('statistics')
   const { darkMode } = useDarkMode()
   const statistics = calculateStatistics()
   let logsDates = {}

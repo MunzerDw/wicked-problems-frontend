@@ -7,7 +7,6 @@ import snapshots from 'models/Snapshots'
 import { useState } from 'react'
 import { Chart, Line } from 'react-chartjs-2'
 import { useDarkMode } from 'hooks/useDarkMode'
-import project from 'models/Project'
 import moment from 'moment'
 
 function formatDate(date) {

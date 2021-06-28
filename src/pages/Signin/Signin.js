@@ -8,7 +8,6 @@ import ThemeToogle from 'components/ThemeToogle'
 import { useDarkMode } from 'hooks/useDarkMode'
 import Flex from 'components/Flex'
 import SimpleButton from 'components/SimpleButton'
-import general from 'models/General'
 import { useHistory } from 'react-router'
 
 function Signin() {
