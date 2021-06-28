@@ -38,6 +38,7 @@ const Node = observer(({ icon, color, children, ...props }) => {
       (props.xPos !== x || props.yPos !== y) &&
       (x || y)
     ) {
+      project.editNodePos(props.id, props.xPos, props.yPos)
       axios.put('/nodes/' + props.id, { x: props.xPos, y: props.yPos })
     }
     if (!props.isDragging) {

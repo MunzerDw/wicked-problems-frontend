@@ -18,6 +18,7 @@ import Constraint from './components/Constraint'
 import NodeEditor from './components/NodeEditor'
 import projectModel from 'models/Project'
 import CustomEdge from './components/CustomEdge'
+import project from 'models/Project'
 
 // HELPERS
 const nodeTypes = {
@@ -34,6 +35,7 @@ const edgeTypes = {
 const Project = observer(() => {
   const reactFlowWrapper = useRef(null)
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
+  const urlSafeName = window.location.pathname.split('/')[2]
   console.log('Project')
   const onLoad = (_reactFlowInstance) => {
     setReactFlowInstance(_reactFlowInstance)

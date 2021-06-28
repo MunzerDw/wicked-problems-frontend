@@ -21,8 +21,11 @@ function CanvasPage({ className, topBar, onLoad, ...props }) {
       )
     })
     async function load() {
-      await project.loadProjectAndNodes(urlSafeName)
-      onLoad && (await onLoad())
+      if (!project.fetchedData) {
+        await project.loadProjectAndNodes(urlSafeName)
+      } else {
+        onLoad && (await onLoad())
+      }
     }
     load()
     // eslint-disable-next-line

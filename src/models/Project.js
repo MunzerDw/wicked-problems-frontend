@@ -156,6 +156,13 @@ class Project {
       this.nodes[nodeIndex].data = { ...this.nodes[nodeIndex].data, ...newData }
     }
   }
+  editNodePos(id, x, y) {
+    const nodeIndex = this.nodes.findIndex((obj) => obj.id === id)
+    if (this.nodes[nodeIndex] && this.nodes[nodeIndex].data) {
+      this.nodes[nodeIndex].position = { x: x, y: y }
+      console.log(this.nodes[nodeIndex].position)
+    }
+  }
   updateLabels(newData, id) {
     const nodes = this.nodes.filter((obj) => obj.data.labelId === id)
     for (let i = 0; i < nodes.length; i++) {
@@ -470,18 +477,16 @@ class Project {
 
   // ONLOAD
   async loadProjectAndNodes(name) {
-    if (!this.fetchedData) {
-      const project = await this.fetchProject(name)
-      await this.fetchNodes(project?.id)
-      await this.fetchEdges(project?.id)
-      await settings.fetchLabels(name)
-      await snapshots.loadSnapshots(name)
-      if (!this.socket) {
-        this.connectSocket()
-      }
-      this.fetchedData = true
-      snapshots.setFilteredLabels(settings.labels)
+    const project = await this.fetchProject(name)
+    await this.fetchNodes(project?.id)
+    await this.fetchEdges(project?.id)
+    await settings.fetchLabels(name)
+    await snapshots.loadSnapshots(name)
+    if (!this.socket) {
+      this.connectSocket()
     }
+    this.fetchedData = true
+    snapshots.setFilteredLabels(settings.labels)
   }
 }
 
