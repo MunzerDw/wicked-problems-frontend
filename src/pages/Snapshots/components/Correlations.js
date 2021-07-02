@@ -47,7 +47,7 @@ const Correlations = observer(() => {
         ) : (
           <Flex.Col>
             {correlations?.map((corr, i) => {
-              return <Correlation correlation={corr} />
+              return <Correlation key={i} correlation={corr} />
             })}
           </Flex.Col>
         )}
