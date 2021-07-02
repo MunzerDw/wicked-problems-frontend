@@ -192,6 +192,19 @@ class Snapshots {
       alert(error.response?.data?.message)
     }
   }
+  async calculateStatistics(id) {
+    try {
+      const response = await axios.post('/snapshots/calculatestatistics/' + id)
+      if (response.status === 200) {
+        this.editSnapshot(response.data, id)
+        return response.data
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.response?.data?.message)
+    }
+  }
 
   // ONLOAD
   async loadSnapshots(name) {

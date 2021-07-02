@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { Chart, Line } from 'react-chartjs-2'
 import { useDarkMode } from 'hooks/useDarkMode'
 import moment from 'moment'
+import InfoPopup from 'components/InfoPopup'
 
 function formatDate(date) {
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
@@ -39,7 +40,7 @@ Chart.register({
   },
 })
 
-const Snapshot = observer(({ id, ...props }) => {
+const Snapshot = observer(({ id, index, ...props }) => {
   const { darkMode } = useDarkMode()
   const [expanded, setExpanded] = useState(false)
   const snapshot = snapshots.findSnapshot(id)
@@ -93,7 +94,6 @@ const Snapshot = observer(({ id, ...props }) => {
       },
     ],
   }
-
   return (
     <Flex.Col
       id={id}
@@ -117,6 +117,39 @@ const Snapshot = observer(({ id, ...props }) => {
             ''}
         </Flex.Col>
         <Flex.Row space="0">
+          <Flex.Row className="mr-4">
+            <InfoPopup
+              text="statistics"
+              icon="FaChartLine"
+              expandDown={!index}
+              onClick={() => {
+                snapshots.calculateStatistics(snapshot.id)
+              }}
+            >
+              <div className="grid grid-cols-2 pa-y-2 gap-x-8 flex items-center">
+                <div className="opacity-75">Max</div>
+                <div className="font-bold text-lg">
+                  {snapshot.statistics?.max === undefined
+                    ? '-'
+                    : snapshot.statistics?.max}
+                </div>
+                <div className="opacity-75">Average</div>
+                <div className="font-bold text-lg">
+                  {snapshot.statistics?.avg === undefined
+                    ? '-'
+                    : snapshot.statistics?.avg}
+                </div>
+                <div className="opacity-75">Min</div>
+                <div className="font-bold text-lg">
+                  {snapshot.statistics?.min === undefined
+                    ? '-'
+                    : snapshot.statistics?.min}
+                </div>
+              </div>
+              <br />
+              <div>click to recalculate</div>
+            </InfoPopup>
+          </Flex.Row>
           <Button
             basic
             title="edit snapshot"

@@ -111,7 +111,7 @@ const Snapshots = observer(() => {
             </Flex.Col>
             <Flex.Col className="w-full h-full overflow-auto p-2" space="16">
               {snapshots.snapshots?.map((snaphshot, i) => {
-                return <Snapshot key={i} id={snaphshot.id} />
+                return <Snapshot index={i} key={i} id={snaphshot.id} />
               })}
             </Flex.Col>
           </Flex.Row>

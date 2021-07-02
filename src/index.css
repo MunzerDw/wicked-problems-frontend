@@ -71,3 +71,20 @@ input:checked ~ .toggle__dot {
     transform: rotate(360deg);
   }
 }
+
+/* ANIMATIONS */
+
+.fadeIn {
+  animation: fadeIn ease 100ms;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
