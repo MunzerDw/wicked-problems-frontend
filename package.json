@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "chart.js": "^3.3.2",
     "chartjs-plugin-annotation": "^1.0.2",
+    "copy-to-clipboard": "^3.3.1",
     "dotenv": "^9.0.2",
     "firebase": "^8.6.2",
     "javascript-time-ago": "^2.3.5",

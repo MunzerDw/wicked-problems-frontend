@@ -9,6 +9,9 @@ import { Chart, Line } from 'react-chartjs-2'
 import { useDarkMode } from 'hooks/useDarkMode'
 import moment from 'moment'
 import InfoPopup from 'components/InfoPopup'
+import copy from 'copy-to-clipboard'
+import SimpleButton from 'components/SimpleButton'
+import firebase from 'firebase/app'
 
 function formatDate(date) {
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
@@ -41,6 +44,7 @@ Chart.register({
 })
 
 const Snapshot = observer(({ id, index, ...props }) => {
+  const user = firebase.auth()?.currentUser
   const { darkMode } = useDarkMode()
   const [expanded, setExpanded] = useState(false)
   const snapshot = snapshots.findSnapshot(id)
@@ -119,6 +123,78 @@ const Snapshot = observer(({ id, index, ...props }) => {
         <Flex.Row space="0">
           <Flex.Row className="mr-4">
             <InfoPopup
+              expandDown={index < 3 ? true : false}
+              onClick={() => {
+                copy(window.origin + '/api/snapshots/' + snapshot.id + '/data')
+              }}
+              text="data endpoint"
+              expandDown={!index}
+            >
+              <div className="">{snapshot.name}</div>
+              <br />
+              <div className="text-sm">Endpoint to add data</div>
+              <div className="dark:bg-gray-900 bg-gray-200 w-full h-full font-mono rounded p-2">
+                <div className="whitespace-normal font-bold">POST</div>
+                <div className="whitespace-normal font-bold">
+                  -h Authorization: {'Bearer <BEARER_TOKEN>'}
+                </div>
+                <div className="whitespace-normal font-bold">
+                  {process.env.NODE_ENV === 'development'
+                    ? process.env.REACT_APP_BACKEND_URL +
+                      '/snapshots/' +
+                      snapshot.id +
+                      '/data'
+                    : window.origin + '/api/snapshots/' + snapshot.id + '/data'}
+                </div>
+              </div>
+              <div className="text-sm">Request body format</div>
+              <div className="dark:bg-gray-900 bg-gray-200 w-full h-full font-mono rounded p-2">
+                <div>{'{'}</div>
+                <div className="ml-2">
+                  <div>{'text: String,'}</div>
+                  <div>{'dateColumn?: String,'}</div>
+                  <div>{'valueColumn?: String,'}</div>
+                  <div>{'dateFormat?: String,'}</div>
+                  <div>{'separator?: String'}</div>
+                </div>
+                <div>{'}'}</div>
+              </div>
+              <div className="text-sm">Response on success (200)</div>
+              <div className="dark:bg-gray-900 bg-gray-200 w-full h-full font-mono rounded p-2">
+                <div>{'[{'}</div>
+                <div className="ml-2">
+                  <div>{'date: Date,'}</div>
+                  <div>{'value: Number'}</div>
+                </div>
+                <div>{'}]'}</div>
+              </div>
+              <br />
+              <SimpleButton
+                text="copy bearer token"
+                icon="FaCopy"
+                onClick={() => {
+                  copy(user.za)
+                }}
+              />
+              <SimpleButton
+                text="click endpoint url"
+                icon="FaCopy"
+                onClick={() => {
+                  copy(
+                    process.env.NODE_ENV === 'development'
+                      ? process.env.REACT_APP_BACKEND_URL +
+                          '/snapshots/' +
+                          snapshot.id +
+                          '/data'
+                      : window.origin +
+                          '/api/snapshots/' +
+                          snapshot.id +
+                          '/data'
+                  )
+                }}
+              />
+            </InfoPopup>
+            <InfoPopup
               text="statistics"
               icon="FaChartLine"
               expandDown={!index}
@@ -126,6 +202,8 @@ const Snapshot = observer(({ id, index, ...props }) => {
                 snapshots.calculateStatistics(snapshot.id)
               }}
             >
+              <div className="">{snapshot.name}</div>
+              <br />
               <div className="grid grid-cols-2 pa-y-2 gap-x-8 flex items-center">
                 <div className="opacity-75">Max</div>
                 <div className="font-bold text-lg">
@@ -146,8 +224,6 @@ const Snapshot = observer(({ id, index, ...props }) => {
                     : snapshot.statistics?.min}
                 </div>
               </div>
-              <br />
-              <div>click to recalculate</div>
             </InfoPopup>
           </Flex.Row>
           <Button
@@ -208,6 +284,11 @@ const Snapshot = observer(({ id, index, ...props }) => {
                 duration: 0,
               },
               plugins: {
+                legend: {
+                  labels: {
+                    color: darkMode ? 'white' : 'black',
+                  },
+                },
                 actions: {
                   nodes: JSON.parse(JSON.stringify(actions)),
                   maxValue: maxValue,
@@ -251,9 +332,6 @@ const Snapshot = observer(({ id, index, ...props }) => {
               lineAtIndex: [2, 4, 30],
               responsive: true,
               maintainAspectRatio: false,
-              legend: {
-                display: false,
-              },
               scales: {
                 y: {
                   beginAtZero: true,

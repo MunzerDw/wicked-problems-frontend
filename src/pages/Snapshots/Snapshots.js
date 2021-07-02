@@ -9,13 +9,16 @@ import Snapshot from './components/Snapshot'
 import SnapshotEditor from './components/SnapshotEditor'
 import SnapshotsCombined from './components/SnapshotsCombined'
 import Timeline from './components/Timeline'
+import Correlations from './components/Correlations'
 import settings from 'models/Settings'
 import SelectMultiple from 'components/SelectMultiple'
 
 const Snapshots = observer(() => {
+  const urlSafeName = window.location.pathname.split('/')[2]
   return (
     <CanvasPage className="flex justify-center p-12">
       <Timeline />
+      <Correlations />
       <Flex.Col className="w-full" style={{}} space="8">
         <Flex.Col space="1" className="w-full">
           <Flex.Row className="w-full" justify="between">
@@ -38,6 +41,15 @@ const Snapshots = observer(() => {
                   snapshots.setFilteredLabels(data.map((d) => d.value))
                 }}
               />
+              <Button
+                basic
+                onClick={() => {
+                  snapshots.calculateCorrelations(urlSafeName)
+                  snapshots.setCorrelationsOpen(true)
+                }}
+              >
+                Correlations
+              </Button>
               <Button
                 basic
                 onClick={() => {
@@ -80,7 +92,7 @@ const Snapshots = observer(() => {
         </Flex.Col>
         {snapshots.view === 'list' ? (
           <Flex.Row
-            className="w-full overflow-hidden"
+            className="w-full"
             align="start"
             style={{
               minHeight: '600px',

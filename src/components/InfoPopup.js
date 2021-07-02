@@ -1,25 +1,22 @@
 import Flex from './Flex'
 import Icon from './Icon'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import SimpleButton from './SimpleButton'
+import useOutsideAlerter from 'hooks/useOutsideAlerter'
 
 function InfoPopup({ text, icon, className, onClick, expandDown, ...props }) {
-  const [show, setShow] = useState(false)
+  const [active, setActive] = useState(false)
+  const wrapperRef = useRef(null)
+  useOutsideAlerter(wrapperRef, () => {
+    setActive(false)
+  })
   return (
-    <div
-      onMouseOver={() => {
-        setShow(true)
-      }}
-      onMouseOut={() => {
-        setShow(false)
-      }}
-      className="relative"
-    >
-      {show && (
+    <div ref={wrapperRef} className="">
+      {active && (
         <div
-          className="absolute max-w-96 p-2 bg-gray-200 dark:bg-gray-700 rounded shadow-lg fadeIn"
+          className="absolute max-w-96 p-2 bg-white dark:bg-gray-700 rounded shadow-lg fadeIn space-y-2"
           style={{
-            [expandDown ? 'top' : 'bottom']: '25px',
+            ['top']: '10%',
             zIndex: '9000',
             minWidth: '200px',
             left: '50%',
@@ -36,10 +33,14 @@ function InfoPopup({ text, icon, className, onClick, expandDown, ...props }) {
         }
       >
         <SimpleButton
+          active={true}
           iconRight={true}
           text={text}
           icon={icon || 'FaExclamationCircle'}
-          onClick={onClick}
+          onClick={(e) => {
+            setActive(!active)
+            onClick && onClick(e)
+          }}
         />
       </div>
     </div>

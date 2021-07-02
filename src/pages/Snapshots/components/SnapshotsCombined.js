@@ -259,6 +259,11 @@ const SnapshotsCombined = observer(() => {
                 duration: 0,
               },
               plugins: {
+                legend: {
+                  labels: {
+                    color: darkMode ? 'white' : 'black',
+                  },
+                },
                 actions: {
                   nodes: JSON.parse(JSON.stringify(actions)),
                   maxValue: 100,
@@ -294,12 +299,6 @@ const SnapshotsCombined = observer(() => {
                       }
                     },
                   },
-                },
-              },
-              legend: {
-                display: true,
-                labels: {
-                  fontColor: darkMode ? 'white' : 'black',
                 },
               },
               responsive: true,

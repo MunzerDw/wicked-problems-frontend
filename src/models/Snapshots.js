@@ -27,6 +27,9 @@ class Snapshots {
   filteredSnapshots = []
   filteredLabels = []
   timelineOpen = false
+  correlationsOpen = false
+  correlations = []
+  correlationsLoading = false
 
   constructor() {
     makeAutoObservable(this)
@@ -42,6 +45,10 @@ class Snapshots {
 
   setTimelineOpen(state) {
     this.timelineOpen = state
+  }
+
+  setCorrelationsOpen(state) {
+    this.correlationsOpen = state
   }
 
   setFilteredSnapshots(filteredSnapshots) {
@@ -203,6 +210,27 @@ class Snapshots {
       }
     } catch (error) {
       alert(error.response?.data?.message)
+    }
+  }
+  async calculateCorrelations(name) {
+    try {
+      if (!this.correlations.length) this.correlationsLoading = true
+      const response = await axios.post(
+        '/snapshots/calculatecorrelations?urlSafeName=' + name
+      )
+      if (response.status === 200) {
+        const correlations = response.data.sort((a, b) =>
+          a.correlation > b.correlation ? -1 : 1
+        )
+        this.correlations = correlations
+        return correlations
+      } else {
+        alert(response.status)
+      }
+    } catch (error) {
+      alert(error.response?.data?.message)
+    } finally {
+      this.correlationsLoading = false
     }
   }
 
