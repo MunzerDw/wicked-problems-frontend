@@ -87,6 +87,17 @@ class Snapshots {
       this.snapshots[snapshotIndex][key] = newData[key]
     }
   }
+  addSnapshotData(newData, id) {
+    const snapshotIndex = this.snapshots.findIndex((obj) => obj.id === id)
+    if (this.snapshots[snapshotIndex]['data']) {
+      this.snapshots[snapshotIndex]['data'] = [
+        ...this.snapshots[snapshotIndex]['data'],
+        ...newData,
+      ]
+    } else {
+      this.snapshots[snapshotIndex]['data'] = [...newData]
+    }
+  }
   removeSnapshot(id) {
     this.setSnapshots(this.snapshots.filter((snapshot) => id !== snapshot.id))
   }

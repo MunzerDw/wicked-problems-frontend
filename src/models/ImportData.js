@@ -10,10 +10,16 @@ class ImportData {
   dateColumn = ''
   valueColumn = ''
   separator = ''
+  text = ''
   open = false
+  useFile = true
 
   constructor() {
     makeAutoObservable(this)
+  }
+
+  setUseFile(state) {
+    this.useFile = state
   }
 
   setSnapshotId(id) {
@@ -26,6 +32,10 @@ class ImportData {
 
   setFile(file) {
     this.file = file
+  }
+
+  setText(text) {
+    this.text = text
   }
 
   setDateColumn(name) {
@@ -58,9 +68,10 @@ class ImportData {
       const upload = {
         dateColumn: this.dateColumn,
         valueColumn: this.valueColumn,
-        file: this.file,
+        file: this.useFile ? this.file : null,
         dateFormat: this.dateFormat,
         separator: this.separator,
+        text: this.useFile ? '' : this.text,
       }
       const data = new FormData()
       const keys = Object.keys(upload)
@@ -72,7 +83,7 @@ class ImportData {
         '/snapshots/' + this.snapshotId + '/data',
         data
       )
-      snapshots.editSnapshot({ data: response.data }, this.snapshotId)
+      snapshots.addSnapshotData(response.data, this.snapshotId)
       return response.data
     } catch (error) {
       alert(error.response?.data?.message)

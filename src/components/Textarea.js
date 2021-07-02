@@ -32,7 +32,7 @@ function Textarea({
           value={value || ''}
           type={props.type || 'text'}
           name={props.name}
-          className={`flex-1 block w-full p-2 pl-2 focus:outline-none border-0 bg-transparent ${
+          className={`flex-1 block w-full p-2 pl-2 focus:outline-none border-0 bg-transparent h-full ${
             disabled
               ? ' cursor-not-allowed bg-secondary-100 border-secondary-200 text-gray-900'
               : ''

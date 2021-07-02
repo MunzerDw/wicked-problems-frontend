@@ -41,7 +41,7 @@ Chart.register({
 
 const Snapshot = observer(({ id, ...props }) => {
   const { darkMode } = useDarkMode()
-  const [expanded, setExpanded] = useState(true)
+  const [expanded, setExpanded] = useState(false)
   const snapshot = snapshots.findSnapshot(id)
   const actions = snapshots.getFilteredActions()
   let dates = [...(snapshot.data?.map((d) => d.date) || [])]
