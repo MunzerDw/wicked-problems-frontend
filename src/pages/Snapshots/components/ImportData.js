@@ -7,7 +7,6 @@ import { observer } from 'mobx-react'
 import importData from 'models/ImportData'
 import Textarea from 'components/Textarea'
 import { useState } from 'react'
-import Toogle from 'components/Toogle'
 import SimpleButton from 'components/SimpleButton'
 
 const ImportData = observer(() => {

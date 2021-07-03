@@ -123,7 +123,6 @@ const Snapshot = observer(({ id, index, ...props }) => {
         <Flex.Row space="0">
           <Flex.Row className="mr-4">
             <InfoPopup
-              expandDown={index < 3 ? true : false}
               onClick={() => {
                 copy(window.origin + '/api/snapshots/' + snapshot.id + '/data')
               }}

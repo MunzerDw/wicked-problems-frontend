@@ -59,9 +59,9 @@ function CanvasPage({ className, topBar, onLoad, ...props }) {
                 <LinkTab to={'/projects/' + urlSafeName + '/snapshots'}>
                   Snapshots
                 </LinkTab>
-                <LinkTab to={'/projects/' + urlSafeName + '/publicanalysis'}>
+                {/* <LinkTab to={'/projects/' + urlSafeName + '/publicanalysis'}>
                   Public Analysis
-                </LinkTab>
+                </LinkTab> */}
                 <LinkTab to={'/projects/' + urlSafeName + '/settings'}>
                   Settings
                 </LinkTab>

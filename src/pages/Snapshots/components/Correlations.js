@@ -3,14 +3,8 @@ import Flex from 'components/Flex'
 import Popup from 'components/Popup'
 import { observer } from 'mobx-react'
 import snapshots from 'models/Snapshots'
-import project from 'models/Project'
-import TimelineDate from './TimelineDate'
 import Loading from 'components/Loading'
 import Correlation from './Correlation'
-
-function formatDate(date) {
-  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
-}
 
 const Correlations = observer(() => {
   const correlations = snapshots.correlations
