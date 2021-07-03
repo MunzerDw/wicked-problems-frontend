@@ -27,7 +27,7 @@ const LabelEditor = observer(() => {
       onClose={() => settings.setEditorLabel({ text: '', color: '' })}
     >
       <Form
-        className="bg-gray-200 dark:bg-gray-700 shadow-lg rounded p-6"
+        className="bg-white dark:bg-gray-700 shadow-lg rounded p-6"
         onSubmit={async () => {
           if (editorLabel.id) {
             await settings.updateLabel(

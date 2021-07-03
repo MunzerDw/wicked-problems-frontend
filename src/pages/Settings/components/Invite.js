@@ -6,7 +6,7 @@ import firebase from 'firebase/app'
 function Invite({ invite }) {
   const userId = firebase.auth()?.currentUser?.uid
   return (
-    <Flex.Row className="p-2 rounded bg-gray-200 dark:bg-gray-900">
+    <Flex.Row className="p-2 rounded bg-white dark:bg-gray-900">
       <div>{invite.email}</div>
       {userId === invite.hostId && (
         <Button

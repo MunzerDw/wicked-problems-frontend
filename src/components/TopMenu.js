@@ -4,7 +4,7 @@ import User from './User'
 function TopMenu() {
   return (
     <div
-      className="w-full h-full bg-gray-200 dark:bg-gray-700 p-6 flex"
+      className="w-full h-full bg-white dark:bg-gray-700 p-6 flex shadow"
       style={{
         maxHeight: '90px',
       }}

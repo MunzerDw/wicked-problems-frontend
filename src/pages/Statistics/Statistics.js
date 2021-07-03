@@ -147,8 +147,8 @@ const Statistics = observer(() => {
   return (
     <CanvasPage className="p-12">
       <div className="text-4xl font-medium mb-16">Statistics</div>
-      <div className="grid grid-cols-2 gap-16">
-        <Flex.Col>
+      <div className="grid grid-cols-2 gap-8">
+        <Flex.Col className="bg-white rounded shadow p-4 dark:bg-gray-700">
           <div className="text-2xl">Details</div>
           <div className="grid grid-cols-2 pa-y-2 gap-x-8 flex items-center">
             <div className="opacity-75">
@@ -167,7 +167,10 @@ const Statistics = observer(() => {
             <div className="font-bold text-lg">{statistics.created}</div>
           </div>
         </Flex.Col>
-        <Flex.Row space="8">
+        <Flex.Row
+          space="8"
+          className="bg-white rounded shadow p-4 dark:bg-gray-700"
+        >
           <NumberStat.Medium
             value={statistics.totalNodes}
             text="nodes"
@@ -187,7 +190,7 @@ const Statistics = observer(() => {
             className="bg-gradient-to-r from-yellow-300 to-yellow-400 text-white w-full"
           />
         </Flex.Row>
-        <Flex.Col>
+        <Flex.Col className="bg-white rounded shadow p-4 dark:bg-gray-700">
           <div className="text-2xl">Nodes</div>
           <div className="w-full" style={{ minHeight: '400px' }}>
             <Bar
@@ -233,7 +236,7 @@ const Statistics = observer(() => {
             />
           </div>
         </Flex.Col>
-        <Flex.Col>
+        <Flex.Col className="bg-white rounded shadow p-4 dark:bg-gray-700">
           <div className="text-2xl">Activity</div>
           <div className="w-full" style={{ minHeight: '400px' }}>
             <Line
@@ -275,7 +278,10 @@ const Statistics = observer(() => {
             />
           </div>
         </Flex.Col>
-        <Flex.Col className="col-span-2" style={{ maxHeight: '500px' }}>
+        <Flex.Col
+          className="col-span-2 bg-white rounded shadow p-4 dark:bg-gray-700"
+          style={{ maxHeight: '700px' }}
+        >
           <div className="text-2xl">Logs</div>
           <Table>
             <Table.Head className="bg-gray-200 dark:bg-gray-900">

@@ -101,7 +101,7 @@ const Snapshot = observer(({ id, index, ...props }) => {
   return (
     <Flex.Col
       id={id}
-      className="w-full rounded bg-gray-200 dark:bg-gray-900 shadow-md trans hover:shadow-lg"
+      className="w-full rounded bg-white dark:bg-gray-700 shadow-md trans hover:shadow-lg"
     >
       <Flex.Row align="start" justify="between" className="w-full p-4">
         <Flex.Col space="1">

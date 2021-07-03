@@ -21,7 +21,7 @@ const ProjectCard = observer(({ id }) => {
         <Flex.Col
           space="2"
           justify="between"
-          className="p-4 rounded shadow-xl hover:shadow-2xl trans bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 w-full h-full cursor-pointer"
+          className="p-4 rounded shadow-xl hover:shadow-2xl trans bg-white dark:bg-gray-700 dark:hover:bg-gray-600 w-full h-full cursor-pointer"
         >
           <Flex.Row
             justify="between"

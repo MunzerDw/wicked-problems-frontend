@@ -28,11 +28,11 @@ function CanvasPage({ className, topBar, onLoad, ...props }) {
     // eslint-disable-next-line
   }, [])
   return (
-    <div className="h-screen w-screen dark:bg-gray-800">
+    <div className="h-screen w-screen bg-gray-200 dark:bg-gray-800">
       <Flex.Row space="0" align="start" className="w-full h-full relative">
         <Menu />
         <Flex.Col space="0" className="w-full h-full">
-          <div className="w-full p-1 px-2 flex justify-between items-center shadow">
+          <div className="w-full p-1 px-2 flex justify-between items-center shadow sticky top-0 bg-white dark:bg-gray-700">
             <Flex.Row>
               {/* <MenuToggle /> */}
               <Flex.Row space="2">

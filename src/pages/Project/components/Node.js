@@ -59,7 +59,7 @@ const Node = observer(({ icon, color, children, ...props }) => {
       space="0"
       onDoubleClick={onDoubleClick}
       className={
-        'bg-gray-200 dark:bg-gray-500 w-96 border-2 rounded dark:border-none trans hover:shadow-lg ' +
+        'bg-white dark:bg-gray-500 w-96 border-2 rounded dark:border-none trans hover:shadow-lg ' +
         ((node.data?.selectedBy && node.data?.selectedBy === userId) ||
         props.selected
           ? ' border-gray-600 dark:border-white '

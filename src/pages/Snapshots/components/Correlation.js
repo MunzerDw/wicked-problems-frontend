@@ -37,7 +37,7 @@ function Correlation({ correlation, ...props }) {
     ],
   }
   return (
-    <Flex.Col className="w-full p-2 border border-gray-500 rounded">
+    <Flex.Col className="w-full p-2 bg-white dark:bg-gray-700 shadow rounded">
       <div>
         Correlation: <b>{Math.round(correlation.correlation * 100) / 100}</b>
       </div>

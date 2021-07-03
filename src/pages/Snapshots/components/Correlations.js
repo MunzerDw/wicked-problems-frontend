@@ -20,7 +20,7 @@ const Correlations = observer(() => {
       setState={snapshots.setCorrelationsOpen}
     >
       <div
-        className="bg-white dark:bg-gray-700 shadow-lg rounded p-6 max-h-full overflow-auto relative w-full"
+        className="bg-gray-200 dark:bg-gray-800 shadow-lg rounded p-6 max-h-full overflow-auto relative w-full"
         style={{ maxWidth: '1000px' }}
       >
         <div className="absolute top-0 right-0">

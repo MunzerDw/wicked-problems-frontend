@@ -12,8 +12,8 @@ function Toogle({ onChange, checked, ...props }) {
           onChange={(e) => onChange(e.target.checked)}
           {...props}
         />
-        <div className="toggle__line my-auto w-10 h-4 bg-gray-200 dark:bg-gray-600 rounded-full shadow-inner"></div>
-        <div className="toggle__dot m-auto trans absolute w-6 h-6 bg-white rounded-full shadow inset-y-0 left-0"></div>
+        <div className="toggle__line my-auto w-10 h-4 bg-gray-100 dark:bg-gray-600 rounded-full shadow-inner"></div>
+        <div className="toggle__dot m-auto trans absolute w-6 h-6 bg-gray-300 rounded-full shadow inset-y-0 left-0"></div>
       </div>
     </label>
   )

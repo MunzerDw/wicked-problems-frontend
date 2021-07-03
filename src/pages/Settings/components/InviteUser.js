@@ -7,7 +7,7 @@ import project from 'models/Project'
 function InviteUser() {
   const [email, setEmail] = useState('')
   return (
-    <Flex.Row className="p-2 rounded bg-gray-200 dark:bg-gray-900">
+    <Flex.Row className="p-2 rounded bg-white dark:bg-gray-900">
       <Input
         className="w-full"
         value={email}

@@ -18,7 +18,7 @@ const Projects = observer(() => {
     <Page>
       <ProjectEditor />
       <div className="flex flex-col space-y-6">
-        <div className="flex items-center justify-between bg-gray-200 dark:bg-gray-900 p-4 rounded">
+        <div className="flex items-center justify-between bg-white dark:bg-gray-900 p-4 rounded">
           <div className="text-2xl font-medium">
             Projects ({projectsModel.projects.length})
           </div>

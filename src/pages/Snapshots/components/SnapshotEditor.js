@@ -11,7 +11,7 @@ const SnapshotEditor = observer(() => {
   return (
     <Popup state={snapshotEditor.open} setState={snapshotEditor.setOpen}>
       <Form
-        className="bg-gray-200 dark:bg-gray-700 shadow-lg rounded p-6"
+        className="bg-white dark:bg-gray-700 shadow-lg rounded p-6"
         onSubmit={async () => {
           if (snapshotEditor.editorSnapshot.id) {
             snapshots.updateSnapshot(

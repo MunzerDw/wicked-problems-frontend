@@ -124,7 +124,7 @@ const SnapshotsCombined = observer(() => {
     ],
   }
   return (
-    <Flex.Col className="w-full rounded bg-gray-200 dark:bg-gray-900 shadow-md trans hover:shadow-lg">
+    <Flex.Col className="w-full rounded bg-white dark:bg-gray-700 shadow-md trans hover:shadow-lg">
       <Flex.Row justify="between" className="w-full p-4">
         <Flex.Row>
           <div
@@ -209,7 +209,7 @@ const SnapshotsCombined = observer(() => {
             customInput={
               <Flex.Row
                 space="1"
-                className="rounded p-2 py-1 dark:bg-gray-700 dark:hover:bg-gray-600 bg-gray-100 hover:bg-white shadow-md cursor-pointer"
+                className="rounded p-2 py-1 dark:bg-gray-800 dark:hover:bg-gray-700 bg-gray-100 hover:bg-white shadow-md cursor-pointer"
                 onClick={(e) => {
                   e.preventDefault()
                   e.stopPropagation()

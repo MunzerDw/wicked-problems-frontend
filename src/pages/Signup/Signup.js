@@ -33,7 +33,10 @@ function Signup() {
           (darkMode ? 'opacity-75' : 'opacity-60')
         }
       ></div>
-      <ThemeToogle className="absolute top-0 right-0 ml-4 mt-4 z-50" />
+      <ThemeToogle
+        className="z-50 mr-4 mt-4"
+        style={{ position: 'absolute', right: '0' }}
+      />
       <Form
         className="m-auto z-40"
         onSubmit={async (e) => {

@@ -28,7 +28,7 @@ const ImportData = observer(() => {
   return (
     <Popup state={importData.open} setState={importData.setOpen}>
       <Form
-        className="bg-gray-200 dark:bg-gray-700 shadow-lg rounded p-6 max-h-full overflow-auto"
+        className="bg-white dark:bg-gray-700 shadow-lg rounded p-6 max-h-full overflow-auto"
         onSubmit={async () => {
           await importData.uploadData()
           importData.setOpen(false)
