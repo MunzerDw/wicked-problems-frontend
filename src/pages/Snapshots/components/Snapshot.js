@@ -12,6 +12,7 @@ import InfoPopup from 'components/InfoPopup'
 import copy from 'copy-to-clipboard'
 import SimpleButton from 'components/SimpleButton'
 import firebase from 'firebase/app'
+import project from 'models/Project'
 
 function formatDate(date) {
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
@@ -122,77 +123,84 @@ const Snapshot = observer(({ id, index, ...props }) => {
         </Flex.Col>
         <Flex.Row space="0">
           <Flex.Row className="mr-4">
-            <InfoPopup
-              onClick={() => {
-                copy(window.origin + '/api/snapshots/' + snapshot.id + '/data')
-              }}
-              text="data endpoint"
-              expandDown={!index}
-            >
-              <div className="">{snapshot.name}</div>
-              <br />
-              <div className="text-sm">Endpoint to add data</div>
-              <div className="dark:bg-gray-900 bg-gray-200 w-full h-full font-mono rounded p-2">
-                <div className="whitespace-normal font-bold">POST</div>
-                <div className="whitespace-normal font-bold">
-                  -h Authorization: {'Bearer <BEARER_TOKEN>'}
-                </div>
-                <div className="whitespace-normal font-bold">
-                  {process.env.NODE_ENV === 'development'
-                    ? process.env.REACT_APP_BACKEND_URL +
-                      '/snapshots/' +
-                      snapshot.id +
-                      '/data'
-                    : window.origin + '/api/snapshots/' + snapshot.id + '/data'}
-                </div>
-              </div>
-              <div className="text-sm">Request body format</div>
-              <div className="dark:bg-gray-900 bg-gray-200 w-full h-full font-mono rounded p-2">
-                <div>{'{'}</div>
-                <div className="ml-2">
-                  <div>{'text: String,'}</div>
-                  <div>{'dateColumn?: String,'}</div>
-                  <div>{'valueColumn?: String,'}</div>
-                  <div>{'dateFormat?: String,'}</div>
-                  <div>{'separator?: String'}</div>
-                </div>
-                <div>{'}'}</div>
-              </div>
-              <div className="text-sm">Response on success (200)</div>
-              <div className="dark:bg-gray-900 bg-gray-200 w-full h-full font-mono rounded p-2">
-                <div>{'[{'}</div>
-                <div className="ml-2">
-                  <div>{'date: Date,'}</div>
-                  <div>{'value: Number'}</div>
-                </div>
-                <div>{'}]'}</div>
-              </div>
-              <br />
-              <SimpleButton
-                text="copy bearer token"
-                icon="FaCopy"
-                onClick={() => {
-                  copy(user.za)
-                }}
-              />
-              <SimpleButton
-                text="click endpoint url"
-                icon="FaCopy"
+            {project.isLoggedIn() && (
+              <InfoPopup
                 onClick={() => {
                   copy(
-                    process.env.NODE_ENV === 'development'
-                      ? process.env.REACT_APP_BACKEND_URL +
-                          '/snapshots/' +
-                          snapshot.id +
-                          '/data'
-                      : window.origin +
-                          '/api/snapshots/' +
-                          snapshot.id +
-                          '/data'
+                    window.origin + '/api/snapshots/' + snapshot.id + '/data'
                   )
                 }}
-              />
-            </InfoPopup>
+                text="data endpoint"
+                expandDown={!index}
+              >
+                <div className="">{snapshot.name}</div>
+                <br />
+                <div className="text-sm">Endpoint to add data</div>
+                <div className="dark:bg-gray-900 bg-gray-200 w-full h-full font-mono rounded p-2">
+                  <div className="whitespace-normal font-bold">POST</div>
+                  <div className="whitespace-normal font-bold">
+                    -h Authorization: {'Bearer <BEARER_TOKEN>'}
+                  </div>
+                  <div className="whitespace-normal font-bold">
+                    {process.env.NODE_ENV === 'development'
+                      ? process.env.REACT_APP_BACKEND_URL +
+                        '/snapshots/' +
+                        snapshot.id +
+                        '/data'
+                      : window.origin +
+                        '/api/snapshots/' +
+                        snapshot.id +
+                        '/data'}
+                  </div>
+                </div>
+                <div className="text-sm">Request body format</div>
+                <div className="dark:bg-gray-900 bg-gray-200 w-full h-full font-mono rounded p-2">
+                  <div>{'{'}</div>
+                  <div className="ml-2">
+                    <div>{'text: String,'}</div>
+                    <div>{'dateColumn?: String,'}</div>
+                    <div>{'valueColumn?: String,'}</div>
+                    <div>{'dateFormat?: String,'}</div>
+                    <div>{'separator?: String'}</div>
+                  </div>
+                  <div>{'}'}</div>
+                </div>
+                <div className="text-sm">Response on success (200)</div>
+                <div className="dark:bg-gray-900 bg-gray-200 w-full h-full font-mono rounded p-2">
+                  <div>{'[{'}</div>
+                  <div className="ml-2">
+                    <div>{'date: Date,'}</div>
+                    <div>{'value: Number'}</div>
+                  </div>
+                  <div>{'}]'}</div>
+                </div>
+                <br />
+                <SimpleButton
+                  text="copy bearer token"
+                  icon="FaCopy"
+                  onClick={() => {
+                    copy(user.za)
+                  }}
+                />
+                <SimpleButton
+                  text="click endpoint url"
+                  icon="FaCopy"
+                  onClick={() => {
+                    copy(
+                      process.env.NODE_ENV === 'development'
+                        ? process.env.REACT_APP_BACKEND_URL +
+                            '/snapshots/' +
+                            snapshot.id +
+                            '/data'
+                        : window.origin +
+                            '/api/snapshots/' +
+                            snapshot.id +
+                            '/data'
+                    )
+                  }}
+                />
+              </InfoPopup>
+            )}
             <InfoPopup
               text="statistics"
               icon="FaChartLine"
@@ -225,54 +233,60 @@ const Snapshot = observer(({ id, index, ...props }) => {
               </div>
             </InfoPopup>
           </Flex.Row>
-          <Button
-            basic
-            title="edit snapshot"
-            icon="FaEdit"
-            color="indigo"
-            onClick={() => {
-              snapshotEditor.setEditorSnapshot(snapshot)
-              snapshotEditor.setOpen(true)
-            }}
-          />
-          <Button
-            basic
-            title="delete snapshot and its data"
-            icon="FaTrashAlt"
-            color="yellow"
-            onClick={() => {
-              if (
-                window.confirm('Are you sure you want to delete this snapshot?')
-              ) {
-                snapshots.deleteSnapshot(id)
-              }
-            }}
-          />
-          <Button
-            basic
-            title="import data"
-            icon="FaDatabase"
-            color="green"
-            onClick={() => {
-              importData.setSnapshotId(id)
-              importData.setOpen(true)
-            }}
-          />
-          <Button
-            basic
-            title="delete imported data"
-            icon="FaMinus"
-            color="yellow"
-            onClick={() => {
-              if (
-                window.confirm(
-                  'Are you sure you want to delete the data of this snapshot?'
-                )
-              ) {
-                snapshots.deleteSnapshotData(id)
-              }
-            }}
-          />
+          {project.isLoggedIn() && (
+            <Flex.Row space="0">
+              <Button
+                basic
+                title="edit snapshot"
+                icon="FaEdit"
+                color="indigo"
+                onClick={() => {
+                  snapshotEditor.setEditorSnapshot(snapshot)
+                  snapshotEditor.setOpen(true)
+                }}
+              />
+              <Button
+                basic
+                title="delete snapshot and its data"
+                icon="FaTrashAlt"
+                color="yellow"
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      'Are you sure you want to delete this snapshot?'
+                    )
+                  ) {
+                    snapshots.deleteSnapshot(id)
+                  }
+                }}
+              />
+              <Button
+                basic
+                title="import data"
+                icon="FaDatabase"
+                color="green"
+                onClick={() => {
+                  importData.setSnapshotId(id)
+                  importData.setOpen(true)
+                }}
+              />
+              <Button
+                basic
+                title="delete imported data"
+                icon="FaMinus"
+                color="yellow"
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      'Are you sure you want to delete the data of this snapshot?'
+                    )
+                  ) {
+                    snapshots.deleteSnapshotData(id)
+                  }
+                }}
+              />
+            </Flex.Row>
+          )}
         </Flex.Row>
       </Flex.Row>
       {(expanded && data.length && (

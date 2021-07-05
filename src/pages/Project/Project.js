@@ -17,6 +17,7 @@ import Constraint from './components/Constraint'
 import NodeEditor from './components/NodeEditor'
 import projectModel from 'models/Project'
 import CustomEdge from './components/CustomEdge'
+import project from 'models/Project'
 
 // HELPERS
 const nodeTypes = {
@@ -133,7 +134,7 @@ const Project = observer(() => {
               <Controls />
             </ReactFlow>
           </div>
-          <NodesBar />
+          {project.isLoggedIn() && <NodesBar />}
         </ReactFlowProvider>
       </div>
       <NodeEditor />

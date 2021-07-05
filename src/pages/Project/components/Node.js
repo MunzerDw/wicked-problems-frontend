@@ -39,7 +39,9 @@ const Node = observer(({ icon, color, children, ...props }) => {
       (x || y)
     ) {
       project.editNodePos(props.id, props.xPos, props.yPos)
-      axios.put('/nodes/' + props.id, { x: props.xPos, y: props.yPos })
+      if (project.isLoggedIn()) {
+        axios.put('/nodes/' + props.id, { x: props.xPos, y: props.yPos })
+      }
     }
     if (!props.isDragging) {
       setX(props.xPos)
@@ -48,7 +50,7 @@ const Node = observer(({ icon, color, children, ...props }) => {
   })
 
   const onDoubleClick = async () => {
-    if (node.id !== nodeEditor.getEditorNode().id) {
+    if (node.id !== nodeEditor.getEditorNode().id && project.isLoggedIn()) {
       await project.selectNode(node.id)
       nodeEditor.setOpen(true)
       nodeEditor.setEditorNode(node)

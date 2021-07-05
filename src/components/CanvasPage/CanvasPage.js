@@ -71,18 +71,16 @@ function CanvasPage({ className, topBar, onLoad, ...props }) {
               </Flex.Row>
             </div>
             <Flex.Row>
-              {isLoggedIn && (
-                <Badge
-                  className="opacity-75"
-                  text={
-                    <Flex.Row space="1">
-                      <Icon name="FaUsers" />{' '}
-                      <div>{project.project?.invites?.length + 1} users</div>
-                    </Flex.Row>
-                  }
-                  color="transparent"
-                />
-              )}
+              <Badge
+                className="opacity-75"
+                text={
+                  <Flex.Row space="1">
+                    <Icon name="FaUsers" />{' '}
+                    <div>{project.project?.invites?.length + 1} users</div>
+                  </Flex.Row>
+                }
+                color="transparent"
+              />
               <ThemeToogle />
               {isLoggedIn && <User />}
             </Flex.Row>

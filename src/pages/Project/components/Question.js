@@ -58,14 +58,16 @@ function Question({ ...props }) {
                 </div>
               )}
               <Flex.Row justify="end" className="w-full h-8" space="2">
-                <Button
-                  icon={node.data.isHidden ? 'FaEyeSlash' : 'FaEye'}
-                  onClick={() => {
-                    node.data.isHidden
-                      ? project.hideQuestionBranch(node.id, false)
-                      : project.hideQuestionBranch(node.id, true)
-                  }}
-                />
+                {project.isLoggedIn() && (
+                  <Button
+                    icon={node.data.isHidden ? 'FaEyeSlash' : 'FaEye'}
+                    onClick={() => {
+                      node.data.isHidden
+                        ? project.hideQuestionBranch(node.id, false)
+                        : project.hideQuestionBranch(node.id, true)
+                    }}
+                  />
+                )}
               </Flex.Row>
             </Flex.Col>
           </>

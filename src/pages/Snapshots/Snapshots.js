@@ -12,6 +12,7 @@ import Timeline from './components/Timeline'
 import Correlations from './components/Correlations'
 import settings from 'models/Settings'
 import SelectMultiple from 'components/SelectMultiple'
+import project from 'models/Project'
 
 const Snapshots = observer(() => {
   const urlSafeName = window.location.pathname.split('/')[2]
@@ -58,16 +59,18 @@ const Snapshots = observer(() => {
               >
                 View Actions Timeline
               </Button>
-              <Button
-                basic
-                color="green"
-                onClick={() => {
-                  snapshotEditor.setEditorSnapshot({ name: '' })
-                  snapshotEditor.setOpen(true)
-                }}
-              >
-                Add Snapshot
-              </Button>
+              {project.isLoggedIn() && (
+                <Button
+                  basic
+                  color="green"
+                  onClick={() => {
+                    snapshotEditor.setEditorSnapshot({ name: '' })
+                    snapshotEditor.setOpen(true)
+                  }}
+                >
+                  Add Snapshot
+                </Button>
+              )}
             </Flex.Row>
           </Flex.Row>
           <Flex.Row space="0">

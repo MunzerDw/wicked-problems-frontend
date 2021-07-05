@@ -2,6 +2,7 @@ import React from 'react'
 import firebase from 'firebase/app'
 import { FirebaseAuthConsumer } from '@react-firebase/auth'
 import Dropdown from './Dropdown'
+import axios from 'axios'
 
 function User() {
   return (
@@ -14,6 +15,9 @@ function User() {
                 key: 'Sign out',
                 action: () => {
                   firebase.auth().signOut()
+                  axios.defaults.headers = {
+                    authorization: '',
+                  }
                 },
               },
             ]}
