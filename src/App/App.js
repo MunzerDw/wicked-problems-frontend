@@ -13,6 +13,10 @@ import Signin from 'pages/Signin/Signin'
 import Signup from 'pages/Signup/Signup'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import NotFound from 'pages/NotFound/NotFound'
+import PublicProjects from 'pages/PublicProjects/PublicProjects'
+import Project from 'pages/Project/Project'
+import Statistics from 'pages/Statistics/Statistics'
+import Snapshots from 'pages/Snapshots/Snapshots'
 
 require('dotenv').config()
 
@@ -52,10 +56,22 @@ function App() {
                 <BrowserRouter>
                   <Switch>
                     <Route exact path="/">
+                      <PublicProjects />
+                    </Route>
+                    <Route exact path="/signin">
                       <Signin />
                     </Route>
                     <Route exact path="/signup">
                       <Signup />
+                    </Route>
+                    <Route exact path="/projects/:id">
+                      <Project />
+                    </Route>
+                    <Route exact path="/projects/:id/statistics">
+                      <Statistics />
+                    </Route>
+                    <Route exact path="/projects/:id/snapshots">
+                      <Snapshots />
                     </Route>
                     <Route>
                       <NotFound />

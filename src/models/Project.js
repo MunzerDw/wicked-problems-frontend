@@ -4,6 +4,7 @@ import nodeEditor from './NodeEditor'
 import socketIOClient from 'socket.io-client'
 import settings from './Settings'
 import snapshots from './Snapshots'
+import firebase from 'firebase/app'
 
 // Model the application state.
 class Project {
@@ -22,7 +23,7 @@ class Project {
     console.log('connecting to socket')
     this.socket = socketIOClient(process.env.REACT_APP_BACKEND_URL, {
       auth: {
-        token: axios.defaults.headers.authorization.replace('Bearer ', ''),
+        token: axios.defaults.headers.authorization?.replace('Bearer ', ''),
       },
       query: {
         projectId: this.project?.id,
@@ -112,6 +113,10 @@ class Project {
   }
 
   // STATE FUNCTIONS
+  isLoggedIn() {
+    const user = firebase.auth().currentUser
+    return user
+  }
   addNode(node) {
     this.setNodes([
       ...this.nodes,

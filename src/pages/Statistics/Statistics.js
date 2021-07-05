@@ -280,81 +280,88 @@ const Statistics = observer(() => {
             />
           </div>
         </Flex.Col>
-        <Flex.Col
-          className="col-span-2 bg-white rounded shadow p-4 dark:bg-gray-700"
-          style={{ maxHeight: '700px' }}
-        >
-          <div className="text-2xl">Logs</div>
-          <Table>
-            <Table.Head className="bg-gray-200 dark:bg-gray-900">
-              <Table.Cell>User</Table.Cell>
-              <Table.Cell>Date</Table.Cell>
-              <Table.Cell>Action</Table.Cell>
-              <Table.Cell>Node</Table.Cell>
-              <Table.Cell>Details</Table.Cell>
-            </Table.Head>
-            <Table.Body>
-              {project.project.logs
-                ?.slice()
-                .sort(
-                  (a, b) =>
-                    new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime()
-                )
-                .map((log, i) => {
-                  return (
-                    <Table.Row key={i}>
-                      <Table.Cell>
-                        <FirebaseAuthConsumer>
-                          {({ isSignedIn, user, providerId, ...authState }) => {
-                            return user.uid === log.userId &&
-                              user.uid === project.project.userId
-                              ? 'Admin (you)'
-                              : user.uid !== log.userId &&
-                                log.userId === project.project.userId
-                              ? 'Admin'
-                              : user.uid === log.userId &&
-                                log.userId !== project.project.userId
-                              ? 'Collaborator (you)'
-                              : 'Collaborator'
-                          }}
-                        </FirebaseAuthConsumer>
-                      </Table.Cell>
-                      <Table.Cell>
-                        {formatDate(new Date(log.createdAt))}
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Badge
-                          color={
-                            log.type === 'CREATE'
-                              ? 'indigo-400'
-                              : log.type === 'UPDATE'
-                              ? 'yellow-500'
-                              : 'red-500'
-                          }
-                          text={log.type}
-                          className="text-white"
-                        />
-                      </Table.Cell>
-                      <Table.Cell>
-                        {log.nodeId ? (
-                          <>
-                            <span className="font-bold">{log.node.type}</span>
-                            <span>
-                              {log.node.text ? ': ' + log.node.text : ''}
-                            </span>
-                          </>
-                        ) : (
-                          '-'
-                        )}
-                      </Table.Cell>
-                      <Table.Cell>{JSON.stringify(log.details)}</Table.Cell>
-                    </Table.Row>
+        {project.isLoggedIn() && (
+          <Flex.Col
+            className="col-span-2 bg-white rounded shadow p-4 dark:bg-gray-700"
+            style={{ maxHeight: '700px' }}
+          >
+            <div className="text-2xl">Logs</div>
+            <Table>
+              <Table.Head className="bg-gray-200 dark:bg-gray-900">
+                <Table.Cell>User</Table.Cell>
+                <Table.Cell>Date</Table.Cell>
+                <Table.Cell>Action</Table.Cell>
+                <Table.Cell>Node</Table.Cell>
+                <Table.Cell>Details</Table.Cell>
+              </Table.Head>
+              <Table.Body>
+                {project.project.logs
+                  ?.slice()
+                  .sort(
+                    (a, b) =>
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
                   )
-                })}
-            </Table.Body>
-          </Table>
-        </Flex.Col>
+                  .map((log, i) => {
+                    return (
+                      <Table.Row key={i}>
+                        <Table.Cell>
+                          <FirebaseAuthConsumer>
+                            {({
+                              isSignedIn,
+                              user,
+                              providerId,
+                              ...authState
+                            }) => {
+                              return user.uid === log.userId &&
+                                user.uid === project.project.userId
+                                ? 'Admin (you)'
+                                : user.uid !== log.userId &&
+                                  log.userId === project.project.userId
+                                ? 'Admin'
+                                : user.uid === log.userId &&
+                                  log.userId !== project.project.userId
+                                ? 'Collaborator (you)'
+                                : 'Collaborator'
+                            }}
+                          </FirebaseAuthConsumer>
+                        </Table.Cell>
+                        <Table.Cell>
+                          {formatDate(new Date(log.createdAt))}
+                        </Table.Cell>
+                        <Table.Cell>
+                          <Badge
+                            color={
+                              log.type === 'CREATE'
+                                ? 'indigo-400'
+                                : log.type === 'UPDATE'
+                                ? 'yellow-500'
+                                : 'red-500'
+                            }
+                            text={log.type}
+                            className="text-white"
+                          />
+                        </Table.Cell>
+                        <Table.Cell>
+                          {log.nodeId ? (
+                            <>
+                              <span className="font-bold">{log.node.type}</span>
+                              <span>
+                                {log.node.text ? ': ' + log.node.text : ''}
+                              </span>
+                            </>
+                          ) : (
+                            '-'
+                          )}
+                        </Table.Cell>
+                        <Table.Cell>{JSON.stringify(log.details)}</Table.Cell>
+                      </Table.Row>
+                    )
+                  })}
+              </Table.Body>
+            </Table>
+          </Flex.Col>
+        )}
       </div>
     </CanvasPage>
   )

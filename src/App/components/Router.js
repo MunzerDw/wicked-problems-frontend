@@ -12,6 +12,7 @@ function Router() {
     <BrowserRouter>
       <Switch>
         <Redirect exact from="/signup" to="/" />
+        <Redirect exact from="/signin" to="/" />
         <Route exact path="/">
           <Projects />
         </Route>

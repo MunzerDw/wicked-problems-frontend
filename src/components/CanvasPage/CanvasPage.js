@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { initFirebaseAnalytics } from 'services/analytics'
 
 function CanvasPage({ className, topBar, onLoad, ...props }) {
+  const isLoggedIn = project.isLoggedIn()
   const urlSafeName = window.location.pathname.split('/')[2]
   useEffect(() => {
     initFirebaseAnalytics().then((fa) => {
@@ -30,7 +31,6 @@ function CanvasPage({ className, topBar, onLoad, ...props }) {
   return (
     <div className="h-screen w-screen bg-gray-200 dark:bg-gray-800">
       <Flex.Row space="0" align="start" className="w-full h-full relative">
-        <Menu />
         <Flex.Col space="0" className="w-full h-full">
           <div className="w-full p-1 px-2 flex justify-between items-center shadow sticky top-0 bg-white dark:bg-gray-700">
             <Flex.Row>
@@ -62,25 +62,29 @@ function CanvasPage({ className, topBar, onLoad, ...props }) {
                 {/* <LinkTab to={'/projects/' + urlSafeName + '/publicanalysis'}>
                   Public Analysis
                 </LinkTab> */}
-                <LinkTab to={'/projects/' + urlSafeName + '/settings'}>
-                  Settings
-                </LinkTab>
+                {isLoggedIn && (
+                  <LinkTab to={'/projects/' + urlSafeName + '/settings'}>
+                    Settings
+                  </LinkTab>
+                )}
                 <LinkTab to={'/'}>Home</LinkTab>
               </Flex.Row>
             </div>
             <Flex.Row>
-              <Badge
-                className="opacity-75"
-                text={
-                  <Flex.Row space="1">
-                    <Icon name="FaUsers" />{' '}
-                    <div>{project.project?.invites?.length + 1} users</div>
-                  </Flex.Row>
-                }
-                color="transparent"
-              />
+              {isLoggedIn && (
+                <Badge
+                  className="opacity-75"
+                  text={
+                    <Flex.Row space="1">
+                      <Icon name="FaUsers" />{' '}
+                      <div>{project.project?.invites?.length + 1} users</div>
+                    </Flex.Row>
+                  }
+                  color="transparent"
+                />
+              )}
               <ThemeToogle />
-              <User />
+              {isLoggedIn && <User />}
             </Flex.Row>
           </div>
           <div className={'w-full h-full relative overflow-auto ' + className}>

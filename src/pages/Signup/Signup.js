@@ -103,7 +103,7 @@ function Signup() {
           <div>Already have an account?</div>
           <SimpleButton
             onClick={() => {
-              history.push('/')
+              history.push('/signin')
             }}
             text="Sign in"
             className="font-bold text-gray-900 dark:text-indigo-100"
