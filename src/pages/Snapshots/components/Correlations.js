@@ -30,9 +30,9 @@ const Correlations = observer(() => {
             Correlations between snapshots data
           </div>
           <div>
-            The following shows the correlations between all snapshots you have
-            added with normalized values. The closed the correlation to 1, the
-            more the two data sets behave similarly.
+            The following shows the correlations between all snapshots data you
+            have added, with normalized values. The closer the correlation is to
+            1, the more the two data sets behave similarly.
           </div>
         </Flex.Col>
         <br />

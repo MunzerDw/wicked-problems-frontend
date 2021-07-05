@@ -183,7 +183,7 @@ const Snapshot = observer(({ id, index, ...props }) => {
                   }}
                 />
                 <SimpleButton
-                  text="click endpoint url"
+                  text="copy endpoint url"
                   icon="FaCopy"
                   onClick={() => {
                     copy(
