@@ -103,7 +103,7 @@ const Project = observer(() => {
             >
               <Background variant="dots" gap={12} />
               <MiniMap
-                maskColor="rgb(227, 227, 227, 0.5)"
+                maskColor="rgb(0, 0, 0, 0.5)"
                 style={{
                   backgroundColor: 'white',
                   border: 'none',

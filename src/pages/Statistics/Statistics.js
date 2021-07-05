@@ -36,7 +36,9 @@ function calculateStatistics() {
       )
       return edgesFromQuestionToIdeas.length
     })
-  result.maxIdeasPerQuestion = Math.max(...questionsEdgesToIdeas)
+  result.maxIdeasPerQuestion = questionsEdgesToIdeas.length
+    ? Math.max(...questionsEdgesToIdeas)
+    : 0
   result.minIdeasPerQuestion = Math.min(...questionsEdgesToIdeas)
   try {
     result.avgIdeasPerQuestion =
@@ -155,13 +157,13 @@ const Statistics = observer(() => {
               Average number of ideas to a question
             </div>
             <div className="font-bold text-lg">
-              {statistics.avgIdeasPerQuestion}
+              {statistics.avgIdeasPerQuestion || '-'}
             </div>
             <div className="opacity-75">
               Maximum number of ideas to a question
             </div>
             <div className="font-bold text-lg">
-              {statistics.maxIdeasPerQuestion}
+              {statistics.maxIdeasPerQuestion || '-'}
             </div>
             <div className="opacity-75">Project created at</div>
             <div className="font-bold text-lg">{statistics.created}</div>

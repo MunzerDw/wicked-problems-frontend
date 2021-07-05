@@ -60,7 +60,7 @@ function Action({ ...props }) {
               <Flex.Row justify="end" className="w-full h-8" space="1">
                 {node.data?.doneAt && (
                   <Badge
-                    className="bg-white dark:bg-gray-600 py-1"
+                    className="bg-gray-200 dark:bg-gray-600 py-1"
                     text={
                       <Flex.Row space="1">
                         <Icon
@@ -255,8 +255,10 @@ function Action({ ...props }) {
                           </Flex.Row>
                         }
                       />
+                    ) : settings.labels.length ? (
+                      <SimpleButton className="px-1" text={'select label'} />
                     ) : (
-                      <SimpleButton className="px-1" text="select label" />
+                      <div>no labels found</div>
                     )
                   }
                   data={settings.labels.map((label) => {

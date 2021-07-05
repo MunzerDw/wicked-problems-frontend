@@ -105,6 +105,12 @@ class Project {
     this.edges = edges
   }
 
+  reset() {
+    this.project = {}
+    this.nodes = []
+    this.edges = []
+  }
+
   // STATE FUNCTIONS
   addNode(node) {
     this.setNodes([
@@ -502,7 +508,8 @@ class Project {
 
   // ONLOAD
   async loadProjectAndNodes(name) {
-    if (!this.fetchedData) {
+    if (!this.fetchedData || name !== this.project?.urlSafeName) {
+      this.reset()
       const project = await this.fetchProject(name)
       await this.fetchNodes(project?.id)
       await this.fetchEdges(project?.id)
