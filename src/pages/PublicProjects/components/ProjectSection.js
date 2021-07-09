@@ -1,7 +1,7 @@
 import Button from 'components/Button'
 import Flex from 'components/Flex'
 import NumberStat from 'components/NumberStat'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import TimeAgo from 'javascript-time-ago'
 
 function ProjectSection({ project, ...props }) {

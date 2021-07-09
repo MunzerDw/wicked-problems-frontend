@@ -61,10 +61,13 @@ const SnapshotsCombined = observer(() => {
   const [expanded, setExpanded] = useState(true)
   const actions = snapshots.getFilteredActions()
   const datesUnfiltered = snapshots.dates
-  const minDate = new Date(datesUnfiltered[0])
-  const maxDate = new Date(datesUnfiltered[datesUnfiltered.length - 1])
+  const minDate = new Date(datesUnfiltered[0] || new Date())
+  const maxDate = new Date(
+    datesUnfiltered[datesUnfiltered.length - 1] || new Date()
+  )
   const [startDate, setStartDate] = useState(minDate)
   const [endDate, setEndDate] = useState(maxDate)
+  console.log(minDate, maxDate, startDate, endDate)
   const dates = snapshots.dates?.filter((date) => {
     if (startDate) {
       if (startDate.getTime() > new Date(date).getTime()) {

@@ -37,7 +37,7 @@ const Correlations = observer(() => {
         </Flex.Col>
         <br />
         {snapshots.correlationsLoading ? (
-          <Loading />
+          <div className="relative py-8">{<Loading />}</div>
         ) : (
           <Flex.Col>
             {correlations?.map((corr, i) => {

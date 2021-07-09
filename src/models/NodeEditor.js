@@ -27,7 +27,9 @@ class NodeEditor {
         const id = this.editorNode.id
         this.setEditorNode({})
         evidenceEditor.setOpen(false)
-        await project.deSelectNode(id)
+        if (id) {
+          await project.deSelectNode(id)
+        }
       }, 100)
     }
   }

@@ -1,4 +1,3 @@
-import Page from 'components/Page'
 import { observer } from 'mobx-react'
 import { useEffect, useState } from 'react'
 import projectsModel from 'models/Projects'

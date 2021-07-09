@@ -92,7 +92,7 @@ const NodeEditor = observer(() => {
       <EvidenceEditor />
       <div
         className={
-          'fixed top-0 right-0 h-full bg-white dark:bg-gray-700 shadow-lg dark:border-non overflow-hidden trans ' +
+          'fixed top-0 right-0 h-full bg-white dark:bg-gray-700 shadow-lg dark:border-non trans overflow-auto ' +
           (nodeEditor.open ? 'w-96' : 'w-0')
         }
         style={{
@@ -122,6 +122,7 @@ const NodeEditor = observer(() => {
               <div className="p-2 pl-0 w-full">
                 <Textarea
                   id="editorTextarea"
+                  style={{ height: '150px' }}
                   value={node.data?.text}
                   onChange={(e) => {
                     if (nodeEditor?.editorNode?.data) {
@@ -140,9 +141,12 @@ const NodeEditor = observer(() => {
                       nodeEditor?.editorNode?.id &&
                       nodeEditor?.editorNode?.data?.text !== oldNode?.data?.text
                     ) {
-                      project.updateNode({
-                        text: e.currentTarget.value,
-                      })
+                      project.updateNode(
+                        {
+                          text: e.currentTarget.value,
+                        },
+                        nodeEditor?.editorNode?.id
+                      )
                     }
                   }}
                 />

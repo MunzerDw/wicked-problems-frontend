@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 import Icon from 'components/Icon'
 import projectEditor from 'models/ProjectEditor'
 import projects from 'models/Projects'
-import projectModel from 'models/Project'
 import { observer } from 'mobx-react'
 import firebase from 'firebase/app'
 
