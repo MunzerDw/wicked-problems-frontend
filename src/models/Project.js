@@ -21,7 +21,7 @@ class Project {
   connectSocket() {
     // Real Time
     console.log('connecting to socket')
-    this.socket = socketIOClient(process.env.REACT_APP_BACKEND_URL, {
+    this.socket = socketIOClient(process.env.REACT_APP_SOCKET_URL, {
       auth: {
         token: axios.defaults.headers.authorization?.replace('Bearer ', ''),
       },
