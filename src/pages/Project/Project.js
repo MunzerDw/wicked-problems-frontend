@@ -101,6 +101,7 @@ const Project = observer(() => {
               onDragOver={onDragOver}
               defaultZoom={0}
               edgeTypes={edgeTypes}
+              minZoom={0.01}
             >
               <Background variant="dots" gap={12} />
               <MiniMap
