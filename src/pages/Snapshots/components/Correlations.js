@@ -17,7 +17,12 @@ const Correlations = observer(() => {
         className="bg-gray-200 dark:bg-gray-800 shadow-lg rounded p-6 max-h-full overflow-auto relative w-full"
         style={{ maxWidth: '1000px' }}
       >
-        <div className="absolute top-0 right-0">
+        <div
+          className="sticky top-0 w-full flex justify-end"
+          style={{
+            left: '500px',
+          }}
+        >
           <Button
             icon="FaTimes"
             onClick={() => {
