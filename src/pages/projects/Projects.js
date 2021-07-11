@@ -37,11 +37,11 @@ const Projects = observer(() => {
           {({ isSignedIn, user, providerId, ...authState }) => {
             const ownProjects = projectsModel.projects
               .slice()
-              .sort((a, b) => new Date(b.date) - new Date(a.date))
+              .sort((a, b) => (new Date(b.date) < new Date(a.date) ? 1 : -1))
               .filter((project) => project.userId === user.uid)
             const guestProjects = projectsModel.projects
               .slice()
-              .sort((a, b) => new Date(b.date) - new Date(a.date))
+              .sort((a, b) => (new Date(b.date) < new Date(a.date) ? 1 : -1))
               .filter((project) => project.userId !== user.uid)
             return (
               <Flex.Col space="16">
