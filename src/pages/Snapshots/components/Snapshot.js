@@ -157,7 +157,7 @@ const Snapshot = observer(({ id, index, ...props }) => {
                 <div className="dark:bg-gray-900 bg-gray-200 w-full h-full font-mono rounded p-2">
                   <div>{'{'}</div>
                   <div className="ml-2">
-                    <div>{'text: String,'}</div>
+                    <div>{'text: String, // csv text string'}</div>
                     <div>{'dateColumn?: String,'}</div>
                     <div>{'valueColumn?: String,'}</div>
                     <div>{'dateFormat?: String,'}</div>
