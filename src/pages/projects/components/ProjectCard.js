@@ -46,9 +46,15 @@ const ProjectCard = observer(({ id }) => {
                   icon="FaTrashAlt"
                   iconColor="yellow-500"
                   onClick={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    projects.deleteProject(project.id)
+                    if (
+                      window.confirm(
+                        'Are you sure you want to delete this project?'
+                      )
+                    ) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      projects.deleteProject(project.id)
+                    }
                   }}
                 />
               )}

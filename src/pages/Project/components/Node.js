@@ -74,14 +74,33 @@ const Node = observer(({ icon, color, children, ...props }) => {
         id="a"
         type="source"
         position="right"
+        title="source"
         style={{ width: '20px', height: '20px' }}
-      />
+      >
+        <div
+          className="flex w-full h-full pointer-events-none"
+          style={{
+            zIndex: '0',
+          }}
+        >
+          <div className="m-auto">
+            <Icon name="FaAngleRight" />
+          </div>
+        </div>
+      </Handle>
       <Handle
         id="c"
         type="target"
         position="left"
+        title="target"
         style={{ width: '20px', height: '20px' }}
-      />
+      >
+        <div className="flex w-full h-full pointer-events-none">
+          <div className="m-auto">
+            <Icon name="FaAngleRight" />
+          </div>
+        </div>
+      </Handle>
       <div className="flex p-4 rounded-full">
         <Icon size={50} name={icon} className="m-auto" color={color} />
       </div>

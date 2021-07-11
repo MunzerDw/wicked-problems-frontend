@@ -53,6 +53,7 @@ function Signin() {
         <div className="text-4xl">Sign In</div>
         <div className="space-y-2">
           <Input
+            name="email"
             label="E-mail"
             value={email}
             onChange={(e) => {
@@ -64,6 +65,7 @@ function Signin() {
         </div>
         <div className="space-y-2">
           <Input
+            name="password"
             label="Password"
             type="password"
             value={password}

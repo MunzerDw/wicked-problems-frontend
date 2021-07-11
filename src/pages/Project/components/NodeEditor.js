@@ -133,14 +133,16 @@ const NodeEditor = observer(() => {
                           text: e.currentTarget.value,
                         },
                       })
+                      project.editNode(
+                        {
+                          text: e.currentTarget.value,
+                        },
+                        nodeEditor.editorNode?.id
+                      )
                     }
                   }}
                   onBlur={(e) => {
-                    const oldNode = project.findNode(nodeEditor?.editorNode?.id)
-                    if (
-                      nodeEditor?.editorNode?.id &&
-                      nodeEditor?.editorNode?.data?.text !== oldNode?.data?.text
-                    ) {
+                    if (nodeEditor?.editorNode?.id) {
                       project.updateNode(
                         {
                           text: e.currentTarget.value,
