@@ -84,7 +84,7 @@ const Node = observer(({ icon, color, children, ...props }) => {
           }}
         >
           <div className="m-auto">
-            <Icon name="FaAngleRight" />
+            <Icon className="text-white" name="FaAngleRight" />
           </div>
         </div>
       </Handle>
@@ -97,7 +97,7 @@ const Node = observer(({ icon, color, children, ...props }) => {
       >
         <div className="flex w-full h-full pointer-events-none">
           <div className="m-auto">
-            <Icon name="FaAngleRight" />
+            <Icon className="text-white" name="FaAngleRight" />
           </div>
         </div>
       </Handle>
