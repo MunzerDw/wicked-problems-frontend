@@ -295,12 +295,12 @@ class Project {
   }
   async updateNode(body, id) {
     try {
+      this.editNode(body, id || nodeEditor.editorNode.id)
       const response = await axios.put(
         '/nodes/' + (id || nodeEditor.editorNode.id),
         body
       )
       if (response.status === 200) {
-        this.editNode(response.data, id || nodeEditor.editorNode.id)
         return response.data
       } else {
         alert(response.status)
@@ -388,9 +388,9 @@ class Project {
   }
   async deleteNodes(ids) {
     try {
+      this.removeNodes(ids)
       const response = await axios.delete('/nodes', { data: { ids: ids } })
       if (response.status === 204) {
-        this.removeNodes(ids)
       } else {
         alert(response.status)
       }
@@ -441,9 +441,9 @@ class Project {
   }
   async deleteEdges(ids) {
     try {
+      this.removeEdges(ids)
       const response = await axios.delete('/edges', { data: { ids: ids } })
       if (response.status === 204) {
-        this.removeEdges(ids)
       } else {
         alert(response.status)
       }
