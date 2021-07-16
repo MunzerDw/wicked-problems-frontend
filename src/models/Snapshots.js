@@ -33,6 +33,10 @@ class Snapshots {
 
   constructor() {
     makeAutoObservable(this)
+    try {
+      const filteredLabels = JSON.parse(localStorage.getItem('filteredLabels'))
+      this.filteredLabels = filteredLabels
+    } catch (error) {}
   }
 
   getView() {
@@ -57,6 +61,7 @@ class Snapshots {
 
   setFilteredLabels(filteredLabels) {
     this.filteredLabels = filteredLabels
+    localStorage.setItem('filteredLabels', JSON.stringify(filteredLabels))
   }
 
   setView(view) {

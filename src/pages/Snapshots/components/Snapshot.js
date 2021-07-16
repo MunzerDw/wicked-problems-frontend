@@ -49,10 +49,20 @@ const Snapshot = observer(({ id, index, ...props }) => {
   const { darkMode } = useDarkMode()
   const [expanded, setExpanded] = useState(false)
   const snapshot = snapshots.findSnapshot(id)
-  const actions = snapshots.getFilteredActions()
+  let actions = snapshots.getFilteredActions()
   let dates = [...(snapshot.data?.map((d) => d.date) || [])]
     ?.slice()
     .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
+  actions = actions?.filter((action) => {
+    const date = new Date(action.data?.doneAt).getTime()
+    const minDate = new Date(dates[0]).getTime()
+    const maxDate = new Date(dates[dates.length - 1]).getTime()
+    if (minDate <= date && date <= maxDate) {
+      console.log('date between')
+      return true
+    }
+  })
+  console.log(actions)
   for (let i = 0; i < dates.length; i++) {
     const date = dates[i]
     const nextDate = dates[i + 1]

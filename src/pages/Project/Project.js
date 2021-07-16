@@ -99,7 +99,7 @@ const Project = observer(() => {
               onLoad={onLoad}
               onDrop={onDrop}
               onDragOver={onDragOver}
-              defaultZoom={0}
+              defaultZoom={0.01}
               edgeTypes={edgeTypes}
               minZoom={0.01}
             >

@@ -59,7 +59,7 @@ const months = [
 const SnapshotsCombined = observer(() => {
   const { darkMode } = useDarkMode()
   const [expanded, setExpanded] = useState(true)
-  const actions = snapshots.getFilteredActions()
+  let actions = snapshots.getFilteredActions()
   const datesUnfiltered = snapshots.dates
   const minDate = new Date(datesUnfiltered[0] || new Date())
   const maxDate = new Date(
@@ -80,6 +80,15 @@ const SnapshotsCombined = observer(() => {
       }
     }
     return true
+  })
+  actions = actions?.filter((action) => {
+    const date = new Date(action.data?.doneAt).getTime()
+    const minDate = new Date(dates[0]).getTime()
+    const maxDate = new Date(dates[dates.length - 1]).getTime()
+    if (minDate <= date && date <= maxDate) {
+      console.log('date between')
+      return true
+    }
   })
   const lineData = {
     labels: dates?.map((date) => formatDate(new Date(date))),

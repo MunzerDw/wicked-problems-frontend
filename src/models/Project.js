@@ -375,6 +375,23 @@ class Project {
       alert(error.response?.data?.message)
     }
   }
+  async fetchEdges(id) {
+    try {
+      if (!id) return
+      const response = await axios('/edges?projectId=' + id)
+      this.setEdges(
+        response.data.map((edge) => ({
+          id: edge.id,
+          source: edge.source,
+          target: edge.target,
+          isHidden: edge.isHidden,
+          type: 'custom',
+        }))
+      )
+    } catch (error) {
+      alert(error.response?.data?.message)
+    }
+  }
   async createNode(node) {
     try {
       const response = await axios.post('/nodes', {
@@ -394,23 +411,6 @@ class Project {
       } else {
         alert(response.status)
       }
-    } catch (error) {
-      alert(error.response?.data?.message)
-    }
-  }
-  async fetchEdges(id) {
-    try {
-      if (!id) return
-      const response = await axios('/edges?projectId=' + id)
-      this.setEdges(
-        response.data.map((edge) => ({
-          id: edge.id,
-          source: edge.source,
-          target: edge.target,
-          isHidden: edge.isHidden,
-          type: 'custom',
-        }))
-      )
     } catch (error) {
       alert(error.response?.data?.message)
     }
@@ -525,7 +525,6 @@ class Project {
         this.connectSocket()
       }
       this.fetchedData = true
-      snapshots.setFilteredLabels(settings.labels)
     }
   }
 }
