@@ -33,10 +33,6 @@ class Snapshots {
 
   constructor() {
     makeAutoObservable(this)
-    try {
-      const filteredLabels = JSON.parse(localStorage.getItem('filteredLabels'))
-      this.filteredLabels = filteredLabels
-    } catch (error) {}
   }
 
   getView() {
@@ -61,7 +57,6 @@ class Snapshots {
 
   setFilteredLabels(filteredLabels) {
     this.filteredLabels = filteredLabels
-    localStorage.setItem('filteredLabels', JSON.stringify(filteredLabels))
   }
 
   setView(view) {
@@ -225,7 +220,7 @@ class Snapshots {
       )
       if (response.status === 200) {
         const correlations = response.data.sort((a, b) =>
-          a.correlation > b.correlation ? -1 : 1
+          Math.abs(a.correlation) > Math.abs(b.correlation) ? -1 : 1
         )
         this.correlations = correlations
         return correlations

@@ -172,6 +172,10 @@ class Project {
     const nodeIndex = this.nodes.findIndex((obj) => obj.id === id)
     if (this.nodes[nodeIndex] && this.nodes[nodeIndex].data) {
       this.nodes[nodeIndex].data = { ...this.nodes[nodeIndex].data, ...newData }
+      if (newData.labelId) {
+        const label = settings.findLabel(newData.labelId)
+        this.nodes[nodeIndex].data.label = { ...label }
+      }
     }
   }
   editNodePos(id, x, y) {
