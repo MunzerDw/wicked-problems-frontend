@@ -29,8 +29,8 @@ const ImportData = observer(() => {
       <Form
         className="bg-white dark:bg-gray-700 shadow-lg rounded p-6 max-h-full overflow-auto"
         onSubmit={async () => {
-          await importData.uploadData()
-          importData.setOpen(false)
+          const result = await importData.uploadData()
+          if (result) importData.setOpen(false)
         }}
       >
         <SimpleButton
