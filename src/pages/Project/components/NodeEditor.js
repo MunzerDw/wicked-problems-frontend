@@ -269,10 +269,9 @@ const NodeEditor = observer(() => {
               </div>
             </Flex.Row>
           )}
-          {node.type === 'ARGUMENT' && (
             <Flex.Col className="w-full">
               <Flex.Row className="w-full" justify="between" space="0">
-                <div>Evidences</div>
+                <div>Evidence</div>
                 <Button
                   color="green"
                   basic
@@ -374,7 +373,6 @@ const NodeEditor = observer(() => {
                 })}
               </Flex.Col>
             </Flex.Col>
-          )}
         </Flex.Col>
       </div>
     </>

@@ -4,6 +4,7 @@ import Flex from 'components/Flex'
 import Icon from 'components/Icon'
 import project from 'models/Project'
 import Button from 'components/Button'
+import Badge from 'components/Badge'
 
 function Question({ ...props }) {
   return (
@@ -68,6 +69,13 @@ function Question({ ...props }) {
                     }}
                   />
                 )}
+              </Flex.Row>
+              <Flex.Row justify="end" className="w-full h-8" space="2">
+                <Badge
+                  className="text-white"
+                  color="gray-400"
+                  text={(node.data?.evidences?.length || 0) + ' evidence'}
+                />
               </Flex.Row>
             </Flex.Col>
           </>

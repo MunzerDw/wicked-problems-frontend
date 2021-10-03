@@ -3,6 +3,7 @@ import Dropdown from 'components/Dropdown'
 import Flex from 'components/Flex'
 import Icon from 'components/Icon'
 import project from 'models/Project'
+import Badge from 'components/Badge'
 
 function Idea({ ...props }) {
   return (
@@ -58,6 +59,11 @@ function Idea({ ...props }) {
                 </div>
               )}
               <Flex.Row justify="end" className="w-full h-8" space="2">
+                <Badge
+                  className="text-white"
+                  color="gray-400"
+                  text={(node.data?.evidences?.length || 0) + ' evidence'}
+                />
                 <Flex.Row
                   space="1"
                   className={
