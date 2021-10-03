@@ -69,8 +69,6 @@ function Question({ ...props }) {
                     }}
                   />
                 )}
-              </Flex.Row>
-              <Flex.Row justify="end" className="w-full h-8" space="2">
                 <Badge
                   className="text-white"
                   color="gray-400"
